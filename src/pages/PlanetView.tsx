@@ -5,11 +5,24 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import PlanetPage from "@/components/PlanetPage";
 
+// Mapping of planet IDs to Portuguese names
+const planetNames = {
+  algebra: "Álgebra",
+  aritmetica: "Aritmética",
+  estatistica: "Estatística",
+  funcoes: "Funções",
+  geometria: "Geometria"
+};
+
 const PlanetView = () => {
   const { planetId } = useParams<{ planetId: string }>();
   
   useEffect(() => {
-    document.title = `NumiVerse - Explore ${planetId?.charAt(0).toUpperCase() + (planetId?.slice(1) || '')}`;
+    if (planetId && planetId in planetNames) {
+      document.title = `NumiVerse - Explorar ${planetNames[planetId as keyof typeof planetNames]}`;
+    } else {
+      document.title = "NumiVerse - Explorar Planeta";
+    }
   }, [planetId]);
   
   return (
