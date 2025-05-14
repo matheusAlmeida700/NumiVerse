@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -8,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sun, Moon, Earth, Calculator, Triangle, CheckCircle, LockIcon, RocketIcon } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { lessonData } from '@/data/lessonData';
+import { isLessonCompleted, getLessonStats } from '@/services/userService';
 
 interface LessonType {
   id: string;
@@ -35,7 +37,7 @@ const planetsData = {
     description: "Explore o mundo das equações, variáveis e resolução de problemas",
     color: "bg-yellow-500",
     icon: <Sun className="w-6 h-6" />,
-    progress: 85,
+    progress: 0, // Will be calculated dynamically
     lessons: [
       {
         id: "algebra-1",
@@ -43,7 +45,7 @@ const planetsData = {
         description: "Aprenda a trabalhar com expressões algébricas e suas propriedades.",
         duration: 15,
         xp: 150,
-        completed: true,
+        completed: false, // Will be updated dynamically
         locked: false
       },
       {
@@ -52,7 +54,7 @@ const planetsData = {
         description: "Domine as técnicas para resolver equações de primeiro grau.",
         duration: 20,
         xp: 200,
-        completed: true,
+        completed: false,
         locked: false
       },
       {
@@ -90,7 +92,7 @@ const planetsData = {
         description: "Navegue por um labirinto espacial resolvendo equações algébricas.",
         difficulty: "medium" as const,
         xp: 250,
-        completed: true,
+        completed: false,
         locked: false
       },
       {
@@ -109,7 +111,7 @@ const planetsData = {
     description: "Domine os fundamentos dos números, operações e contagens",
     color: "bg-slate-300",
     icon: <Moon className="w-6 h-6" />,
-    progress: 60,
+    progress: 0,
     lessons: [
       {
         id: "aritmetica-1",
@@ -117,16 +119,16 @@ const planetsData = {
         description: "Compreenda os conjuntos numéricos e suas propriedades.",
         duration: 10,
         xp: 100,
-        completed: true,
+        completed: false,
         locked: false
       },
       {
         id: "aritmetica-2",
         title: "Frações e Decimais",
-        description: "Aprenda a trabalhar com fra��ões e números decimais.",
+        description: "Aprenda a trabalhar com frações e números decimais.",
         duration: 15,
         xp: 150,
-        completed: true,
+        completed: false,
         locked: false
       },
       {
@@ -164,7 +166,7 @@ const planetsData = {
         description: "Corra contra o tempo para resolver problemas simples de aritmética.",
         difficulty: "easy" as const,
         xp: 150,
-        completed: true,
+        completed: false,
         locked: false
       },
       {
@@ -403,17 +405,65 @@ const planetsData = {
 };
 
 const PlanetPage = () => {
-  const { planetId } = useParams();
+  const { planetId } = useParams<{ planetId: string }>();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [planetData, setPlanetData] = useState<any>(null);
   
-  // Check if the planet exists
-  if (!planetId || !planetsData[planetId as keyof typeof planetsData]) {
-    return <div className="flex items-center justify-center h-[80vh]">Planeta não encontrado</div>;
+  useEffect(() => {
+    // Check if the planet exists
+    if (!planetId || !planetsData[planetId as keyof typeof planetsData]) {
+      toast({
+        title: "Erro",
+        description: "Planeta não encontrado",
+        variant: "destructive",
+      });
+      navigate('/');
+      return;
+    }
+    
+    // Clone the planet data to avoid modifying the original
+    const planet = JSON.parse(JSON.stringify(planetsData[planetId as keyof typeof planetsData]));
+    
+    // Update completion status for lessons based on localStorage data
+    let completedLessons = 0;
+    planet.lessons = planet.lessons.map((lesson: LessonType, index: number) => {
+      const completed = isLessonCompleted(lesson.id);
+      if (completed) completedLessons++;
+      
+      // Lock lessons based on previous completion (except the first one)
+      const locked = index > 0 && !isLessonCompleted(planet.lessons[index - 1].id);
+      
+      return {
+        ...lesson,
+        completed,
+        locked
+      };
+    });
+    
+    // Calculate progress percentage
+    const totalLessons = planet.lessons.length;
+    planet.progress = totalLessons > 0 ? Math.floor((completedLessons / totalLessons) * 100) : 0;
+    
+    // Set local state with updated data
+    setPlanetData(planet);
+    
+    // Update page title
+    if (planetId && planetId in planetsData) {
+      document.title = `NumiVerse - Explorar ${planetData?.name || ''}`;
+    } else {
+      document.title = "NumiVerse - Explorar Planeta";
+    }
+  }, [planetId, navigate, toast]);
+  
+  if (!planetData) {
+    return (
+      <div className="flex items-center justify-center h-[80vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      </div>
+    );
   }
-  
-  const planet = planetsData[planetId as keyof typeof planetsData];
   
   const startLesson = (lesson: LessonType) => {
     if (lesson.locked) {
@@ -448,30 +498,30 @@ const PlanetPage = () => {
         {/* Planet header */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <div className="relative">
-            <div className={`w-24 h-24 ${planet.color} rounded-full flex items-center justify-center`}>
-              {planet.icon}
+            <div className={`w-24 h-24 ${planetData.color} rounded-full flex items-center justify-center`}>
+              {planetData.icon}
             </div>
-            <div className={`absolute inset-0 ${planet.color.replace('bg-', 'bg-')}/40 rounded-full blur-xl -z-10`}></div>
+            <div className={`absolute inset-0 ${planetData.color.replace('bg-', 'bg-')}/40 rounded-full blur-xl -z-10`}></div>
           </div>
           
           <div className="flex-1 text-center md:text-left">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <h1 className="text-3xl md:text-4xl font-bold text-white">{planet.name}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{planetData.name}</h1>
               <div className="flex items-center justify-center md:justify-start">
                 <Badge variant="outline" className="text-yellow-300 border-yellow-300/30">
                   <Sun className="w-3 h-3 mr-1 fill-yellow-300" /> 
-                  {planet.progress < 50 ? 'INICIANTE' : planet.progress < 80 ? 'INTERMEDIÁRIO' : 'AVANÇADO'}
+                  {planetData.progress < 50 ? 'INICIANTE' : planetData.progress < 80 ? 'INTERMEDIÁRIO' : 'AVANÇADO'}
                 </Badge>
               </div>
             </div>
             
-            <p className="mt-2 text-lg text-white/80">{planet.description}</p>
+            <p className="mt-2 text-lg text-white/80">{planetData.description}</p>
             
             <div className="mt-4">
               <div className="flex items-center gap-2">
-                <p className="text-sm text-white/60">Progresso: {planet.progress}%</p>
+                <p className="text-sm text-white/60">Progresso: {planetData.progress}%</p>
                 <div className="flex-1 max-w-md">
-                  <Progress value={planet.progress} className="h-2" />
+                  <Progress value={planetData.progress} className="h-2" />
                 </div>
               </div>
             </div>
@@ -490,7 +540,7 @@ const PlanetPage = () => {
             {/* Lessons tab */}
             <TabsContent value="lessons" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {planet.lessons.map((lesson) => (
+                {planetData.lessons.map((lesson: LessonType) => (
                   <Card key={lesson.id} className={`bg-card border-white/10 overflow-hidden ${lesson.locked ? 'opacity-70' : ''}`}>
                     <div className="relative">
                       <div className={`absolute right-3 top-3 z-10 ${lesson.completed ? 'text-green-500' : lesson.locked ? 'text-white/40' : 'text-white/70'}`}>
@@ -539,7 +589,7 @@ const PlanetPage = () => {
             {/* Games tab */}
             <TabsContent value="games" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {planet.games.map((game) => (
+                {planetData.games.map((game: GameType) => (
                   <Card key={game.id} className={`bg-card border-white/10 overflow-hidden ${game.locked ? 'opacity-70' : ''}`}>
                     <div className="relative">
                       <div className={`absolute right-3 top-3 z-10 ${game.completed ? 'text-green-500' : game.locked ? 'text-white/40' : 'text-white/70'}`}>
@@ -588,7 +638,7 @@ const PlanetPage = () => {
             {/* Achievements tab */}
             <TabsContent value="achievements" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Achievement cards */}
+                {/* Achievement cards - these will now be calculated based on actual progress */}
                 <Card className="bg-card border-white/10">
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
@@ -597,12 +647,12 @@ const PlanetPage = () => {
                       </div>
                       <span>Primeiro Passo</span>
                     </CardTitle>
-                    <CardDescription>Complete sua primeira lição em {planet.name}</CardDescription>
+                    <CardDescription>Complete sua primeira lição em {planetData.name}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center">
-                      <Progress value={100} className="h-2" />
-                      <span className="ml-2 text-xs text-white/60">100%</span>
+                      <Progress value={planetData.progress > 0 ? 100 : 0} className="h-2" />
+                      <span className="ml-2 text-xs text-white/60">{planetData.progress > 0 ? '100%' : '0%'}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -615,12 +665,12 @@ const PlanetPage = () => {
                       </div>
                       <span>Mestre dos Jogos</span>
                     </CardTitle>
-                    <CardDescription>Complete todos os jogos em {planet.name}</CardDescription>
+                    <CardDescription>Complete todos os jogos em {planetData.name}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center">
-                      <Progress value={50} className="h-2" />
-                      <span className="ml-2 text-xs text-white/60">1/2</span>
+                      <Progress value={0} className="h-2" />
+                      <span className="ml-2 text-xs text-white/60">0/2</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -633,12 +683,12 @@ const PlanetPage = () => {
                       </div>
                       <span>Explorador do Conhecimento</span>
                     </CardTitle>
-                    <CardDescription>Termine 75% das lições em {planet.name}</CardDescription>
+                    <CardDescription>Termine 75% das lições em {planetData.name}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center">
-                      <Progress value={50} className="h-2" />
-                      <span className="ml-2 text-xs text-white/60">50%</span>
+                      <Progress value={planetData.progress >= 75 ? 100 : (planetData.progress / 75) * 100} className="h-2" />
+                      <span className="ml-2 text-xs text-white/60">{planetData.progress}%</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -649,14 +699,14 @@ const PlanetPage = () => {
                       <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
                         <LockIcon className="w-5 h-5 text-green-500" />
                       </div>
-                      <span>Mestre de {planet.name}</span>
+                      <span>Mestre de {planetData.name}</span>
                     </CardTitle>
-                    <CardDescription>Complete todas as lições e jogos em {planet.name}</CardDescription>
+                    <CardDescription>Complete todas as lições e jogos em {planetData.name}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center">
-                      <Progress value={33} className="h-2" />
-                      <span className="ml-2 text-xs text-white/60">33%</span>
+                      <Progress value={planetData.progress} className="h-2" />
+                      <span className="ml-2 text-xs text-white/60">{planetData.progress}%</span>
                     </div>
                   </CardContent>
                 </Card>

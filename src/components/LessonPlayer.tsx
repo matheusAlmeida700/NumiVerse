@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { CheckCircle, XCircle, Award, Zap, Heart } from 'lucide-react';
 import { lessonData, lessonToPlanetMap } from '@/data/lessonData';
+import { completeLesson, isLessonCompleted, getLessonStats, getStreakDays } from '@/services/userService';
 
 // Sons
 const correctSound = new Audio('/sounds/correct.mp3');
@@ -38,6 +39,14 @@ const LessonPlayer = () => {
     if (lessonId && lessonData[lessonId]) {
       setCurrentLesson(lessonData[lessonId]);
       document.title = `NumiVerse - ${lessonData[lessonId].title}`;
+      
+      // Check if lesson was already completed
+      const wasAlreadyCompleted = isLessonCompleted(lessonId);
+      
+      // Load current streak from local storage
+      const currentStreak = getStreakDays();
+      setStreak(currentStreak);
+      
     } else {
       toast({
         title: "Erro",
@@ -129,12 +138,25 @@ const LessonPlayer = () => {
       setCompleted(true);
       setProgress(100);
       
-      if (currentLesson) {
+      if (currentLesson && lessonId) {
+        const earnedXp = Math.round(currentLesson.xp * (results.correct / currentLesson.questions.length));
+        
+        // Save lesson completion data with real progress
+        const updatedUserData = completeLesson(
+          lessonId,
+          results.correct,
+          currentLesson.questions.length,
+          earnedXp
+        );
+        
         setResults(prev => ({
           ...prev,
           total: currentLesson.questions.length,
-          xp: Math.round(currentLesson.xp * (prev.correct / currentLesson.questions.length))
+          xp: earnedXp
         }));
+        
+        // Update local streak value to match the saved one
+        setStreak(updatedUserData.streakDays);
       }
     }
   };

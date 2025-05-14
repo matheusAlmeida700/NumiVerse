@@ -1,13 +1,24 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, Rocket } from 'lucide-react';
+import { getUserXp, getUserLevel, getStreakDays, getCurrentLevelProgress } from '@/services/userService';
 
 const NavBar = () => {
-  const [xp, setXp] = useState(1250);
-  const [level, setLevel] = useState(5);
+  const [xp, setXp] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [streak, setStreak] = useState(0);
+  const [levelProgress, setLevelProgress] = useState(0);
+  
+  useEffect(() => {
+    // Load actual user data
+    setXp(getUserXp());
+    setLevel(getUserLevel());
+    setStreak(getStreakDays());
+    setLevelProgress(getCurrentLevelProgress() / 10); // Convert to percentage (0-100)
+  }, []);
   
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
@@ -22,21 +33,21 @@ const NavBar = () => {
         
         <div className="flex items-center space-x-6">
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/planets" className="text-white/80 hover:text-white transition">Planets</Link>
-            <Link to="/missions" className="text-white/80 hover:text-white transition">Missions</Link>
-            <Link to="/achievements" className="text-white/80 hover:text-white transition">Achievements</Link>
-            <Link to="/community" className="text-white/80 hover:text-white transition">Community</Link>
+            <Link to="/planetas" className="text-white/80 hover:text-white transition">Planetas</Link>
+            <Link to="/missoes" className="text-white/80 hover:text-white transition">Missões</Link>
+            <Link to="/conquistas" className="text-white/80 hover:text-white transition">Conquistas</Link>
+            <Link to="/comunidade" className="text-white/80 hover:text-white transition">Comunidade</Link>
           </div>
           
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 bg-card/50 py-1 px-3 rounded-full">
               <Star className="w-4 h-4 text-yellow-300" />
-              <span className="text-yellow-100 text-sm font-medium">1,238</span>
+              <span className="text-yellow-100 text-sm font-medium">{xp}</span>
             </div>
             
             <div className="hidden sm:flex items-center gap-2 bg-space-blue/20 py-1 px-3 rounded-full">
               <Rocket className="w-4 h-4 text-space-blue" />
-              <span className="text-space-blue text-sm font-medium">Streak: 7</span>
+              <span className="text-space-blue text-sm font-medium">Sequência: {streak}</span>
             </div>
             
             <div className="flex items-center gap-2 px-2 py-1 border border-white/20 rounded-lg">
@@ -45,10 +56,10 @@ const NavBar = () => {
                 <div className="h-1.5 w-12 bg-white/20 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-gradient-to-r from-space-purple to-space-blue rounded-full" 
-                    style={{ width: `${(xp % 1000) / 10}%` }}
+                    style={{ width: `${levelProgress}%` }}
                   ></div>
                 </div>
-                <span className="text-white/80 text-[10px]">Level {level}</span>
+                <span className="text-white/80 text-[10px]">Nível {level}</span>
               </div>
             </div>
             
