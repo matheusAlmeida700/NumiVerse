@@ -79,7 +79,7 @@ const planetsData = {
         id: "arithmetic-game-1",
         title: "Number Blast",
         description: "Race against time to solve simple arithmetic problems.",
-        difficulty: "easy",
+        difficulty: "easy" as const,
         xp: 150,
         completed: true,
         locked: false
@@ -88,7 +88,7 @@ const planetsData = {
         id: "arithmetic-game-2",
         title: "Calculation Station",
         description: "Practice arithmetic operations in a fun space station setting.",
-        difficulty: "medium",
+        difficulty: "medium" as const,
         xp: 300,
         completed: false,
         locked: false
@@ -144,7 +144,7 @@ const planetsData = {
         id: "algebra-game-1",
         title: "Equation Explorer",
         description: "Navigate through a space maze by solving algebraic equations.",
-        difficulty: "medium",
+        difficulty: "medium" as const,
         xp: 250,
         completed: true,
         locked: false
@@ -153,7 +153,7 @@ const planetsData = {
         id: "algebra-game-2",
         title: "Variable Voyage",
         description: "Collect variables and form correct equations in this adventure game.",
-        difficulty: "hard",
+        difficulty: "hard" as const,
         xp: 400,
         completed: false,
         locked: false
@@ -209,7 +209,7 @@ const planetsData = {
         id: "geometry-game-1",
         title: "Shape Shifter",
         description: "Transform shapes to solve puzzling challenges in space.",
-        difficulty: "easy",
+        difficulty: "easy" as const,
         xp: 200,
         completed: true,
         locked: false
@@ -218,7 +218,7 @@ const planetsData = {
         id: "geometry-game-2",
         title: "Cosmic Constructor",
         description: "Build structures using geometric principles to reach distant stars.",
-        difficulty: "medium",
+        difficulty: "medium" as const,
         xp: 350,
         completed: false,
         locked: false
@@ -274,7 +274,7 @@ const planetsData = {
         id: "trig-game-1",
         title: "Angle Astronaut",
         description: "Navigate through space using precise angle calculations.",
-        difficulty: "medium",
+        difficulty: "medium" as const,
         xp: 300,
         completed: false,
         locked: false
@@ -283,7 +283,7 @@ const planetsData = {
         id: "trig-game-2",
         title: "Sine Wave Surfer",
         description: "Ride trigonometric waves to collect cosmic treasures.",
-        difficulty: "hard",
+        difficulty: "hard" as const,
         xp: 450,
         completed: false,
         locked: true
