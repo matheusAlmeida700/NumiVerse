@@ -1,13 +1,13 @@
-
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sun, Moon, Earth, Calculator, Triangle, Square, CheckCircle, LockIcon, RocketIcon } from 'lucide-react';
+import { Sun, Moon, Earth, Calculator, Triangle, CheckCircle, LockIcon, RocketIcon } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { lessonData } from '@/data/lessonData';
 
 interface LessonType {
   id: string;
@@ -123,7 +123,7 @@ const planetsData = {
       {
         id: "aritmetica-2",
         title: "Frações e Decimais",
-        description: "Aprenda a trabalhar com frações e números decimais.",
+        description: "Aprenda a trabalhar com fra��ões e números decimais.",
         duration: 15,
         xp: 150,
         completed: true,
@@ -405,6 +405,7 @@ const planetsData = {
 const PlanetPage = () => {
   const { planetId } = useParams();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   
   // Check if the planet exists
@@ -424,11 +425,8 @@ const PlanetPage = () => {
       return;
     }
     
-    toast({
-      title: "Lição Iniciada",
-      description: `Iniciando ${lesson.title}. Boa sorte!`,
-    });
-    // In a real app, navigate to lesson page
+    // Navegar para a página da lição
+    navigate(`/lesson/${lesson.id}`);
   };
   
   const playGame = (game: GameType) => {
@@ -441,11 +439,7 @@ const PlanetPage = () => {
       return;
     }
     
-    toast({
-      title: "Jogo Iniciado",
-      description: `Iniciando ${game.title}. Divirta-se!`,
-    });
-    // In a real app, navigate to game page
+    navigate(`/game/${game.id}`);
   };
   
   return (
