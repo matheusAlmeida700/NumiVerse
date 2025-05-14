@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Planet, PlanetCircle, Star, Triangle, Square, Circle, Compass } from 'lucide-react';
+import { Globe, PlayCircle, Star, Triangle, Square, Circle, Compass } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -97,7 +97,7 @@ const SolarSystem = () => {
       color: "bg-purple-400",
       glowColor: "bg-purple-400/40",
       size: 75,
-      icon: <Planet className="w-6 h-6" />,
+      icon: <Globe className="w-6 h-6" />,
       position: { x: -100, y: 200 },
       unlocked: false,
       progress: 0,

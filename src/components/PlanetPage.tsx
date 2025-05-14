@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, Triangle, Square, Circle, Compass, Planet, CheckCircle, LockIcon, RocketIcon } from 'lucide-react';
+import { Star, Triangle, Square, Circle, Compass, Globe, CheckCircle, LockIcon, RocketIcon } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 interface LessonType {
