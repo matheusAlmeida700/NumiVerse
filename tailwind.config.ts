@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,12 +62,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+        space: {
+          'purple': '#8B5CF6',
+          'blue': '#0EA5E9',
+          'deep-purple': '#1A1F2C',
+          'light-purple': '#D6BCFA',
+          'soft-blue': '#D3E4FD',
+        }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				'exo': ['"Exo 2"', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {
@@ -84,12 +95,41 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.6' },
+        },
+        'spin-slow': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'twinkle': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.3' },
+        },
+        'orbit': {
+          '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg) translateX(150px) rotate(-360deg)' },
+        },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'spin-slow': 'spin-slow 40s linear infinite',
+        'twinkle': 'twinkle 4s ease-in-out infinite',
+        'orbit': 'orbit 20s linear infinite',
+			},
+      backgroundImage: {
+        'space-gradient': 'linear-gradient(to bottom, #0f172a, #121738)',
+        'planet-glow': 'radial-gradient(circle at center, rgba(139, 92, 246, 0.7), rgba(139, 92, 246, 0) 70%)',
+      },
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
