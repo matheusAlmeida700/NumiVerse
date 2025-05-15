@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Rocket } from "lucide-react";
 import Hero from "../assets/numiVerse.png";
 import ParticleBackground from "@/components/ParticleBackground";
+import Ufo from "@/components/Ufo";
+import Rocket from "@/components/Rocket";
 
 const Index = () => {
   return (
@@ -16,7 +17,7 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Hero section */}
-        <section className="pt-32 pb-20 px-4 relative">
+        <section className="pt-32 pb-20 px-4 relative flex items-center min-h-screen">
           <div className="max-w-6xl mx-auto text-center">
             <div>
               <h1 className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-10 font-bold">
@@ -43,6 +44,10 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        <div className="relative">
+          <Rocket />
+        </div>
 
         <div id="introduction" className="about-content container">
           <div data-aos="zoom-in" data-aos-delay="100">

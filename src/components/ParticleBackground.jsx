@@ -70,7 +70,7 @@ const ParticleBackground = (props) => {
           density: {
             enable: true,
           },
-          value: 150,
+          value: 70,
         },
         opacity: {
           value: 1.0,

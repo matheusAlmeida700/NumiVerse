@@ -41,17 +41,17 @@
     @apply border-border;
   }
 
+  canvas {}
+
   body {
     @apply bg-background text-foreground font-exo;
   }
 
   .space-stars {
     @apply absolute inset-0 overflow-hidden pointer-events-none;
-    background-image: radial-gradient(
-        2px 2px at 25px 80px,
+    background-image: radial-gradient(2px 2px at 25px 80px,
         white,
-        rgba(255, 255, 255, 0)
-      ),
+        rgba(255, 255, 255, 0)),
       radial-gradient(2.5px 2.5px at 50px 150px, white, rgba(255, 255, 255, 0)),
       radial-gradient(2px 2px at 125px 230px, white, rgba(255, 255, 255, 0)),
       radial-gradient(3px 3px at 215px 40px, white, rgba(255, 255, 255, 0)),
@@ -67,6 +67,7 @@
     0% {
       background-position: 0 0;
     }
+
     100% {
       background-position: 500px 500px;
     }
@@ -110,16 +111,19 @@
 }
 
 @keyframes bounces {
+
   0%,
   100% {
     transform: translateY(-25%);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
+
   50% {
     transform: none;
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
+
 .animate-bounces {
   animation: bounces 7s infinite;
 }
