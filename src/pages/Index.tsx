@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import SolarSystem from "@/components/SolarSystem";
 import { Rocket, Star } from "lucide-react";
+import Hero from "../assets/numi.png";
 
 const Index = () => {
   return (
@@ -19,14 +19,12 @@ const Index = () => {
         <section className="pt-32 pb-20 px-4 relative">
           <div className="max-w-6xl mx-auto text-center">
             <div className="animate-float">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white text-glow mb-6">
-                Explore o <span className="text-space-purple">NumiVerse</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-10">
+              <h1 className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-10 font-bold">
                 Embarque em uma jornada interestelar pela matemática. Aprenda,
                 jogue e domine conceitos matemáticos enquanto explora planetas
                 em nossa aventura cósmica.
-              </p>
+              </h1>
+              <img className="mx-auto w-48 mb-12" src={Hero} alt="" />
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link to="/register">
                   <Button className="text-lg px-8 py-6 bg-space-purple hover:bg-space-purple/80 flex items-center gap-2">
@@ -39,40 +37,12 @@ const Index = () => {
                     variant="outline"
                     className="text-lg px-8 py-6 border-white/20 hover:bg-white/5"
                   >
-                    Saiba Mais
+                    Já tenho uma conta
                   </Button>
                 </Link>
               </div>
             </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto">
-              <div className="bg-card/30 backdrop-blur-sm p-4 rounded-lg border border-white/10">
-                <p className="text-3xl font-bold text-white">6</p>
-                <p className="text-white/60 text-sm">Planetas</p>
-              </div>
-              <div className="bg-card/30 backdrop-blur-sm p-4 rounded-lg border border-white/10">
-                <p className="text-3xl font-bold text-white">50+</p>
-                <p className="text-white/60 text-sm">Lições</p>
-              </div>
-              <div className="bg-card/30 backdrop-blur-sm p-4 rounded-lg border border-white/10">
-                <p className="text-3xl font-bold text-white">20+</p>
-                <p className="text-white/60 text-sm">Jogos</p>
-              </div>
-              <div className="bg-card/30 backdrop-blur-sm p-4 rounded-lg border border-white/10">
-                <p className="text-3xl font-bold text-white">100K+</p>
-                <p className="text-white/60 text-sm">Exploradores do Espaço</p>
-              </div>
-            </div>
           </div>
-        </section>
-
-        {/* Solar System Section */}
-        <section className="py-10 relative">
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-white mb-10">
-            Explore os Planetas Matemáticos
-          </h2>
-          <SolarSystem />
         </section>
 
         {/* Features section */}
@@ -134,28 +104,6 @@ const Index = () => {
                   cada vez mais complexos no seu próprio ritmo.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA section */}
-        <section className="py-20 px-4 relative">
-          <div className="max-w-4xl mx-auto bg-card/50 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-white/10">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                  Pronto para explorar o NumiVerse?
-                </h2>
-                <p className="text-white/70">
-                  Junte-se a milhares de exploradores do espaço dominando a
-                  matemática por meio de aventuras cósmicas.
-                </p>
-              </div>
-              <Link to="/register">
-                <Button className="whitespace-nowrap bg-space-purple hover:bg-space-purple/80">
-                  Iniciar Jornada
-                </Button>
-              </Link>
             </div>
           </div>
         </section>
