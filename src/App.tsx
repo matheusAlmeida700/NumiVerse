@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,7 +16,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
@@ -30,20 +29,29 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           {/* Auth routes */}
-          <Route path="/entrar" element={<LoginPage />} />
-          <Route path="/registrar" element={<SignUpPage />} />
-          
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<SignUpPage />} />
+
           {/* Main routes */}
           <Route path="/" element={<Index />} />
           <Route path="/planet/:planetId" element={<PlanetView />} />
           <Route path="/planets" element={<Navigate to="/" />} />
           <Route path="/game/:gameId" element={<GamePage />} />
           <Route path="/lesson/:lessonId" element={<LessonView />} />
-          <Route path="/missoes" element={<h1 className="p-8 text-center">Missões (Em Desenvolvimento)</h1>} />
-          <Route path="/conquistas" element={<h1 className="p-8 text-center">Conquistas (Em Desenvolvimento)</h1>} />
-          <Route path="/comunidade" element={<h1 className="p-8 text-center">Comunidade (Em Desenvolvimento)</h1>} />
-          <Route path="/recuperar-senha" element={<h1 className="p-8 text-center">Recuperação de Senha (Em Desenvolvimento)</h1>} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route
+            path="/missions"
+            element={
+              <h1 className="p-8 text-center">Missões (Em Desenvolvimento)</h1>
+            }
+          />
+          <Route
+            path="/achievements"
+            element={
+              <h1 className="p-8 text-center">
+                Conquistas (Em Desenvolvimento)
+              </h1>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

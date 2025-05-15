@@ -76,7 +76,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        exo: ['"Exo 2"', "sans-serif"],
+        exo: ['"Varela Round"', "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
