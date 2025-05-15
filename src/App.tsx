@@ -36,8 +36,7 @@ const App = () => (
           {/* Main routes */}
           <Route path="/" element={<Index />} />
           <Route path="/planet/:planetId" element={<PlanetView />} />
-          <Route path="/planetas" element={<Index />} /> {/* Redirect to home which has the planets */}
-          <Route path="/planets" element={<Navigate to="/planetas" />} /> {/* Alias for English URL */}
+          <Route path="/planets" element={<Navigate to="/" />} />
           <Route path="/game/:gameId" element={<GamePage />} />
           <Route path="/lesson/:lessonId" element={<LessonView />} />
           <Route path="/missoes" element={<h1 className="p-8 text-center">Missões (Em Desenvolvimento)</h1>} />
