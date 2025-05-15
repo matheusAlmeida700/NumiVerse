@@ -70,14 +70,30 @@ export const completeLesson = (
   // Update level (1000 XP per level)
   userProgress.level = Math.max(1, Math.floor(userProgress.totalXp / 1000) + 1);
   
-  // Update streak
+  // Update streak - Only increase if the last streak date wasn't today
   const lastStreakDate = userProgress.lastStreakDate 
     ? new Date(userProgress.lastStreakDate).toISOString().split('T')[0]
     : null;
     
   if (lastStreakDate !== todayString) {
-    // Only increase streak if the last streak date wasn't today
-    userProgress.streakDays += 1;
+    // Check if this is a continuation of the streak (yesterday or first time)
+    if (!lastStreakDate) {
+      // First time - start streak
+      userProgress.streakDays = 1;
+    } else {
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayString = yesterday.toISOString().split('T')[0];
+      
+      if (lastStreakDate === yesterdayString) {
+        // Last activity was yesterday - continue streak
+        userProgress.streakDays += 1;
+      } else {
+        // Break in the streak - reset
+        userProgress.streakDays = 1;
+      }
+    }
+    
     userProgress.lastStreakDate = today.toISOString();
   }
   
@@ -102,11 +118,20 @@ export const getStreakDays = (): number => {
   if (userProgress.lastStreakDate) {
     const lastDate = new Date(userProgress.lastStreakDate);
     const today = new Date();
-    const diffTime = Math.abs(today.getTime() - lastDate.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const lastDateStr = lastDate.toISOString().split('T')[0];
+    const todayStr = today.toISOString().split('T')[0];
     
-    if (diffDays > 1) {
-      // Reset streak if more than 1 day has passed
+    if (lastDateStr === todayStr) {
+      // Already logged in today
+      return userProgress.streakDays;
+    }
+    
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    
+    if (lastDateStr !== yesterdayStr) {
+      // More than 1 day has passed - reset streak
       userProgress.streakDays = 0;
       saveUserProgress(userProgress);
     }
@@ -127,5 +152,29 @@ export const getUserXp = (): number => {
 
 export const getCurrentLevelProgress = (): number => {
   const userProgress = getUserProgress();
-  return userProgress.totalXp % 1000;
+  return (userProgress.totalXp % 1000) / 10; // Convert to percentage (0-100)
+};
+
+// Helper functions for future API integration
+export const syncUserProgressWithBackend = async () => {
+  try {
+    // This function will be implemented when the backend is ready
+    // It will sync the local storage data with the backend
+    return true;
+  } catch (error) {
+    console.error('Error syncing user progress:', error);
+    return false;
+  }
+};
+
+// This will be used to load data from the backend API
+export const loadUserProgressFromBackend = async () => {
+  try {
+    // This function will be implemented when the backend is ready
+    // For now, just return the local data
+    return getUserProgress();
+  } catch (error) {
+    console.error('Error loading user progress from backend:', error);
+    return getUserProgress();
+  }
 };

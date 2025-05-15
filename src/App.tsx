@@ -9,8 +9,18 @@ import PlanetView from "./pages/PlanetView";
 import GamePage from "./pages/GamePage";
 import LessonView from "./pages/LessonView";
 import NotFound from "./pages/NotFound";
+import LoginPage from "./pages/Auth/LoginPage";
+import SignUpPage from "./pages/Auth/SignUpPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -19,6 +29,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Auth routes */}
+          <Route path="/entrar" element={<LoginPage />} />
+          <Route path="/registrar" element={<SignUpPage />} />
+          
+          {/* Main routes */}
           <Route path="/" element={<Index />} />
           <Route path="/planet/:planetId" element={<PlanetView />} />
           <Route path="/planets" element={<Navigate to="/" />} />
@@ -27,7 +42,7 @@ const App = () => (
           <Route path="/missoes" element={<h1 className="p-8 text-center">Missões (Em Desenvolvimento)</h1>} />
           <Route path="/conquistas" element={<h1 className="p-8 text-center">Conquistas (Em Desenvolvimento)</h1>} />
           <Route path="/comunidade" element={<h1 className="p-8 text-center">Comunidade (Em Desenvolvimento)</h1>} />
-          <Route path="/register" element={<h1 className="p-8 text-center">Página de Registro (Em Desenvolvimento)</h1>} />
+          <Route path="/recuperar-senha" element={<h1 className="p-8 text-center">Recuperação de Senha (Em Desenvolvimento)</h1>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

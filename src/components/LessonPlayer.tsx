@@ -33,6 +33,28 @@ const LessonPlayer = () => {
     xp: number;
   }>({ correct: 0, total: 0, xp: 0 });
   const [completed, setCompleted] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+
+  // Mensagens de feedback
+  const correctFeedbacks = [
+    "Muito bem!",
+    "Excelente!",
+    "Incrível!",
+    "Perfeito!",
+    "Você é demais!",
+    "Acertou!",
+    "Sensacional!",
+    "Continue assim!"
+  ];
+  
+  const incorrectFeedbacks = [
+    "Não foi dessa vez",
+    "Quase lá!",
+    "Tente novamente!",
+    "Não desista!",
+    "Você consegue!",
+    "Continue tentando!"
+  ];
 
   // Carregar a lição
   useEffect(() => {
@@ -105,14 +127,22 @@ const LessonPlayer = () => {
       setStreak(newStreak);
       setResults(prev => ({ ...prev, correct: prev.correct + 1 }));
       
-      // Mostrar feedback de streak a cada 3 acertos
-      if (newStreak % 3 === 0) {
+      // Escolher mensagem aleatória de feedback positivo
+      const randomIndex = Math.floor(Math.random() * correctFeedbacks.length);
+      setFeedbackMessage(correctFeedbacks[randomIndex]);
+      
+      // Mostrar feedback de streak a cada 5 acertos
+      if (newStreak % 5 === 0) {
         setShowStreak(true);
         setTimeout(() => setShowStreak(false), 2000);
       }
     } else {
       incorrectSound.play();
       setStreak(0);
+      
+      // Escolher mensagem aleatória de feedback negativo
+      const randomIndex = Math.floor(Math.random() * incorrectFeedbacks.length);
+      setFeedbackMessage(incorrectFeedbacks[randomIndex]);
     }
     
     setTimeout(() => {
@@ -125,6 +155,7 @@ const LessonPlayer = () => {
     setShowFeedback(false);
     setIsCorrect(null);
     setSelectedAnswers([]);
+    setFeedbackMessage("");
     
     if (currentLesson && currentQuestionIndex < currentLesson.questions.length - 1) {
       setCurrentQuestionIndex(prev => {
@@ -200,6 +231,14 @@ const LessonPlayer = () => {
     } else {
       navigate('/');
     }
+  };
+
+  // Tentar a mesma lição novamente
+  const handleRetry = () => {
+    setCurrentQuestionIndex(0);
+    setProgress(0);
+    setResults({ correct: 0, total: 0, xp: 0 });
+    setCompleted(false);
   };
 
   // Renderizar questão atual
@@ -281,16 +320,16 @@ const LessonPlayer = () => {
         
         {/* Feedback visual */}
         {showFeedback && (
-          <div className="mt-6 flex items-center justify-center w-full">
+          <div className="mt-6 flex flex-col items-center justify-center w-full">
             {isCorrect ? (
-              <div className="flex flex-col items-center text-green-500">
+              <div className="flex flex-col items-center text-green-500 animate-fade-in">
                 <CheckCircle className="w-16 h-16 animate-bounce" />
-                <p className="mt-2 text-lg font-medium">Correto!</p>
+                <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
               </div>
             ) : (
-              <div className="flex flex-col items-center text-red-500">
+              <div className="flex flex-col items-center text-red-500 animate-fade-in">
                 <XCircle className="w-16 h-16 animate-bounce" />
-                <p className="mt-2 text-lg font-medium">Incorreto</p>
+                <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
               </div>
             )}
           </div>
@@ -302,6 +341,17 @@ const LessonPlayer = () => {
   // Renderizar resultado final
   const renderResults = () => {
     const percentage = Math.round((results.correct / results.total) * 100);
+    let motivationalMessage = "";
+    
+    if (percentage >= 90) {
+      motivationalMessage = "Excelente! Você dominou este conteúdo!";
+    } else if (percentage >= 70) {
+      motivationalMessage = "Muito bom! Continue praticando para se aperfeiçoar!";
+    } else if (percentage >= 50) {
+      motivationalMessage = "Bom trabalho! Você está progredindo bem!";
+    } else {
+      motivationalMessage = "Continue tentando! A prática leva à perfeição!";
+    }
     
     return (
       <div className="flex flex-col items-center w-full max-w-xl mx-auto">
@@ -309,12 +359,7 @@ const LessonPlayer = () => {
           <Award className={`w-full h-full ${percentage >= 80 ? 'text-yellow-400' : 'text-blue-400'} animate-pulse`} />
         </div>
         
-        <h2 className="text-3xl font-bold text-center mb-6">
-          {percentage >= 90 ? 'Excelente!' : 
-           percentage >= 70 ? 'Muito bom!' : 
-           percentage >= 50 ? 'Bom trabalho!' : 
-           'Continue tentando!'}
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-6">{motivationalMessage}</h2>
         
         <Card className="w-full mb-8">
           <CardContent className="p-6">
@@ -341,12 +386,22 @@ const LessonPlayer = () => {
           </CardContent>
         </Card>
         
-        <Button 
-          onClick={handleFinish} 
-          className="mt-4 w-full max-w-xs bg-space-purple hover:bg-space-purple/80"
-        >
-          Concluir
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <Button 
+            onClick={handleRetry} 
+            className="w-full bg-blue-600 hover:bg-blue-700"
+            variant="outline"
+          >
+            Tentar Novamente
+          </Button>
+          
+          <Button 
+            onClick={handleFinish} 
+            className="w-full bg-space-purple hover:bg-space-purple/80"
+          >
+            Continuar
+          </Button>
+        </div>
       </div>
     );
   };
@@ -368,12 +423,15 @@ const LessonPlayer = () => {
         {/* Barra de progresso */}
         <div className="mb-8 w-full">
           <Progress value={progress} className="h-3" />
+          <p className="text-xs text-white/60 text-right mt-1">
+            {currentQuestionIndex + 1} de {currentLesson.questions.length}
+          </p>
         </div>
         
         {/* Feedback de streak */}
         {showStreak && (
           <div className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/90 text-white px-6 py-3 rounded-full animate-bounce z-50 flex items-center">
-            <Heart className="w-5 h-5 mr-2 fill-white" /> {streak} acertos seguidos!
+            <Heart className="w-5 h-5 mr-2 fill-white" /> {streak} acertos seguidos! Incrível!
           </div>
         )}
         

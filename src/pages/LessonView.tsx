@@ -24,7 +24,7 @@ const LessonView = () => {
       
       <NavBar />
       
-      <main className="flex-1">
+      <main className="flex-1 pt-16">
         <LessonPlayer />
       </main>
       
