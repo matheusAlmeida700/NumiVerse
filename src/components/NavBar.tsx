@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, Rocket } from "lucide-react";
@@ -16,6 +17,7 @@ const NavBar = () => {
   const [level, setLevel] = useState(1);
   const [streak, setStreak] = useState(0);
   const [levelProgress, setLevelProgress] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     // Load actual user data
@@ -40,25 +42,33 @@ const NavBar = () => {
           <div className="hidden md:flex items-center gap-6">
             <Link
               to="/planetas"
-              className="text-white/80 hover:text-white transition"
+              className={`text-white/80 hover:text-white transition ${
+                location.pathname === "/planetas" || location.pathname === "/" ? "text-white font-medium" : ""
+              }`}
             >
               Planetas
             </Link>
             <Link
               to="/missoes"
-              className="text-white/80 hover:text-white transition"
+              className={`text-white/80 hover:text-white transition ${
+                location.pathname === "/missoes" ? "text-white font-medium" : ""
+              }`}
             >
               Missões
             </Link>
             <Link
               to="/conquistas"
-              className="text-white/80 hover:text-white transition"
+              className={`text-white/80 hover:text-white transition ${
+                location.pathname === "/conquistas" ? "text-white font-medium" : ""
+              }`}
             >
               Conquistas
             </Link>
             <Link
               to="/comunidade"
-              className="text-white/80 hover:text-white transition"
+              className={`text-white/80 hover:text-white transition ${
+                location.pathname === "/comunidade" ? "text-white font-medium" : ""
+              }`}
             >
               Comunidade
             </Link>
@@ -89,12 +99,14 @@ const NavBar = () => {
               </div>
             </div>
 
-            <Avatar className="w-8 h-8 border border-space-purple">
-              <AvatarImage src="" />
-              <AvatarFallback className="bg-space-blue text-white text-xs">
-                AV
-              </AvatarFallback>
-            </Avatar>
+            <Link to={localStorage.getItem('user') ? "/" : "/entrar"}>
+              <Avatar className="w-8 h-8 border border-space-purple cursor-pointer">
+                <AvatarImage src="" />
+                <AvatarFallback className="bg-space-blue text-white text-xs">
+                  {localStorage.getItem('user') ? "US" : "LG"}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
           </div>
         </div>
       </div>
