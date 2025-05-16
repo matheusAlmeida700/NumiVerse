@@ -23,14 +23,12 @@ export const useAuth = () => {
     queryFn: authService.getCurrentUser,
     enabled: isAuthenticated, // Only run if authenticated
     retry: false,
-    meta: {
-      onError: () => {
-        // If error, try to use local data
-        const localUser = authService.getUserFromLocal();
-        if (!localUser) {
-          setIsAuthenticated(false);
-          localStorage.removeItem('auth_token');
-        }
+    onError: () => {
+      // If error, try to use local data
+      const localUser = authService.getUserFromLocal();
+      if (!localUser) {
+        setIsAuthenticated(false);
+        localStorage.removeItem('auth_token');
       }
     }
   });
