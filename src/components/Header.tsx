@@ -15,7 +15,7 @@ const Header = () => {
 
         <Button className="flex items-center space-x-6">
           <Link
-            to="/login"
+            to="/auth"
             className="text-white/80 hover:text-white transition"
           >
             COMECE AGORA

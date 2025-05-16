@@ -4,7 +4,7 @@ import { OrbitControls, useGLTF } from "@react-three/drei";
 import CanvasLoader from "./Loader";
 
 const Rockets = ({ isMobile }) => {
-  const { scene } = useGLTF("./rocket/scene.gltf");
+  const { scene } = useGLTF("./animatedrocket.glb");
   return (
     <group dispose={null}>
       <hemisphereLight intensity={0.5} groundColor="black" />
@@ -17,8 +17,8 @@ const Rockets = ({ isMobile }) => {
       />
       <primitive
         object={scene}
-        scale={isMobile ? 0.55 : 0.75}
-        position={isMobile ? [0, -3.3, -1] : [0, -3.4, -1.5]}
+        scale={isMobile ? 20 : 1}
+        position={isMobile ? [0, -3.3, -1] : [0, -10, -1.5]}
         rotation={[-0.01, -0.2, -0.1]}
       />
     </group>

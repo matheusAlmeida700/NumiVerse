@@ -1,12 +1,11 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "../assets/NumiVerse.png";
 import ParticleBackground from "@/components/ParticleBackground";
-import Ufo from "@/components/Ufo";
 import Rocket from "@/components/Rocket";
+import { RocketIcon } from "lucide-react";
 
 const Index = () => {
   return (
@@ -21,19 +20,23 @@ const Index = () => {
         <section className="pt-32 pb-20 px-4 relative flex items-center min-h-screen">
           <div className="max-w-6xl mx-auto text-center">
             <div>
-              <h1 className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-10 font-bold">
+              <h1 className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-bold">
                 Explore o universo da matemática! Aprenda, jogue e conquiste
                 planetas em uma jornada cósmica cheia de desafios.
               </h1>
-              <img className="mx-auto mb-12 animate-float" src={Hero} alt="" />
+              <img
+                className="mx-auto mb-12 animate-float px-6"
+                src={Hero}
+                alt="NumiVerse"
+              />
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link to="/register">
+                <Link to="/auth">
                   <Button className="text-md px-8 py-6 bg-space-purple hover:bg-space-purple/80 flex items-center gap-2">
-                    <Rocket className="w-5 h-5" />
+                    <RocketIcon />
                     COMECE SUA JORNADA
                   </Button>
                 </Link>
-                <Link to="/about">
+                <Link to="/auth">
                   <Button
                     variant="outline"
                     className="text-md px-8 py-6 border-white/20 hover:bg-white/5"

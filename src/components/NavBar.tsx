@@ -1,13 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, Rocket, Menu, X } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
@@ -15,14 +10,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Logo from "/src/assets/numi/numi-ship.png";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/contexts/AuthContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 
 const NavBar = () => {
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const { userProgress, userStreak } = useUserProgress();
-  
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Default values for if API isn't connected yet
@@ -62,20 +57,27 @@ const NavBar = () => {
                 <Menu size={24} />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-card/90 backdrop-blur-md border-white/10">
+            <SheetContent
+              side="right"
+              className="bg-card/90 backdrop-blur-md border-white/10"
+            >
               <div className="flex flex-col gap-6 pt-6">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.path}
                     to={link.path}
-                    className={({ isActive }) => 
-                      `text-lg ${isActive ? 'text-white font-medium' : 'text-white/70 hover:text-white'}`
+                    className={({ isActive }) =>
+                      `text-lg ${
+                        isActive
+                          ? "text-white font-medium"
+                          : "text-white/70 hover:text-white"
+                      }`
                     }
                   >
                     {link.label}
                   </NavLink>
                 ))}
-                
+
                 <div className="border-t border-white/10 pt-4 mt-4">
                   {isAuthenticated ? (
                     <div className="flex flex-col gap-3">
@@ -91,8 +93,8 @@ const NavBar = () => {
                       </div>
                     </div>
                   ) : (
-                    <NavLink 
-                      to="/login" 
+                    <NavLink
+                      to="/auth"
                       className="bg-space-purple px-4 py-2 rounded-md text-white font-medium"
                     >
                       Entrar
@@ -111,15 +113,19 @@ const NavBar = () => {
               <NavLink
                 key={link.path}
                 to={link.path}
-                className={({ isActive }) => 
-                  `${isActive ? 'text-white font-medium' : 'text-white/80 hover:text-white transition'}`
+                className={({ isActive }) =>
+                  `${
+                    isActive
+                      ? "text-white font-medium"
+                      : "text-white/80 hover:text-white transition"
+                  }`
                 }
               >
                 {link.label}
               </NavLink>
             ))}
           </div>
-          
+
           {/* User Stats & Profile */}
           <div className="flex items-center gap-4">
             {isAuthenticated && (
@@ -129,7 +135,9 @@ const NavBar = () => {
                     <TooltipTrigger asChild>
                       <div className="hidden sm:flex items-center gap-2 bg-card/50 py-1 px-3 rounded-full">
                         <Star className="w-4 h-4 text-yellow-300" />
-                        <span className="text-yellow-100 text-sm font-medium">{xp}</span>
+                        <span className="text-yellow-100 text-sm font-medium">
+                          {xp}
+                        </span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -163,7 +171,9 @@ const NavBar = () => {
                         style={{ width: `${levelProgress}%` }}
                       ></div>
                     </div>
-                    <span className="text-white/80 text-[10px]">Nível {level}</span>
+                    <span className="text-white/80 text-[10px]">
+                      Nível {level}
+                    </span>
                   </div>
                 </div>
               </>
