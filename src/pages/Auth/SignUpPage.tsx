@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,20 +11,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import { isValidEmail } from "@/lib/utils";
 import Hero from "../../assets/numiVerse.png";
 import NumiShip from "../../assets/register/alien.png";
 import Satelite from "../../assets/login/satelite.png";
+import { useAuth } from "@/hooks/useAuth";
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
+  const { register, isRegistering } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{
     name?: string;
@@ -71,27 +71,7 @@ const SignUpPage = () => {
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      // Simulating registration for now
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      toast({
-        title: "Sucesso!",
-        description: "Conta criada com sucesso",
-      });
-
-      navigate("/login");
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Falha ao criar conta. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    register({ name, email, password });
   };
 
   return (
@@ -140,7 +120,7 @@ const SignUpPage = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="bg-background/50"
-                  disabled={isLoading}
+                  disabled={isRegistering}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs">{errors.name}</p>
@@ -158,7 +138,7 @@ const SignUpPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-background/50"
-                  disabled={isLoading}
+                  disabled={isRegistering}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs">{errors.email}</p>
@@ -177,7 +157,7 @@ const SignUpPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="bg-background/50 pr-10"
-                    disabled={isLoading}
+                    disabled={isRegistering}
                   />
                   <button
                     type="button"
@@ -207,7 +187,7 @@ const SignUpPage = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="bg-background/50 pr-10"
-                    disabled={isLoading}
+                    disabled={isRegistering}
                   />
                 </div>
                 {errors.confirmPassword && (
@@ -222,9 +202,9 @@ const SignUpPage = () => {
               <Button
                 type="submit"
                 className="w-full bg-space-purple hover:bg-space-purple/80"
-                disabled={isLoading}
+                disabled={isRegistering}
               >
-                {isLoading ? (
+                {isRegistering ? (
                   <>
                     <Loader size={16} className="mr-2 animate-spin" />
                     Criando conta...

@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,55 +11,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import Hero from "../../assets/numiVerse.png";
 import NumiShip from "../../assets/login/naveNumi.png";
 import Satelite from "../../assets/login/satelite.png";
+import { useAuth } from "@/hooks/useAuth";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const { login, isLoggingIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!email || !password) {
-      toast({
-        title: "Erro",
-        description: "Por favor, preencha todos os campos",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // Simulating login for now
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Store a fake token for now - this will be replaced with the real token from the API
-      localStorage.setItem("auth_token", "fake_token_for_development");
-
-      toast({
-        title: "Sucesso!",
-        description: "Login realizado com sucesso",
-      });
-
-      navigate("/");
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Falha no login. Verifique suas credenciais.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    if (!email || !password) return;
+    login({ email, password });
   };
 
   return (
@@ -107,7 +75,7 @@ const LoginPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-background/50"
-                  disabled={isLoading}
+                  disabled={isLoggingIn}
                   autoComplete="email"
                 />
               </div>
@@ -124,7 +92,7 @@ const LoginPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="bg-background/50 pr-10"
-                    disabled={isLoading}
+                    disabled={isLoggingIn}
                     autoComplete="current-password"
                   />
                   <button
@@ -150,9 +118,9 @@ const LoginPage = () => {
               <Button
                 type="submit"
                 className="w-full bg-space-purple hover:bg-space-purple/80"
-                disabled={isLoading}
+                disabled={isLoggingIn || !email || !password}
               >
-                {isLoading ? (
+                {isLoggingIn ? (
                   <>
                     <Loader size={16} className="mr-2 animate-spin" />
                     Entrando...

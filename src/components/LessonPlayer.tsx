@@ -1,14 +1,18 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LessonData, Question, Answer } from '@/types/lesson';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { CheckCircle, XCircle, Award, Zap, Heart } from 'lucide-react';
 import { lessonData, lessonToPlanetMap } from '@/data/lessonData';
-import { completeLesson, isLessonCompleted, getLessonStats, getStreakDays } from '@/services/userService';
+import { lessonService } from '@/services/lessonService';
+import { userProgressService } from '@/services/userProgressService';
+import { useUserProgress } from '@/hooks/useUserProgress';
+import { LessonData, Question } from '@/types/lesson';
+import NavBar from './NavBar';
 
 // Sons
 const correctSound = new Audio('/sounds/correct.mp3');
@@ -18,8 +22,23 @@ const completionSound = new Audio('/sounds/completion.mp3');
 const LessonPlayer = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
+  const { completeLesson } = useUserProgress();
   
-  const [currentLesson, setCurrentLesson] = useState<LessonData | null>(null);
+  // Get lesson data - first try API, fallback to local data
+  const { data: lessonFromApi, isLoading: isLoadingLesson } = useQuery({
+    queryKey: ['lesson', lessonId],
+    queryFn: () => lessonId ? lessonService.getLessonById(lessonId) : Promise.reject('No lessonId'),
+    enabled: !!lessonId,
+    retry: 1,
+    onError: () => {
+      // Fallback to local data
+      console.log('Failed to fetch lesson data from API, using local data');
+    }
+  });
+
+  // Use API data if available, otherwise fall back to local data
+  const currentLesson = lessonFromApi || (lessonId && lessonData[lessonId]) || null;
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -58,18 +77,13 @@ const LessonPlayer = () => {
 
   // Carregar a lição
   useEffect(() => {
-    if (lessonId && lessonData[lessonId]) {
-      setCurrentLesson(lessonData[lessonId]);
-      document.title = `NumiVerse - ${lessonData[lessonId].title}`;
+    if (currentLesson) {
+      document.title = `NumiVerse - ${currentLesson.title}`;
       
-      // Check if lesson was already completed
-      const wasAlreadyCompleted = isLessonCompleted(lessonId);
-      
-      // Load current streak from local storage
-      const currentStreak = getStreakDays();
-      setStreak(currentStreak);
-      
-    } else {
+      // Check initial progress
+      setProgress(0);
+      setResults({ correct: 0, total: currentLesson.questions.length, xp: 0 });
+    } else if (!isLoadingLesson && !currentLesson) {
       toast({
         title: "Erro",
         description: "Lição não encontrada",
@@ -77,7 +91,7 @@ const LessonPlayer = () => {
       });
       navigate('/');
     }
-  }, [lessonId, navigate]);
+  }, [currentLesson, navigate, isLoadingLesson]);
 
   // Questão atual
   const currentQuestion = currentLesson?.questions[currentQuestionIndex];
@@ -173,21 +187,17 @@ const LessonPlayer = () => {
         const earnedXp = Math.round(currentLesson.xp * (results.correct / currentLesson.questions.length));
         
         // Save lesson completion data with real progress
-        const updatedUserData = completeLesson(
+        completeLesson({
           lessonId,
-          results.correct,
-          currentLesson.questions.length,
-          earnedXp
-        );
+          correctAnswers: results.correct,
+          totalQuestions: currentLesson.questions.length
+        });
         
         setResults(prev => ({
           ...prev,
           total: currentLesson.questions.length,
           xp: earnedXp
         }));
-        
-        // Update local streak value to match the saved one
-        setStreak(updatedUserData.streakDays);
       }
     }
   };
@@ -237,7 +247,7 @@ const LessonPlayer = () => {
   const handleRetry = () => {
     setCurrentQuestionIndex(0);
     setProgress(0);
-    setResults({ correct: 0, total: 0, xp: 0 });
+    setResults({ correct: 0, total: currentLesson?.questions.length || 0, xp: 0 });
     setCompleted(false);
   };
 
@@ -406,10 +416,22 @@ const LessonPlayer = () => {
     );
   };
 
-  if (!currentLesson) {
+  if (isLoadingLesson) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      </div>
+    );
+  }
+
+  if (!currentLesson) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center p-6">
+          <h2 className="text-2xl font-bold mb-4">Lição não encontrada</h2>
+          <p className="mb-6">A lição que você está procurando não existe ou não está disponível.</p>
+          <Button onClick={() => navigate('/')}>Voltar ao Início</Button>
+        </div>
       </div>
     );
   }
