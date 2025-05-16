@@ -25,14 +25,16 @@ const LessonPlayer = () => {
   const { completeLesson } = useUserProgress();
   
   // Get lesson data - first try API, fallback to local data
-  const { data: lessonFromApi, isLoading: isLoadingLesson } = useQuery({
+  const { data: lessonFromApi, isLoading: isLoadingLesson } = useQuery<LessonData>({
     queryKey: ['lesson', lessonId],
     queryFn: () => lessonId ? lessonService.getLessonById(lessonId) : Promise.reject('No lessonId'),
     enabled: !!lessonId,
     retry: 1,
-    onError: () => {
-      // Fallback to local data
-      console.log('Failed to fetch lesson data from API, using local data');
+    onSettled: (data, error) => {
+      if (error) {
+        // Fallback to local data
+        console.log('Failed to fetch lesson data from API, using local data');
+      }
     }
   });
 

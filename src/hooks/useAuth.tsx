@@ -23,12 +23,14 @@ export const useAuth = () => {
     queryFn: authService.getCurrentUser,
     enabled: isAuthenticated, // Only run if authenticated
     retry: false,
-    onError: () => {
-      // If error, try to use local data
-      const localUser = authService.getUserFromLocal();
-      if (!localUser) {
-        setIsAuthenticated(false);
-        localStorage.removeItem('auth_token');
+    onSettled: (data, error) => {
+      if (error) {
+        // If error, try to use local data
+        const localUser = authService.getUserFromLocal();
+        if (!localUser) {
+          setIsAuthenticated(false);
+          localStorage.removeItem('auth_token');
+        }
       }
     }
   });
@@ -52,7 +54,7 @@ export const useAuth = () => {
     onError: (error: any) => {
       toast({
         title: "Erro",
-        description: error.response?.data?.message || "Falha no login. Verifique suas credenciais.",
+        description: error.message || "Falha no login. Verifique suas credenciais.",
         variant: "destructive",
       });
     }
@@ -71,7 +73,7 @@ export const useAuth = () => {
     onError: (error: any) => {
       toast({
         title: "Erro",
-        description: error.response?.data?.message || "Falha ao criar conta. Tente novamente.",
+        description: error.message || "Falha ao criar conta. Tente novamente.",
         variant: "destructive",
       });
     }

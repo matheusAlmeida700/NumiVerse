@@ -1,7 +1,4 @@
 
-import { apiClient } from './apiClient';
-import { UserProgress } from './userService';
-
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -22,26 +19,79 @@ export interface UserProfile {
   progress: UserProgress;
 }
 
+export interface UserProgress {
+  completedLessons: string[];
+  level: number;
+  xp: number;
+  streak: number;
+  lastActivity: string;
+}
+
 export const authService = {
   login: async (credentials: LoginCredentials) => {
-    const response = await apiClient.post('/auth/login', credentials);
-    return response.data;
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Falha no login');
+    }
+    
+    return response.json();
   },
   
   register: async (data: RegisterData) => {
-    const response = await apiClient.post('/auth/register', data);
-    return response.data;
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Falha ao criar conta');
+    }
+    
+    return response.json();
   },
   
   logout: async () => {
-    const response = await apiClient.post('/auth/logout');
+    const response = await fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
     localStorage.removeItem('auth_token');
-    return response.data;
+    return response.ok;
   },
   
   getCurrentUser: async (): Promise<UserProfile> => {
-    const response = await apiClient.get('/auth/me');
-    return response.data;
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      throw new Error('Not authenticated');
+    }
+    
+    const response = await fetch('/api/auth/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch user');
+    }
+    
+    return response.json();
   },
   
   // Fallback to localStorage when offline or during development
