@@ -30,14 +30,16 @@ const LessonPlayer = () => {
     queryFn: () => lessonId ? lessonService.getLessonById(lessonId) : Promise.reject('No lessonId'),
     enabled: !!lessonId,
     retry: 1,
-    onError: () => {
-      // Fallback to local data
-      console.log('Failed to fetch lesson data from API, using local data');
+    meta: {
+      onError: () => {
+        // Fallback to local data
+        console.log('Failed to fetch lesson data from API, using local data');
+      }
     }
   });
 
   // Use API data if available, otherwise fall back to local data
-  const currentLesson = lessonFromApi || (lessonId && lessonData[lessonId]) || null;
+  const currentLesson = lessonFromApi as LessonData | null || (lessonId && lessonData[lessonId]) || null;
   
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
