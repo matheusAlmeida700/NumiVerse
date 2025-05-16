@@ -1,8 +1,9 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Hero from "../assets/numiVerse.png";
+import Hero from "../assets/NumiVerse.png";
 import ParticleBackground from "@/components/ParticleBackground";
 import Ufo from "@/components/Ufo";
 import Rocket from "@/components/Rocket";

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import { isValidEmail } from "@/lib/utils";
-import Hero from "../../assets/numiVerse.png";
+import Hero from "../../assets/NumiVerse.png"; // Fixed uppercase 'N' in NumiVerse
 import NumiShip from "../../assets/register/alien.png";
 import Satelite from "../../assets/login/satelite.png";
 import { useAuth } from "@/hooks/useAuth";
