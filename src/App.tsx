@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/AuthPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import SolarSystemPage from "./pages/SolarSystemPage";
+import AchievementsPage from "./pages/AchievementsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,36 +39,7 @@ const App = () => (
             <Route path="/game/:gameId" element={<GamePage />} />
             <Route path="/lesson/:lessonId" element={<LessonView />} />
 
-            <Route
-              path="/missoes"
-              element={
-                <div className="min-h-screen pt-24 pb-12 px-4">
-                  <div className="max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center mb-8">
-                      Missões (Em Desenvolvimento)
-                    </h1>
-                    <p className="text-center text-white/70">
-                      Esta funcionalidade estará disponível em breve.
-                    </p>
-                  </div>
-                </div>
-              }
-            />
-            <Route
-              path="/conquistas"
-              element={
-                <div className="min-h-screen pt-24 pb-12 px-4">
-                  <div className="max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center mb-8">
-                      Conquistas (Em Desenvolvimento)
-                    </h1>
-                    <p className="text-center text-white/70">
-                      Esta funcionalidade estará disponível em breve.
-                    </p>
-                  </div>
-                </div>
-              }
-            />
+            <Route path="/achievements" element={<AchievementsPage />} />
             <Route
               path="/perfil"
               element={

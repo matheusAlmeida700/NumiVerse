@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Sun,
-  Moon,
-  Earth,
-  Calculator,
-  Circle,
-  Square,
-  Triangle,
-} from "lucide-react";
+import { Sun, Moon, Earth, Calculator, Triangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { getUserProgress } from "@/services/userService";

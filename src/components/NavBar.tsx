@@ -11,30 +11,22 @@ import {
 } from "@/components/ui/tooltip";
 import Logo from "/src/assets/numi/numi-ship.png";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserProgress } from "@/hooks/useUserProgress";
+import { useUserData } from "@/hooks/useUserData";
 
 const NavBar = () => {
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
-  const { userProgress, userStreak } = useUserProgress();
+
+  const { data: userData, refetch } = useUserData();
+  console.log(userData);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Default values for if API isn't connected yet
-  const xp = userProgress?.totalXp || 0;
-  const level = userProgress?.level || 1;
-  const streak = userStreak?.days || 0;
-  const levelProgress = userProgress ? (userProgress.totalXp % 1000) / 10 : 0; // Convert to percentage (0-100)
-
-  // Navigation links configuration
   const navLinks = [
     { path: "/", label: "Home" },
-    { path: "/planetas", label: "Planetas" },
-    { path: "/missoes", label: "Missões" },
-    { path: "/conquistas", label: "Conquistas" },
+    { path: "/achievements", label: "Conquistas" },
   ];
 
-  // Close mobile menu when navigating
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -83,12 +75,14 @@ const NavBar = () => {
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-2">
                         <Star className="w-4 h-4 text-yellow-300" />
-                        <span className="text-yellow-100">{xp} XP</span>
+                        <span className="text-yellow-100">
+                          {userData?.xp} XP
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Rocket className="w-4 h-4 text-space-blue" />
                         <span className="text-space-blue">
-                          Sequência: {streak}
+                          Sequência: {userData?.streak?.current ?? 0}
                         </span>
                       </div>
                     </div>
@@ -136,7 +130,7 @@ const NavBar = () => {
                       <div className="hidden sm:flex items-center gap-2 bg-card/50 py-1 px-3 rounded-full">
                         <Star className="w-4 h-4 text-yellow-300" />
                         <span className="text-yellow-100 text-sm font-medium">
-                          {xp}
+                          {user.xp}
                         </span>
                       </div>
                     </TooltipTrigger>
@@ -152,7 +146,7 @@ const NavBar = () => {
                       <div className="hidden sm:flex items-center gap-2 bg-space-blue/20 py-1 px-3 rounded-full">
                         <Rocket className="w-4 h-4 text-space-blue" />
                         <span className="text-space-blue text-sm font-medium">
-                          Sequência: {streak}
+                          Sequência: {user?.streak?.current ?? 0}
                         </span>
                       </div>
                     </TooltipTrigger>
@@ -168,11 +162,11 @@ const NavBar = () => {
                     <div className="h-1.5 w-12 bg-white/20 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-space-purple to-space-blue rounded-full"
-                        style={{ width: `${levelProgress}%` }}
+                        style={{ width: `${user.xp}%` }}
                       ></div>
                     </div>
                     <span className="text-white/80 text-[10px]">
-                      Nível {level}
+                      Nível {user.xp ?? 0}
                     </span>
                   </div>
                 </div>

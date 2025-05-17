@@ -60,7 +60,7 @@
       radial-gradient(3px 3px at 380px 230px, white, rgba(255, 255, 255, 0)),
       radial-gradient(2px 2px at 440px 80px, white, rgba(255, 255, 255, 0));
     background-size: 500px 500px;
-    animation: space-stars-move 150s linear infinite;
+    animation: space-stars-move 100s linear infinite;
   }
 
   @keyframes space-stars-move {

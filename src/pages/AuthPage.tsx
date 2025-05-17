@@ -17,6 +17,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NumiShip from "../assets/register/alien.png";
 import Satelite from "../assets/login/satelite.png";
 import Ship from "../assets/login/naveNumi.png";
+import SaturnNumi from "../assets/register/alienSaturno.png";
 import Logo from "/src/assets/numi/numi-ship.png";
 
 const AuthPage = () => {
@@ -26,7 +27,6 @@ const AuthPage = () => {
     name: "",
     email: "",
     password: "",
-    role: "",
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -50,6 +50,7 @@ const AuthPage = () => {
           title: "Login bem-sucedido",
           description: "Bem Vindo ao Corretor de Redações!",
         });
+        navigate("/solar");
       } else {
         if (!formData.name || formData.name.trim() === "") {
           throw new Error("Nome é obrigatório");
@@ -59,8 +60,8 @@ const AuthPage = () => {
           title: "Conta criada",
           description: "Sua conta foi criada com sucesso!",
         });
+        navigate("/");
       }
-      navigate("/");
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -91,7 +92,6 @@ const AuthPage = () => {
       name: "",
       email: "",
       password: "",
-      role: "",
     });
   };
 
@@ -110,17 +110,22 @@ const AuthPage = () => {
         <img
           className="w-96 hidden md:block fixed top-32 left-28 animate-float"
           src={NumiShip}
-          alt=""
+          alt="NumiShip"
         />
         <img
-          className="w-96 hidden md:block fixed top-64 right-20 animate-float"
+          className="w-96 hidden md:block fixed top-44 right-20 animate-float"
           src={Satelite}
-          alt=""
+          alt="Satelite"
         />
         <img
           className="w-96 hidden md:block fixed bottom-20 left-56 animate-float"
           src={Ship}
-          alt=""
+          alt="Ship"
+        />
+        <img
+          className="w-96 hidden md:block fixed bottom-20 right-56 animate-float"
+          src={SaturnNumi}
+          alt="SaturnNumi"
         />
         <div className="absolute top-72 left-28 w-40 h-40 rounded-full bg-space-blue opacity-20 blur-3xl animate-pulse"></div>
         <div className="absolute bottom-60 right-20 w-60 h-60 rounded-full bg-space-purple opacity-20 blur-3xl animate-pulse"></div>

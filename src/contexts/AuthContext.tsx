@@ -7,15 +7,19 @@ import {
 } from "react";
 import { api } from "@/services/apiClient";
 import { useToast } from "@/hooks/use-toast";
-
-export type UserRole = "user" | "admin";
+import { UserStreak } from "@/types/user";
 
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
-  avatarUrl?: string;
+  password: string;
+  progress: string[];
+  streak: UserStreak;
+  xp: number;
+  achievements: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface AuthContextValue {

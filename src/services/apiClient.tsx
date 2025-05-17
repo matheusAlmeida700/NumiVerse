@@ -1,3 +1,9 @@
+import {
+  UserAchievements,
+  UserProgress,
+  UserStreak,
+  UserXP,
+} from "@/types/user";
 import { QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient({
@@ -137,7 +143,7 @@ export const api = {
       const url = API_ENDPOINTS.user(id);
 
       const response = await apiFetch(url);
-      const item = response;
+      const item = response.user;
 
       if (!item || !(item._id || item.id)) {
         throw new Error(`Item not found or invalid data format`);
@@ -223,14 +229,41 @@ export const api = {
   },
 
   user: {
-    getProgress: async () => {
-      return apiFetch("/user/progress");
+    getProgress: async (userId: string) => {
+      return apiFetch<UserProgress>(`/${userId}/progress`);
     },
-    getStreak: async () => {
-      return apiFetch("/user/streak");
+    updateProgress: async (userId: string, lessonId: string) => {
+      return apiFetch<UserProgress>(`/${userId}/progress`, {
+        method: "POST",
+        body: JSON.stringify({ lessonId }),
+      });
     },
-    getAchievements: async () => {
-      return apiFetch("/user/achievements");
+    getStreak: async (userId: string) => {
+      return apiFetch<UserStreak>(`/${userId}/streak`);
+    },
+    updateStreak: async (userId: string, streak: UserStreak) => {
+      return apiFetch<UserStreak>(`/${userId}/streak`, {
+        method: "PUT",
+        body: JSON.stringify(streak),
+      });
+    },
+    getAchievements: async (userId: string) => {
+      return apiFetch<UserAchievements>(`/${userId}/achievements`);
+    },
+    updateAchievements: async (userId: string, achievementId: string) => {
+      return apiFetch<UserAchievements>(`/${userId}/achievements`, {
+        method: "PUT",
+        body: JSON.stringify({ achievementId }),
+      });
+    },
+    getXp: async (userId: string) => {
+      return apiFetch<UserXP>(`/${userId}/xp`);
+    },
+    updateXp: async (userId: string, xpToAdd: number) => {
+      return apiFetch<UserXP>(`/${userId}/xp`, {
+        method: "PUT",
+        body: JSON.stringify({ xp: xpToAdd }),
+      });
     },
   },
 

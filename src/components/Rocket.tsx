@@ -1,25 +1,31 @@
 import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF, useAnimations } from "@react-three/drei";
 import CanvasLoader from "./Loader";
 
 const Rockets = ({ isMobile }) => {
-  const { scene } = useGLTF("./animatedrocket.glb");
+  const { scene, animations } = useGLTF("./spaceship.glb");
+  const { actions } = useAnimations(animations, scene);
+  useEffect(() => {
+    if (actions && actions[Object.keys(actions)[0]]) {
+      actions[Object.keys(actions)[0]].play();
+    }
+  }, [actions]);
   return (
     <group dispose={null}>
-      <hemisphereLight intensity={0.5} groundColor="black" />
+      <hemisphereLight intensity={0.5} groundColor="white" />
       <directionalLight
-        position={[20, 100, 5]}
-        intensity={1.2}
+        position={[150, 200, 150]}
+        intensity={2}
         castShadow
         shadow-mapSize-width={512}
         shadow-mapSize-height={512}
       />
       <primitive
         object={scene}
-        scale={isMobile ? 20 : 1}
-        position={isMobile ? [0, -3.3, -1] : [0, -10, -1.5]}
-        rotation={[-0.01, -0.2, -0.1]}
+        scale={isMobile ? 7 : 8}
+        position={isMobile ? [0, 0, 0] : [0, -1, 0]}
+        rotation={[0, 400, 0]}
       />
     </group>
   );
@@ -38,7 +44,7 @@ const Rocket = () => {
 
   return (
     <Canvas
-      frameloop="demand"
+      frameloop="always"
       shadows
       dpr={window.devicePixelRatio}
       camera={{ position: [20, 3, 5], fov: 25 }}
@@ -47,6 +53,7 @@ const Rocket = () => {
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
           enableZoom={false}
+          enablePan={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
