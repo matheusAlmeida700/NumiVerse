@@ -238,9 +238,8 @@ const LessonPlayer = () => {
     }
   };
 
-  // Gerenciar seleção de resposta
   const handleAnswerSelection = (answerId: string) => {
-    if (showFeedback) return; // Não permitir alteração durante o feedback
+    if (showFeedback) return;
 
     if (!currentQuestion) return;
 

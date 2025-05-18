@@ -6,8 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle, Lock, Star } from "lucide-react";
 import { getPlanetById } from "@/data/planetsData";
 import { getLessonsByPlanet } from "@/data/lessonData";
-import { useUserData } from "@/hooks/useUserData";
-import { isLessonCompleted } from "@/services/userService";
+import { isLessonCompleted, useUserData } from "@/hooks/useUserData";
 
 interface PlanetContentProps {
   planetId: string;
@@ -32,9 +31,12 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
     navigate(`/lesson/${lessonId}`);
   };
 
-  const checkLessonCompleted = (lessonId: string): boolean => {
+  const checkLessonCompleted = (
+    progress: [string],
+    lessonId: string
+  ): boolean => {
     if (userData && userData.progress) {
-      return isLessonCompleted(lessonId);
+      return isLessonCompleted(progress, lessonId);
     }
     return false;
   };

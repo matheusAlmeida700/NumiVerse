@@ -331,15 +331,6 @@ export const api = {
       });
     },
   },
-
-  planets: {
-    getAll: async () => {
-      return apiFetch("/planets");
-    },
-    getById: async (id: string) => {
-      return apiFetch(`/planets/${id}`);
-    },
-  },
 };
 
 export default api;

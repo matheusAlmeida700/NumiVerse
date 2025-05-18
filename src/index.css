@@ -41,10 +41,13 @@
     @apply border-border;
   }
 
-  canvas {}
-
   body {
     @apply bg-background text-foreground font-exo;
+  }
+
+  p,
+  button {
+    font-family: "Poppins"
   }
 
   .space-stars {
@@ -89,6 +92,10 @@
 @layer utilities {
   .text-glow {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+
+  .poppins {
+    font-family: "Poppins"
   }
 }
 

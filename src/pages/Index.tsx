@@ -23,7 +23,7 @@ const Index = () => {
         {/* Hero Section */}
         <section className="relative pt-32 px-4 flex items-center min-h-screen">
           <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-bold">
+            <h1 className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-bold poppins">
               Explore o universo da matemática! Aprenda, jogue e conquiste
               planetas em uma jornada cósmica cheia de desafios.
             </h1>

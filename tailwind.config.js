@@ -75,7 +75,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        exo: ['"Varela Round"', "sans-serif"],
+        exo: ['"League Spartan"', "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
