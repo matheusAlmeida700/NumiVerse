@@ -14,63 +14,63 @@ export function useUserData() {
 }
 
 export const useUpdateProgress = () => {
-  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, lessonId }: { id: string; lessonId: string }) =>
-      userDataService.updateProgress(id, lessonId),
-    onSuccess: () => {
-      if (user?.id) {
-        queryClient.invalidateQueries({ queryKey: ["user", user.id] });
-      }
+    mutationFn: ({ userId, lessonId }: { userId: string; lessonId: string }) =>
+      userDataService.updateProgress(userId, lessonId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["user", variables.userId] });
     },
   });
 };
 
 export const useUpdateStreak = () => {
-  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (streak: {
-      current: number;
-      lastUpdate: string;
-      lastActiveDate: string;
-    }) => userDataService.updateStreak(user.id, streak),
-    onSuccess: () => {
-      if (user?.id) {
-        queryClient.invalidateQueries({ queryKey: ["user", user.id] });
-      }
+    mutationFn: ({
+      userId,
+      streak,
+    }: {
+      userId: string;
+      streak: {
+        current: number;
+        lastUpdate: string;
+      };
+    }) => userDataService.updateStreak(userId, streak),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["user", variables.userId] });
     },
   });
 };
 
 export const useUpdateAchievement = () => {
-  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (achievementId: string) =>
-      userDataService.updateAchievements(user.id, achievementId),
-    onSuccess: () => {
-      if (user?.id) {
-        queryClient.invalidateQueries({ queryKey: ["user", user.id] });
-      }
+    mutationFn: ({
+      userId,
+      achievementId,
+    }: {
+      userId: string;
+      achievementId: string;
+    }) => userDataService.updateAchievements(userId, achievementId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["user", variables.userId] });
     },
   });
 };
 
 export const useUpdateUserXp = () => {
-  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (xp: number) => userDataService.updateXp(user.id, xp),
-    onSuccess: () => {
-      if (user?.id) {
-        queryClient.invalidateQueries({ queryKey: ["user", user.id] });
-      }
+    mutationFn: ({ userId, xpToAdd }: { userId: string; xpToAdd: number }) => {
+      return userDataService.updateXp(userId, xpToAdd);
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["user", variables.userId] });
     },
   });
 };

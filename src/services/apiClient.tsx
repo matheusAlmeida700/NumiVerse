@@ -36,6 +36,10 @@ export const API_ENDPOINTS = {
   user: (id: string) => `${API_BASE_URL}/user/${id}`,
   userLogin: `${API_BASE_URL}/auth/login`,
   userRegister: `${API_BASE_URL}/auth/register`,
+  streak: (id: string) => `${API_BASE_URL}/user/${id}/streak`,
+  progress: (id: string) => `${API_BASE_URL}/user/${id}/progress`,
+  achievements: (id: string) => `${API_BASE_URL}/user/${id}/achievements`,
+  xp: (id: string) => `${API_BASE_URL}/user/${id}/xp`,
 };
 
 const DEFAULT_HEADERS = {
@@ -229,41 +233,81 @@ export const api = {
   },
 
   user: {
-    getProgress: async (userId: string) => {
-      return apiFetch<UserProgress>(`/${userId}/progress`);
-    },
     updateProgress: async (userId: string, lessonId: string) => {
-      return apiFetch<UserProgress>(`/${userId}/progress`, {
-        method: "POST",
-        body: JSON.stringify({ lessonId }),
-      });
-    },
-    getStreak: async (userId: string) => {
-      return apiFetch<UserStreak>(`/${userId}/streak`);
+      try {
+        if (!userId) {
+          throw new Error("Invalid ID format");
+        }
+
+        const url = API_ENDPOINTS.progress(userId);
+
+        const response = await apiFetch(url, {
+          method: "POST",
+          body: JSON.stringify({ lessonId }),
+        });
+
+        return response;
+      } catch (error) {
+        console.error(`Error updating item:`, error);
+        throw error;
+      }
     },
     updateStreak: async (userId: string, streak: UserStreak) => {
-      return apiFetch<UserStreak>(`/${userId}/streak`, {
-        method: "PUT",
-        body: JSON.stringify(streak),
-      });
-    },
-    getAchievements: async (userId: string) => {
-      return apiFetch<UserAchievements>(`/${userId}/achievements`);
+      try {
+        if (!userId) {
+          throw new Error("Invalid ID format");
+        }
+
+        const url = API_ENDPOINTS.streak(userId);
+
+        const response = await apiFetch(url, {
+          method: "PUT",
+          body: JSON.stringify({ streak }),
+        });
+
+        return response;
+      } catch (error) {
+        console.error(`Error updating item:`, error);
+        throw error;
+      }
     },
     updateAchievements: async (userId: string, achievementId: string) => {
-      return apiFetch<UserAchievements>(`/${userId}/achievements`, {
-        method: "PUT",
-        body: JSON.stringify({ achievementId }),
-      });
-    },
-    getXp: async (userId: string) => {
-      return apiFetch<UserXP>(`/${userId}/xp`);
+      try {
+        if (!userId) {
+          throw new Error("Invalid ID format");
+        }
+
+        const url = API_ENDPOINTS.achievements(userId);
+
+        const response = await apiFetch(url, {
+          method: "PUT",
+          body: JSON.stringify({ achievementId }),
+        });
+
+        return response;
+      } catch (error) {
+        console.error(`Error updating item:`, error);
+        throw error;
+      }
     },
     updateXp: async (userId: string, xpToAdd: number) => {
-      return apiFetch<UserXP>(`/${userId}/xp`, {
-        method: "PUT",
-        body: JSON.stringify({ xp: xpToAdd }),
-      });
+      try {
+        if (!userId) {
+          throw new Error("Invalid ID format");
+        }
+
+        const url = API_ENDPOINTS.xp(userId);
+
+        const response = await apiFetch(url, {
+          method: "PUT",
+          body: JSON.stringify({ amount: xpToAdd }),
+        });
+
+        return response;
+      } catch (error) {
+        console.error(`Error updating item:`, error);
+        throw error;
+      }
     },
   },
 

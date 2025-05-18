@@ -18,7 +18,6 @@ import {
   useUpdateStreak,
 } from "@/hooks/useUserData";
 
-// Sons
 const correctSound = new Audio("/sounds/correct.mp3");
 const incorrectSound = new Audio("/sounds/incorrect.mp3");
 const completionSound = new Audio("/sounds/completion.mp3");
@@ -43,11 +42,11 @@ const LessonPlayer = () => {
   const [completed, setCompleted] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
-  // React Query hooks
   const { data: userData, isLoading: isUserDataLoading } = useUserData();
   const updateProgress = useUpdateProgress();
   const updateXp = useUpdateUserXp();
   const updateStreak = useUpdateStreak();
+  console.log(userData);
 
   // Mensagens de feedback
   const correctFeedbacks = [
@@ -112,7 +111,6 @@ const LessonPlayer = () => {
         correct = selectedAnswers[0] === currentQuestion.correctAnswer;
         break;
       case "match":
-        // Aqui verificamos se todas as correspondências estão corretas
         const matchPairs = currentQuestion.correctAnswer as string[];
         correct =
           matchPairs.every((pair) => {
@@ -121,13 +119,11 @@ const LessonPlayer = () => {
           }) && selectedAnswers.length === matchPairs.length;
         break;
       case "drag-drop":
-        // Verificar se a ordem está correta
         const correctOrder = currentQuestion.correctAnswer as string[];
         correct =
           JSON.stringify(selectedAnswers) === JSON.stringify(correctOrder);
         break;
       case "tap-choice":
-        // Verificar se todas as opções corretas foram selecionadas (e apenas elas)
         const correctTaps = currentQuestion.correctAnswer as string[];
         correct =
           correctTaps.every((answer) => selectedAnswers.includes(answer)) &&
@@ -186,20 +182,17 @@ const LessonPlayer = () => {
         return newIndex;
       });
     } else {
-      // Lição concluída
       completionSound.play();
       setCompleted(true);
       setProgress(100);
 
       if (currentLesson && lessonId) {
-        // Calculate earned XP based on performance
         const earnedXp = calculateXpForLesson(
           results.correct,
           currentLesson.questions.length,
           currentLesson.xp
         );
 
-        // Update local user progress data and call API
         handleLessonCompletion(
           lessonId,
           results.correct,
@@ -216,42 +209,30 @@ const LessonPlayer = () => {
     }
   };
 
-  // Handle lesson completion and API updates
   const handleLessonCompletion = async (
     lessonId: string,
     correctAnswers: number,
     totalQuestions: number,
     earnedXp: number
   ) => {
+    if (!userData?._id) return;
+
     try {
-      // Update progress in backend
-      updateProgress.mutate(lessonId);
-
-      // Update XP in backend
-      updateXp.mutate(earnedXp);
-
-      // Update streak in backend
-      const today = new Date().toISOString();
+      updateXp.mutate({ userId: userData?._id, xpToAdd: earnedXp });
+      updateProgress.mutate({ userId: userData?._id, lessonId });
       updateStreak.mutate({
-        current: streak,
-        lastUpdate: today,
+        userId: userData._id,
+        streak: {
+          current: streak,
+          lastUpdate: new Date().toISOString(),
+        },
       });
-
-      // Also update local data for immediate feedback
-      await updateUserProgress(
-        lessonId,
-        correctAnswers,
-        totalQuestions,
-        earnedXp
-      );
     } catch (error) {
       console.error("Error updating user data:", error);
 
-      // Fall back to local update only
       toast({
         title: "Atenção",
-        description:
-          "Progresso salvo localmente. Sincronização com o servidor falhou.",
+        description: "Sincronização com o servidor falhou.",
         variant: "destructive",
       });
     }

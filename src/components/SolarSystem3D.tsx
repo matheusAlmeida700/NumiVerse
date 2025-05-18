@@ -61,16 +61,13 @@ const SolarSystem3D = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     canvasRef.current.appendChild(renderer.domElement);
 
-    // Add ambient light
     const ambientLight = new THREE.AmbientLight(0x404040, 1);
     scene.add(ambientLight);
 
-    // Add point light at the sun's position
     const sunLight = new THREE.PointLight(0xfff9c4, 3, 2000, 1);
     sunLight.position.set(0, 0, 0);
     scene.add(sunLight);
 
-    // Create controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -79,7 +76,6 @@ const SolarSystem3D = () => {
     controls.maxDistance = 1500;
     controls.enablePan = false;
 
-    // Create star background
     const starGeometry = new THREE.BufferGeometry();
     const starMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
@@ -104,25 +100,19 @@ const SolarSystem3D = () => {
     const starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
-    // Load textures
     const textureLoader = new THREE.TextureLoader();
 
-    // Planet objects storage
     const planetObjects: Record<string, THREE.Mesh> = {};
 
-    // Create the sun (first planet in our data)
     const sunTexture = textureLoader.load("/textures/sun-map.jpg");
     const sunGeometry = new THREE.SphereGeometry(50, 64, 64);
     const sunMaterial = new THREE.MeshBasicMaterial({
       map: sunTexture,
-      emissive: 0xffff00,
-      emissiveIntensity: 0.4,
     });
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
     planetObjects[planets[0].id] = sun;
 
-    // Add a glow effect to the sun
     const sunGlow = new THREE.Sprite(
       new THREE.SpriteMaterial({
         map: textureLoader.load("/textures/circle.png"),
@@ -134,12 +124,9 @@ const SolarSystem3D = () => {
     sunGlow.scale.set(150, 150, 1);
     sun.add(sunGlow);
 
-    // Create orbit rings
     const orbits: THREE.Line[] = [];
 
-    // Create other planets
     planets.slice(1).forEach((planet, index) => {
-      // Create orbit
       const orbitRadius = 120 + (index + 1) * 80;
       const orbitGeometry = new THREE.BufferGeometry();
       const orbitPoints = [];
@@ -166,8 +153,6 @@ const SolarSystem3D = () => {
       scene.add(orbit);
       orbits.push(orbit);
 
-      // Create planet
-      // Use placeholder texture initially - these will be replaced with proper textures
       let planetTexture;
       switch (planet.id) {
         case "aritmetica":
@@ -202,13 +187,10 @@ const SolarSystem3D = () => {
       const z = Math.sin(angle) * orbitRadius;
       planetMesh.position.set(x, 0, z);
 
-      // Add planet to scene
       scene.add(planetMesh);
 
-      // Store reference to planet mesh
       planetObjects[planet.id] = planetMesh;
 
-      // For Saturn-like planets, add rings
       if (planet.id === "funcoes") {
         const ringTexture = textureLoader.load("/textures/saturn-rings.jpg");
         const ringGeometry = new THREE.RingGeometry(
@@ -221,7 +203,7 @@ const SolarSystem3D = () => {
           color: 0xffffff,
           side: THREE.DoubleSide,
           transparent: true,
-          opacity: 0.8,
+          opacity: 0.4,
         });
         const ring = new THREE.Mesh(ringGeometry, ringMaterial);
         ring.rotation.x = Math.PI / 2;
@@ -316,28 +298,22 @@ const SolarSystem3D = () => {
           // Get current angle from position
           let angle = Math.atan2(planetMesh.position.z, planetMesh.position.x);
 
-          // Increment angle
           angle += speed;
 
-          // Set new position
           planetMesh.position.x = Math.cos(angle) * orbitRadius;
           planetMesh.position.z = Math.sin(angle) * orbitRadius;
 
-          // Rotate planet on its axis
           planetMesh.rotation.y += 0.005;
         });
       }
 
-      // Update controls
       controls.update();
 
-      // Render scene
       renderer.render(scene, camera);
 
       sceneRef.current.animationId = animationId;
     };
 
-    // Store references to objects that need to be accessed later
     sceneRef.current = {
       scene,
       camera,
@@ -346,10 +322,8 @@ const SolarSystem3D = () => {
       planetObjects,
     };
 
-    // Start animation loop
     animate();
 
-    // Cleanup function
     return () => {
       if (sceneRef.current?.animationId) {
         cancelAnimationFrame(sceneRef.current.animationId);
@@ -358,7 +332,6 @@ const SolarSystem3D = () => {
       renderer.domElement.removeEventListener("click", onMouseClick);
       window.removeEventListener("resize", handleResize);
 
-      // Dispose of ThreeJS resources
       Object.values(planetObjects).forEach((mesh) => {
         mesh.geometry.dispose();
         if (Array.isArray(mesh.material)) {
@@ -370,7 +343,6 @@ const SolarSystem3D = () => {
 
       orbits.forEach((orbit) => {
         orbit.geometry.dispose();
-        orbit.material.dispose();
       });
 
       renderer.dispose();

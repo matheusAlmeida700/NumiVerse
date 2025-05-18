@@ -4,7 +4,7 @@ export interface UserProgress {
 
 export interface UserStreak {
   current: number;
-  lastActiveDate: string;
+  lastUpdate: string;
 }
 
 export interface UserXP {
