@@ -43,14 +43,14 @@ const AchievementsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { user } = useAuth();
-  //   console.log(user._id);
+  console.log(user._id);
 
-  //   const { data: userData, refetch } = useQuery({
-  //     queryKey: ["user", user?.id],
-  //     queryFn: () => userService.getById(user.id),
-  //     enabled: !!user?.id,
-  //     staleTime: 5 * 60 * 1000,
-  //   });
+  const { data: userData, refetch } = useQuery({
+    queryKey: ["user", user?.id],
+    queryFn: () => userService.getById(user.id),
+    enabled: !!user?.id,
+    staleTime: 5 * 60 * 1000,
+  });
 
   console.log(user);
 

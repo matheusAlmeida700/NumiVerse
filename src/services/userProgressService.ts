@@ -1,7 +1,6 @@
 import { UserProgress } from "./authService";
 
 export const userProgressService = {
-  // Get complete user progress
   getUserProgress: async (): Promise<UserProgress> => {
     const token = localStorage.getItem("auth_token");
 
@@ -47,7 +46,6 @@ export const userProgressService = {
     return response.json();
   },
 
-  // Check if a lesson has been completed
   getLessonStatus: async (lessonId: string) => {
     const token = localStorage.getItem("auth_token");
 

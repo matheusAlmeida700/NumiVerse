@@ -41,7 +41,6 @@ export const achievements: Achievement[] = [
     category: "lesson",
   },
 
-  // Streak achievements
   {
     id: "three-day-streak",
     title: "Comprometido",
@@ -71,7 +70,6 @@ export const achievements: Achievement[] = [
     category: "streak",
   },
 
-  // Exploration achievements
   {
     id: "all-planets",
     title: "Explorador Espacial",
@@ -100,7 +98,6 @@ export const achievements: Achievement[] = [
     category: "exploration",
   },
 
-  // Mastery achievements
   {
     id: "level-5",
     title: "Aprendiz Estelar",
@@ -129,7 +126,6 @@ export const achievements: Achievement[] = [
     category: "mastery",
   },
 
-  // Secret achievements
   {
     id: "easter-egg",
     title: "???",

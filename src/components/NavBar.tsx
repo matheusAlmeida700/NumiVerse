@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star, Rocket, Menu, X } from "lucide-react";
+import { Star, Rocket, Menu, X, Flame } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
@@ -23,7 +23,7 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: "/", label: "Home" },
+    { path: "/solar", label: "Sistema Solar" },
     { path: "/achievements", label: "Conquistas" },
   ];
 
@@ -127,10 +127,10 @@ const NavBar = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="hidden sm:flex items-center gap-2 bg-card/50 py-1 px-3 rounded-full">
-                        <Star className="w-4 h-4 text-yellow-300" />
-                        <span className="text-yellow-100 text-sm font-medium">
-                          {user.xp}
+                      <div className="hidden sm:flex items-center gap-2 bg-yellow-700/20 py-2 px-3 rounded-full">
+                        <Star className="w-6 h-6 text-yellow-300" />
+                        <span className="text-yellow-100 font-bold">
+                          {userData?.xp}XP
                         </span>
                       </div>
                     </TooltipTrigger>
@@ -143,41 +143,26 @@ const NavBar = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="hidden sm:flex items-center gap-2 bg-space-blue/20 py-1 px-3 rounded-full">
-                        <Rocket className="w-4 h-4 text-space-blue" />
-                        <span className="text-space-blue text-sm font-medium">
-                          Sequência: {user?.streak?.current ?? 0}
+                      <div className="hidden sm:flex items-center gap-2 bg-space-purple/20 py-2 px-3 rounded-full">
+                        <Flame className="w-6 h-6 text-space-purple" />
+                        <span className="font-bold">
+                          {userData?.streak?.current ?? 0}
                         </span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Dias consecutivos de estudo</p>
+                      <p>Dias consecutivos</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-
-                <div className="flex items-center gap-2 px-2 py-1 border border-white/20 rounded-lg">
-                  <div className="h-5 w-5 rounded-full bg-gradient-to-r from-space-purple to-space-blue"></div>
-                  <div className="flex flex-col">
-                    <div className="h-1.5 w-12 bg-white/20 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-space-purple to-space-blue rounded-full"
-                        style={{ width: `${user.xp}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-white/80 text-[10px]">
-                      Nível {user.xp ?? 0}
-                    </span>
-                  </div>
-                </div>
               </>
             )}
 
             <Link to={isAuthenticated ? "/perfil" : "/login"}>
               <Avatar className="w-8 h-8 border border-space-purple cursor-pointer">
-                <AvatarImage src={user?.avatarUrl || ""} />
+                <AvatarImage src={userData?.avatarUrl || ""} />
                 <AvatarFallback className="bg-space-blue text-white text-xs">
-                  {user?.name?.substring(0, 2).toUpperCase() || "NU"}
+                  {userData?.name?.substring(0, 2).toUpperCase() || "NU"}
                 </AvatarFallback>
               </Avatar>
             </Link>

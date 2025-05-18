@@ -17,7 +17,6 @@ export interface Planet {
   totalGames: number;
 }
 
-// Define icon creators as functions that will be called later when rendering
 export const planets = [
   {
     id: "algebra",
@@ -30,10 +29,7 @@ export const planets = [
     icon: () => <Sun className="w-6 h-6" />,
     position: { x: 0, y: 0 },
     unlocked: true,
-    progress: 25,
-    orbitSpeed: 0, // Sun doesn't orbit
-    totalLessons: 5,
-    totalGames: 2,
+    orbitSpeed: 0,
   },
   {
     id: "aritmetica",
@@ -45,10 +41,7 @@ export const planets = [
     icon: () => <Moon className="w-6 h-6" />,
     position: { x: -150, y: -150 },
     unlocked: true,
-    progress: 40,
     orbitSpeed: 30,
-    totalLessons: 5,
-    totalGames: 2,
   },
   {
     id: "estatistica",
@@ -60,10 +53,7 @@ export const planets = [
     icon: () => <Earth className="w-6 h-6" />,
     position: { x: 150, y: -150 },
     unlocked: true,
-    progress: 15,
     orbitSpeed: 50,
-    totalLessons: 5,
-    totalGames: 2,
   },
   {
     id: "funcoes",
@@ -76,10 +66,7 @@ export const planets = [
     icon: () => <Calculator className="w-6 h-6" />,
     position: { x: 200, y: 100 },
     unlocked: true,
-    progress: 5,
     orbitSpeed: 40,
-    totalLessons: 5,
-    totalGames: 2,
   },
   {
     id: "geometria",
@@ -91,10 +78,7 @@ export const planets = [
     icon: () => <Triangle className="w-6 h-6" />,
     position: { x: -200, y: 150 },
     unlocked: true,
-    progress: 10,
     orbitSpeed: 60,
-    totalLessons: 5,
-    totalGames: 2,
   },
 ];
 

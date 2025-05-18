@@ -1,41 +1,33 @@
-
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import PlanetPage from "@/components/PlanetPage";
-
-// Mapping of planet IDs to Portuguese names
-const planetNames = {
-  algebra: "Álgebra",
-  aritmetica: "Aritmética",
-  estatistica: "Estatística",
-  funcoes: "Funções",
-  geometria: "Geometria"
-};
+import { getPlanetById } from "@/data/planetsData";
+import PlanetContent from "@/components/PlanetContent";
 
 const PlanetView = () => {
   const { planetId } = useParams<{ planetId: string }>();
-  
+
   useEffect(() => {
-    if (planetId && planetId in planetNames) {
-      document.title = `NumiVerse - Explorar ${planetNames[planetId as keyof typeof planetNames]}`;
+    const planet = getPlanetById(planetId || "");
+    if (planet) {
+      document.title = `NumiVerse - Explorar ${planet.name}`;
     } else {
       document.title = "NumiVerse - Explorar Planeta";
     }
   }, [planetId]);
-  
+
   return (
     <div className="min-h-screen flex flex-col bg-space-gradient">
       {/* Space background */}
       <div className="space-stars"></div>
-      
+
       <NavBar />
-      
-      <main className="flex-1">
-        <PlanetPage />
+
+      <main className="flex-1 pt-20 pb-16">
+        <PlanetContent planetId={planetId || ""} />
       </main>
-      
+
       <Footer />
     </div>
   );
