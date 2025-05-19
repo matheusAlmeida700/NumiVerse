@@ -12,13 +12,13 @@ import {
 import Logo from "/src/assets/numi/numi-ship.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserData } from "@/hooks/useUserData";
+import MusicPlayer from "./MusicPlayer";
 
 const NavBar = () => {
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
 
   const { data: userData, refetch } = useUserData();
-  console.log(userData);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

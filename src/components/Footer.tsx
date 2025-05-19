@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <h4 className="font-bold text-white mb-4">NumiVerse</h4>
-            <p className="text-sm text-white/60">
+            <p className="text-md text-white/60">
               Explore a matemática através de uma aventura interestelar.
               Aprenda, jogue e conquiste o universo dos números.
             </p>
@@ -16,7 +16,7 @@ const Footer = () => {
 
           <div>
             <h5 className="font-medium text-white mb-4">Explorar</h5>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-md">
               <li>
                 <Link
                   to="/planets"
@@ -46,7 +46,7 @@ const Footer = () => {
 
           <div>
             <h5 className="font-medium text-white mb-4">Recursos</h5>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-md">
               <li>
                 <Link
                   to="/help"
@@ -87,19 +87,19 @@ const Footer = () => {
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-space-purple transition"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-space-purple transition"
               >
                 <Linkedin />
               </a>
               <a
                 href="#"
-                className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-space-purple transition"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-space-purple transition"
               >
                 <Instagram />
               </a>
               <a
                 href="#"
-                className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-space-purple transition"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-space-purple transition"
               >
                 <Github />
               </a>
@@ -115,19 +115,19 @@ const Footer = () => {
           <div className="mt-4 md:mt-0 flex space-x-6">
             <Link
               to="/privacy"
-              className="text-xs text-white/40 hover:text-white/60 transition"
+              className="text-sm text-white/40 hover:text-white/60 transition"
             >
               Privacidade
             </Link>
             <Link
               to="/terms"
-              className="text-xs text-white/40 hover:text-white/60 transition"
+              className="text-sm text-white/40 hover:text-white/60 transition"
             >
               Termos
             </Link>
             <Link
               to="/cookies"
-              className="text-xs text-white/40 hover:text-white/60 transition"
+              className="text-sm text-white/40 hover:text-white/60 transition"
             >
               Cookies
             </Link>

@@ -23,7 +23,7 @@ const SolarSystem3D = () => {
   const handlePlanetClick = (planetId: string) => {
     const planet = planets.find((p) => p.id === planetId);
 
-    if (planet && !planet.unlocked) {
+    if (!planet) {
       toast({
         title: "Planeta Bloqueado",
         description: `Complete os planetas anteriores para desbloquear ${planet.name}!`,
@@ -61,7 +61,7 @@ const SolarSystem3D = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     canvasRef.current.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 1);
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
     scene.add(ambientLight);
 
     const sunLight = new THREE.PointLight(0xfff9c4, 3, 2000, 1);
@@ -149,7 +149,7 @@ const SolarSystem3D = () => {
         opacity: 0.3,
       });
       const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
-      orbit.rotation.x = Math.PI / 2;
+      orbit.rotation.x = Math.PI / 1;
       scene.add(orbit);
       orbits.push(orbit);
 
@@ -159,7 +159,7 @@ const SolarSystem3D = () => {
           planetTexture = textureLoader.load("/textures/earthMoon.png");
           break;
         case "estatistica":
-          planetTexture = textureLoader.load("/textures/earth-map-1.jpg");
+          planetTexture = textureLoader.load("/textures/earth-texture.jpg");
           break;
         case "funcoes":
           planetTexture = textureLoader.load("/textures/saturn-map.jpg");
@@ -181,7 +181,6 @@ const SolarSystem3D = () => {
 
       const planetMesh = new THREE.Mesh(planetGeometry, planetMaterial);
 
-      // Calculate initial position on orbit
       const angle = index * ((2 * Math.PI) / (planets.length - 1));
       const x = Math.cos(angle) * orbitRadius;
       const z = Math.sin(angle) * orbitRadius;
@@ -210,13 +209,10 @@ const SolarSystem3D = () => {
         planetMesh.add(ring);
       }
 
-      // Add glow effect based on planet's unlocked state
-      const glowColor = planet.unlocked
-        ? new THREE.Color(
-            planet.glowColor.replace("bg-", "").replace("/40", "")
-          )
-        : new THREE.Color(0x333333);
-      const glowIntensity = planet.unlocked ? 0.4 : 0.1;
+      const glowColor = new THREE.Color(
+        planet.glowColor.replace("bg-", "").replace("/40", "")
+      );
+      const glowIntensity = 0.1;
 
       const glowSprite = new THREE.Sprite(
         new THREE.SpriteMaterial({
@@ -232,24 +228,19 @@ const SolarSystem3D = () => {
       planetMesh.add(glowSprite);
     });
 
-    // Set up raycaster for planet interaction
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     const onMouseClick = (event: MouseEvent) => {
-      // Calculate mouse position in normalized device coordinates
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-      // Update the picking ray with the camera and mouse position
       raycaster.setFromCamera(mouse, camera);
 
-      // Calculate objects intersecting the picking ray
       const planetMeshes = Object.values(planetObjects);
       const intersects = raycaster.intersectObjects(planetMeshes);
 
       if (intersects.length > 0) {
-        // Find which planet was clicked
         for (const [id, mesh] of Object.entries(planetObjects)) {
           if (mesh === intersects[0].object) {
             handlePlanetClick(id);
@@ -259,10 +250,8 @@ const SolarSystem3D = () => {
       }
     };
 
-    // Add click event listener
     renderer.domElement.addEventListener("click", onMouseClick);
 
-    // Handle window resize
     const handleResize = () => {
       if (!sceneRef.current) return;
 
@@ -274,28 +263,22 @@ const SolarSystem3D = () => {
 
     window.addEventListener("resize", handleResize);
 
-    // Animation loop
     const animate = () => {
       if (!sceneRef.current) return;
 
       const animationId = requestAnimationFrame(animate);
 
-      // Rotate sun
       sun.rotation.y += 0.001;
 
-      // Animate planets if no planet is currently selected
       if (!activeId) {
         planets.slice(1).forEach((planet, index) => {
           const planetMesh = planetObjects[planet.id];
           if (!planetMesh) return;
 
-          // Calculate orbit speed - convert from our data to reasonable rotation speed
           const speed = (1 / planet.orbitSpeed) * 0.01;
 
-          // Calculate orbit radius
           const orbitRadius = 120 + (index + 1) * 80;
 
-          // Get current angle from position
           let angle = Math.atan2(planetMesh.position.z, planetMesh.position.x);
 
           angle += speed;

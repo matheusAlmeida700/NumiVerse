@@ -21,7 +21,7 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-32 px-4 flex items-center min-h-screen">
+        <section className="relative pt-24 px-4 flex items-center min-h-screen">
           <div className="max-w-6xl mx-auto text-center">
             <h1 className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-bold poppins">
               Explore o universo da matemática! Aprenda, jogue e conquiste
@@ -34,15 +34,16 @@ const Index = () => {
             />
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/auth">
-                <Button className="text-md px-8 py-6 bg-space-purple hover:bg-space-purple/80 flex items-center gap-2">
-                  <RocketIcon />
-                  COMECE SUA JORNADA
+                <Button className="relative group px-8 py-6 text-md bg-space-purple text-white rounded-xl flex items-center gap-2 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.8)]">
+                  <div className="absolute inset-0 z-0 blur-md opacity-20 bg-gradient-to-r from-space-purple via-pink-500 to-space-purple transition-all duration-700 group-hover:opacity-50" />
+                  <RocketIcon className="relative z-10 transform transition-transform duration-500 group-hover:rotate-[20deg]" />
+                  <span className="relative z-10">COMECE SUA JORNADA</span>
                 </Button>
               </Link>
               <Link to="/auth">
                 <Button
                   variant="outline"
-                  className="text-md text-white px-8 py-6 border-white/20 hover:bg-white/5"
+                  className="text-md text-white px-8 py-6 border-white/20 hover:bg-white/5 hover:scale-105 hover:shadow-lg border-2 transition-all"
                 >
                   JÁ TENHO UMA CONTA
                 </Button>
