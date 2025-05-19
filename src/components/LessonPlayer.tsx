@@ -4,7 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { CheckCircle, XCircle, Award, Zap, Heart } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  Award,
+  Zap,
+  Heart,
+  ArrowUp,
+  ArrowDown,
+  Sparkles,
+} from "lucide-react";
 import { lessonData, lessonToPlanetMap } from "@/data/lessonData";
 import {
   updateUserProgress,
@@ -21,6 +30,8 @@ import {
 const correctSound = new Audio("/sounds/correct.mp3");
 const incorrectSound = new Audio("/sounds/incorrect.mp3");
 const completionSound = new Audio("/sounds/completion.mp3");
+
+const STREAK_MILESTONE = 5;
 
 const LessonPlayer = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -41,14 +52,13 @@ const LessonPlayer = () => {
   }>({ correct: 0, total: 0, xp: 0 });
   const [completed, setCompleted] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [sortableItems, setSortableItems] = useState<string[]>([]);
 
   const { data: userData, isLoading: isUserDataLoading } = useUserData();
   const updateProgress = useUpdateProgress();
   const updateXp = useUpdateUserXp();
   const updateStreak = useUpdateStreak();
-  console.log(userData);
 
-  // Mensagens de feedback
   const correctFeedbacks = [
     "Muito bem!",
     "Excelente!",
@@ -69,17 +79,14 @@ const LessonPlayer = () => {
     "Continue tentando!",
   ];
 
-  // Carregar a lição
   useEffect(() => {
     if (lessonId && lessonData[lessonId]) {
       setCurrentLesson(lessonData[lessonId]);
       document.title = `NumiVerse - ${lessonData[lessonId].title}`;
 
-      // Check if lesson was already completed
       const wasAlreadyCompleted =
         userData && isLessonCompleted(userData.progress, lessonId);
 
-      // Set current streak from data
       if (userData && userData.streak) {
         setStreak(userData.streak.current || 0);
       }
@@ -93,10 +100,19 @@ const LessonPlayer = () => {
     }
   }, [lessonId, navigate, userData]);
 
-  // Questão atual
+  useEffect(() => {
+    if (currentQuestion?.type === "sort" && sortableItems.length === 0) {
+      const shuffled = [...currentQuestion.answers]
+        .map((answer) => answer.id)
+        .sort(() => Math.random() - 0.5);
+      setSortableItems(shuffled);
+    } else if (currentQuestion?.type !== "sort") {
+      setSortableItems([]);
+    }
+  }, [currentQuestionIndex, currentLesson]);
+
   const currentQuestion = currentLesson?.questions[currentQuestionIndex];
 
-  // Verificar resposta
   const checkAnswer = () => {
     if (!currentQuestion) return;
 
@@ -105,6 +121,7 @@ const LessonPlayer = () => {
     switch (currentQuestion.type) {
       case "multiple-choice":
       case "fill-blank":
+      case "true-false":
         correct = selectedAnswers[0] === currentQuestion.correctAnswer;
         break;
       case "complete-number":
@@ -119,15 +136,31 @@ const LessonPlayer = () => {
           }) && selectedAnswers.length === matchPairs.length;
         break;
       case "drag-drop":
+      case "sort":
         const correctOrder = currentQuestion.correctAnswer as string[];
         correct =
-          JSON.stringify(selectedAnswers) === JSON.stringify(correctOrder);
+          JSON.stringify(selectedAnswers) === JSON.stringify(correctOrder) ||
+          JSON.stringify(sortableItems) === JSON.stringify(correctOrder);
         break;
       case "tap-choice":
         const correctTaps = currentQuestion.correctAnswer as string[];
         correct =
           correctTaps.every((answer) => selectedAnswers.includes(answer)) &&
           selectedAnswers.length === correctTaps.length;
+        break;
+      case "sequence":
+        const correctSequence = currentQuestion.correctAnswer as string[];
+        correct =
+          JSON.stringify(selectedAnswers) === JSON.stringify(correctSequence);
+        break;
+      case "connect-dots":
+        const correctConnections = currentQuestion.correctAnswer as string[];
+        const allConnectionsCorrect = correctConnections.every((conn) =>
+          selectedAnswers.includes(conn)
+        );
+        const noExtraConnections =
+          selectedAnswers.length === correctConnections.length;
+        correct = allConnectionsCorrect && noExtraConnections;
         break;
     }
 
@@ -140,12 +173,10 @@ const LessonPlayer = () => {
       setStreak(newStreak);
       setResults((prev) => ({ ...prev, correct: prev.correct + 1 }));
 
-      // Escolher mensagem aleatória de feedback positivo
       const randomIndex = Math.floor(Math.random() * correctFeedbacks.length);
       setFeedbackMessage(correctFeedbacks[randomIndex]);
 
-      // Mostrar feedback de streak a cada 5 acertos
-      if (newStreak % 5 === 0) {
+      if (newStreak % STREAK_MILESTONE === 0) {
         setShowStreak(true);
         setTimeout(() => setShowStreak(false), 2000);
       }
@@ -153,7 +184,6 @@ const LessonPlayer = () => {
       incorrectSound.play();
       setStreak(0);
 
-      // Escolher mensagem aleatória de feedback negativo
       const randomIndex = Math.floor(Math.random() * incorrectFeedbacks.length);
       setFeedbackMessage(incorrectFeedbacks[randomIndex]);
     }
@@ -163,11 +193,11 @@ const LessonPlayer = () => {
     }, 2000);
   };
 
-  // Ir para próxima questão
   const nextQuestion = () => {
     setShowFeedback(false);
     setIsCorrect(null);
     setSelectedAnswers([]);
+    setSortableItems([]);
     setFeedbackMessage("");
 
     if (
@@ -218,15 +248,9 @@ const LessonPlayer = () => {
     if (!userData?._id) return;
 
     try {
-      updateXp.mutate({ userId: userData?._id, xpToAdd: earnedXp });
-      updateProgress.mutate({ userId: userData?._id, lessonId });
-      updateStreak.mutate({
-        userId: userData._id,
-        streak: {
-          current: streak,
-          lastUpdate: new Date().toISOString(),
-        },
-      });
+      updateXp.mutate({ userId: userData._id, xpToAdd: earnedXp });
+      updateProgress.mutate({ userId: userData._id, lessonId });
+      updateStreak.mutate({ userId: userData._id });
     } catch (error) {
       console.error("Error updating user data:", error);
 
@@ -247,6 +271,7 @@ const LessonPlayer = () => {
       case "multiple-choice":
       case "fill-blank":
       case "complete-number":
+      case "true-false":
         setSelectedAnswers([answerId]);
         break;
       case "tap-choice":
@@ -257,19 +282,43 @@ const LessonPlayer = () => {
         );
         break;
       case "match":
-        // Lógica para correspondência
-        // Simplificação: assumimos que o usuário seleciona pares de respostas
         setSelectedAnswers((prev) => [...prev, answerId]);
         break;
       case "drag-drop":
-        // Lógica para arrastar e soltar
-        // Simplificação: assumimos que o usuário clica nas opções na ordem desejada
+      case "sequence":
         setSelectedAnswers((prev) => [...prev, answerId]);
+        break;
+      case "connect-dots":
+        if (selectedAnswers.length % 2 === 0) {
+          setSelectedAnswers((prev) => [...prev, answerId]);
+        } else {
+          const prevPoint = selectedAnswers[selectedAnswers.length - 1];
+          const connection = `${prevPoint}-${answerId}`;
+          setSelectedAnswers((prev) => [...prev, answerId, connection]);
+        }
         break;
     }
   };
 
-  // Voltar para a página do planeta
+  const moveItemInSortList = (index: number, direction: "up" | "down") => {
+    if (!currentQuestion || currentQuestion.type !== "sort") return;
+
+    const newOrder = [...sortableItems];
+    if (direction === "up" && index > 0) {
+      [newOrder[index], newOrder[index - 1]] = [
+        newOrder[index - 1],
+        newOrder[index],
+      ];
+    } else if (direction === "down" && index < newOrder.length - 1) {
+      [newOrder[index], newOrder[index + 1]] = [
+        newOrder[index + 1],
+        newOrder[index],
+      ];
+    }
+
+    setSortableItems(newOrder);
+  };
+
   const handleFinish = () => {
     if (lessonId && lessonToPlanetMap[lessonId]) {
       navigate(`/planet/${lessonToPlanetMap[lessonId]}`);
@@ -278,7 +327,6 @@ const LessonPlayer = () => {
     }
   };
 
-  // Tentar a mesma lição novamente
   const handleRetry = () => {
     setCurrentQuestionIndex(0);
     setProgress(0);
@@ -286,25 +334,21 @@ const LessonPlayer = () => {
     setCompleted(false);
   };
 
-  // Renderizar questão atual
   const renderCurrentQuestion = () => {
     if (!currentQuestion) return null;
 
     return (
       <div className="flex flex-col items-center w-full max-w-xl mx-auto">
-        {/* Tipo de questão e instrução */}
         {currentQuestion.instruction && (
           <p className="text-sm text-white/60 mb-2">
             {currentQuestion.instruction}
           </p>
         )}
 
-        {/* Questão */}
         <h3 className="text-xl md:text-2xl font-medium text-center mb-6">
           {currentQuestion.question}
         </h3>
 
-        {/* Imagem (se existir) */}
         {currentQuestion.image && (
           <div className="w-full max-w-md mb-6">
             <img
@@ -315,81 +359,139 @@ const LessonPlayer = () => {
           </div>
         )}
 
-        {/* Respostas */}
-        <div
-          className={`grid ${
-            currentQuestion.type === "match" ? "grid-cols-2" : "grid-cols-1"
-          } gap-3 w-full`}
-        >
-          {currentQuestion.answers.map((answer) => (
-            <Button
-              key={answer.id}
-              variant={
-                showFeedback
-                  ? (isCorrect && selectedAnswers.includes(answer.id)) ||
-                    (isCorrect === false && answer.isCorrect)
+        {currentQuestion.type === "sort" && (
+          <div className="w-full space-y-2">
+            {sortableItems.map((itemId, index) => {
+              const answer = currentQuestion.answers.find(
+                (a) => a.id === itemId
+              );
+              return (
+                <div
+                  key={itemId}
+                  className="flex items-center gap-2 p-3 bg-card/70 border border-white/10 rounded-lg"
+                >
+                  <div className="flex flex-col">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => moveItemInSortList(index, "up")}
+                      disabled={index === 0 || showFeedback}
+                      className="h-7 w-7"
+                    >
+                      <ArrowUp className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => moveItemInSortList(index, "down")}
+                      disabled={
+                        index === sortableItems.length - 1 || showFeedback
+                      }
+                      className="h-7 w-7"
+                    >
+                      <ArrowDown className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <span className="flex-1">{answer?.text}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {currentQuestion.type !== "sort" && (
+          <div
+            className={`grid ${
+              currentQuestion.type === "match" ? "grid-cols-2" : "grid-cols-1"
+            } gap-3 w-full`}
+          >
+            {currentQuestion.answers.map((answer) => (
+              <Button
+                key={answer.id}
+                variant={
+                  showFeedback
+                    ? (isCorrect && selectedAnswers.includes(answer.id)) ||
+                      (isCorrect === false && answer.isCorrect)
+                      ? "default"
+                      : isCorrect === false &&
+                        selectedAnswers.includes(answer.id)
+                      ? "destructive"
+                      : "outline"
+                    : selectedAnswers.includes(answer.id)
                     ? "default"
-                    : isCorrect === false && selectedAnswers.includes(answer.id)
-                    ? "destructive"
                     : "outline"
-                  : selectedAnswers.includes(answer.id)
-                  ? "default"
-                  : "outline"
-              }
-              className={`p-4 h-auto text-left justify-start transition-all ${
-                currentQuestion.type === "tap-choice" ? "rounded-full" : ""
-              } ${
-                showFeedback &&
-                ((isCorrect && selectedAnswers.includes(answer.id)) ||
-                  (!isCorrect && answer.isCorrect))
-                  ? "ring-2 ring-green-500"
-                  : ""
-              }`}
-              onClick={() => handleAnswerSelection(answer.id)}
-              disabled={showFeedback}
-            >
-              {answer.text}
-            </Button>
-          ))}
-
-          {/* Campo de entrada para questões numéricas */}
-          {currentQuestion.type === "complete-number" && (
-            <div className="mt-4 w-full">
-              <input
-                type="text"
-                className="w-full p-4 bg-background border border-border rounded-md text-center text-xl"
-                placeholder="Digite sua resposta"
-                value={selectedAnswers[0] || ""}
-                onChange={(e) => setSelectedAnswers([e.target.value])}
+                }
+                className={`p-4 h-auto text-left justify-start transition-all ${
+                  currentQuestion.type === "tap-choice" ? "rounded-full" : ""
+                } ${
+                  showFeedback &&
+                  ((isCorrect && selectedAnswers.includes(answer.id)) ||
+                    (!isCorrect && answer.isCorrect))
+                    ? "ring-2 ring-green-500"
+                    : ""
+                }`}
+                onClick={() => handleAnswerSelection(answer.id)}
                 disabled={showFeedback}
-              />
-            </div>
-          )}
-        </div>
+              >
+                {answer.imageUrl && (
+                  <img
+                    src={answer.imageUrl}
+                    alt={answer.text}
+                    className="w-8 h-8 mr-2 object-contain"
+                  />
+                )}
+                {answer.text}
+              </Button>
+            ))}
 
-        {/* Botão verificar */}
+            {currentQuestion.type === "complete-number" && (
+              <div className="mt-4 w-full">
+                <input
+                  type="text"
+                  className="w-full p-4 bg-background border border-border rounded-md text-center text-xl"
+                  placeholder="Digite sua resposta"
+                  value={selectedAnswers[0] || ""}
+                  onChange={(e) => setSelectedAnswers([e.target.value])}
+                  disabled={showFeedback}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
         {!showFeedback && (
           <Button
             onClick={checkAnswer}
             className="mt-6 w-full max-w-xs bg-space-purple hover:bg-space-purple/80"
-            disabled={selectedAnswers.length === 0}
+            disabled={
+              currentQuestion.type !== "sort" && selectedAnswers.length === 0
+            }
           >
             Verificar
           </Button>
         )}
 
-        {/* Feedback visual */}
         {showFeedback && (
           <div className="mt-6 flex flex-col items-center justify-center w-full">
             {isCorrect ? (
               <div className="flex flex-col items-center text-green-500 animate-fade-in">
                 <CheckCircle className="w-16 h-16 animate-bounce" />
                 <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
+                {currentQuestion.explanation && (
+                  <p className="mt-4 text-sm text-white/80 p-3 bg-green-500/10 rounded-lg">
+                    {currentQuestion.explanation}
+                  </p>
+                )}
               </div>
             ) : (
               <div className="flex flex-col items-center text-red-500 animate-fade-in">
                 <XCircle className="w-16 h-16 animate-bounce" />
                 <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
+                {currentQuestion.explanation && (
+                  <p className="mt-4 text-sm text-white/80 p-3 bg-red-500/10 rounded-lg">
+                    {currentQuestion.explanation}
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -398,7 +500,6 @@ const LessonPlayer = () => {
     );
   };
 
-  // Renderizar resultado final
   const renderResults = () => {
     const percentage = Math.round((results.correct / results.total) * 100);
     let motivationalMessage = "";
@@ -416,20 +517,24 @@ const LessonPlayer = () => {
 
     return (
       <div className="flex flex-col items-center w-full max-w-xl mx-auto">
-        <div className="w-48 h-48 mb-8">
+        <div className="w-48 h-48 mb-8 relative">
           <Award
             className={`w-full h-full ${
               percentage >= 80 ? "text-yellow-400" : "text-blue-400"
             } animate-pulse`}
           />
+          {percentage >= 90 && (
+            <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-300 w-32 h-32 animate-pulse" />
+          )}
         </div>
 
-        <h2 className="text-3xl font-bold text-center mb-6">
+        <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
           {motivationalMessage}
         </h2>
 
-        <Card className="w-full mb-8">
-          <CardContent className="p-6">
+        <Card className="w-full mb-8 bg-card/80 backdrop-blur-md border border-white/20 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 z-0"></div>
+          <CardContent className="p-6 relative z-10">
             <div className="flex flex-col space-y-4">
               <div className="flex justify-between items-center">
                 <span>Questões respondidas:</span>
@@ -458,7 +563,7 @@ const LessonPlayer = () => {
         <div className="flex flex-col sm:flex-row gap-4 w-full">
           <Button
             onClick={handleRetry}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300"
             variant="outline"
           >
             Tentar Novamente
@@ -466,7 +571,7 @@ const LessonPlayer = () => {
 
           <Button
             onClick={handleFinish}
-            className="w-full bg-space-purple hover:bg-space-purple/80"
+            className="w-full bg-space-purple hover:bg-space-purple/80 shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:shadow-[0_0_20px_rgba(139,92,246,0.8)] transition-all duration-300"
           >
             Continuar
           </Button>
@@ -485,11 +590,9 @@ const LessonPlayer = () => {
 
   return (
     <div className="min-h-screen pt-16 pb-16 px-4 bg-space-gradient">
-      {/* Space background */}
       <div className="space-stars"></div>
 
       <div className="max-w-4xl mx-auto">
-        {/* Barra de progresso */}
         <div className="mb-8 w-full">
           <Progress value={progress} className="h-3" />
           <p className="text-xs text-white/60 text-right mt-1">
@@ -497,7 +600,6 @@ const LessonPlayer = () => {
           </p>
         </div>
 
-        {/* Feedback de streak */}
         {showStreak && (
           <div className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/90 text-white px-6 py-3 rounded-full animate-bounce z-50 flex items-center">
             <Heart className="w-5 h-5 mr-2 fill-white" /> {streak} acertos
@@ -505,8 +607,7 @@ const LessonPlayer = () => {
           </div>
         )}
 
-        {/* Conteúdo principal */}
-        <div className="bg-card/80 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8">
+        <div className="bg-card/80 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8 shadow-lg shadow-purple-500/10">
           {completed ? renderResults() : renderCurrentQuestion()}
         </div>
       </div>

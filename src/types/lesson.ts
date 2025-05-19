@@ -1,10 +1,20 @@
-
-export type QuestionType = 'multiple-choice' | 'fill-blank' | 'match' | 'drag-drop' | 'tap-choice' | 'complete-number';
+export type QuestionType =
+  | "multiple-choice"
+  | "fill-blank"
+  | "match"
+  | "drag-drop"
+  | "tap-choice"
+  | "complete-number"
+  | "sequence"
+  | "true-false"
+  | "sort"
+  | "connect-dots";
 
 export interface Answer {
   id: string;
   text: string;
   isCorrect: boolean;
+  imageUrl?: string;
 }
 
 export interface Question {
@@ -15,6 +25,7 @@ export interface Question {
   image?: string;
   answers: Answer[];
   correctAnswer: string | string[];
+  explanation?: string;
 }
 
 export interface LessonData {
@@ -23,6 +34,7 @@ export interface LessonData {
   description: string;
   questions: Question[];
   xp: number;
+  difficulty?: "beginner" | "intermediate" | "advanced";
 }
 
 export interface LessonProgress {

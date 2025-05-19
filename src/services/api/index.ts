@@ -29,8 +29,7 @@ export const userService = {
 export const userDataService = {
   updateProgress: (id: string, lessonId: string) =>
     api.user.updateProgress(id, lessonId),
-  updateStreak: (userId: string, streak: UserStreak) =>
-    api.user.updateStreak(userId, streak),
+  updateStreak: (userId: string) => api.user.updateStreak(userId),
   updateAchievements: (userId: string, achievementId: string) =>
     api.user.updateAchievements(userId, achievementId),
   updateXp: (userId: string, xpToAdd: number) =>

@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import PlanetView from "./pages/PlanetView";
 import GamePage from "./pages/GamePage";
@@ -12,6 +12,7 @@ import AuthPage from "./pages/AuthPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import SolarSystemPage from "./pages/SolarSystemPage";
 import AchievementsPage from "./pages/AchievementsPage";
+import MusicPlayerButton from "./components/MusicPlayerButton";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,6 +61,9 @@ const App = () => (
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
+    <div className="absolute bottom-12 left-12">
+      <MusicPlayerButton />
+    </div>
   </QueryClientProvider>
 );
 

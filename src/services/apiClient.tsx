@@ -252,7 +252,7 @@ export const api = {
         throw error;
       }
     },
-    updateStreak: async (userId: string, streak: UserStreak) => {
+    updateStreak: async (userId: string) => {
       try {
         if (!userId) {
           throw new Error("Invalid ID format");
@@ -262,15 +262,15 @@ export const api = {
 
         const response = await apiFetch(url, {
           method: "PUT",
-          body: JSON.stringify({ streak }),
         });
 
         return response;
       } catch (error) {
-        console.error(`Error updating item:`, error);
+        console.error(`Error updating streak:`, error);
         throw error;
       }
     },
+
     updateAchievements: async (userId: string, achievementId: string) => {
       try {
         if (!userId) {

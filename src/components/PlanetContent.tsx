@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Lock, Star } from "lucide-react";
+import { CheckCircle, Lock, Star, Sparkles, Rocket } from "lucide-react";
 import { getPlanetById } from "@/data/planetsData";
 import { getLessonsByPlanet } from "@/data/lessonData";
 import { isLessonCompleted, useUserData } from "@/hooks/useUserData";
@@ -16,6 +16,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
   const navigate = useNavigate();
   const [planet, setPlanet] = useState<any>(null);
   const [lessons, setLessons] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   const { data: userData } = useUserData();
 
@@ -25,18 +26,21 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
     const planetLessons = getLessonsByPlanet(planetId);
     setLessons(planetLessons);
+
+    const timer = setTimeout(() => {
+      setLoaded(true);
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [planetId]);
 
   const handleStartLesson = (lessonId: string) => {
     navigate(`/lesson/${lessonId}`);
   };
 
-  const checkLessonCompleted = (
-    progress: [string],
-    lessonId: string
-  ): boolean => {
+  const checkLessonCompleted = (lessonId: string): boolean => {
     if (userData && userData.progress) {
-      return isLessonCompleted(progress, lessonId);
+      return isLessonCompleted(userData.progress, lessonId);
     }
     return false;
   };
@@ -51,21 +55,69 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
     );
   }
 
+  const getDifficultyColor = (difficulty: string | undefined) => {
+    switch (difficulty) {
+      case "beginner":
+        return "bg-green-500/80";
+      case "intermediate":
+        return "bg-yellow-500/80";
+      case "advanced":
+        return "bg-red-500/80";
+      default:
+        return "bg-blue-500/80";
+    }
+  };
+
   return (
     <div className="container mx-auto px-4">
       {/* Planet Header */}
-      <div className="mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+      <div
+        className={`mb-10 text-center transition-all duration-700 ${
+          loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
+        }`}
+      >
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 mt-12 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
           {planet.name}
         </h1>
-        <p className="text-lg text-white/70 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
           {planet.description}
         </p>
+
+        {/* Decorative elements */}
+        <div className="relative w-full max-w-md mx-auto mt-8 h-1">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-space-purple to-transparent"></div>
+        </div>
       </div>
 
       {/* Lessons List */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6 text-white">Lições</h2>
+        <div
+          className={`flex items-center justify-between mb-6 transition-all duration-700 delay-100 ${
+            loaded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+          }`}
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-yellow-400" /> Lições
+          </h2>
+          <div className="text-sm text-white/60 flex items-center gap-2">
+            <span>
+              {
+                lessons.filter((lesson) => checkLessonCompleted(lesson.id))
+                  .length
+              }{" "}
+              de {lessons.length} completadas
+            </span>
+            <Progress
+              value={
+                (lessons.filter((lesson) => checkLessonCompleted(lesson.id))
+                  .length /
+                  lessons.length) *
+                100
+              }
+              className="w-24 h-2"
+            />
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {lessons.map((lesson, index) => {
             const isCompleted = checkLessonCompleted(lesson.id);
@@ -75,8 +127,14 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
             return (
               <Card
                 key={lesson.id}
-                className={`bg-card/50 backdrop-blur-sm transform transition-all duration-300 hover:scale-102 hover:shadow-lg border ${
+                className={`bg-card/50 backdrop-blur-sm transform transition-all duration-500 delay-${
+                  index * 100
+                } hover:scale-102 hover:shadow-lg border ${
                   isCompleted ? "border-green-500/30" : "border-white/10"
+                } ${
+                  loaded
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <CardContent className="p-6 relative overflow-hidden">
@@ -109,7 +167,18 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                   )}
 
                   <div className="flex items-center justify-between mb-4 relative z-10">
-                    <h3 className="text-xl font-medium">{lesson.title}</h3>
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl font-medium">{lesson.title}</h3>
+                      {lesson.difficulty && (
+                        <span
+                          className={`text-xs px-2 py-0.5 rounded-full text-white ${getDifficultyColor(
+                            lesson.difficulty
+                          )}`}
+                        >
+                          {lesson.difficulty}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center">
                       {isCompleted ? (
                         <CheckCircle className="w-6 h-6 text-green-500" />
@@ -167,9 +236,19 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
       {/* Games Section */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6 text-white">Jogos</h2>
+        <h2
+          className={`text-2xl md:text-3xl font-bold mb-6 text-white flex items-center gap-2 transition-all duration-700 delay-300 ${
+            loaded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+          }`}
+        >
+          <Rocket className="w-6 h-6 text-blue-400" /> Jogos
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="bg-card/50 backdrop-blur-sm border border-white/10 transform transition-all duration-300 hover:scale-102 hover:shadow-lg">
+          <Card
+            className={`bg-card/50 backdrop-blur-sm border border-white/10 transform transition-all duration-500 delay-400 hover:scale-102 hover:shadow-lg ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             <CardContent className="p-6 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/5 animate-pulse-glow"></div>
               <h3 className="text-xl font-medium mb-2 relative z-10">
@@ -187,7 +266,11 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 backdrop-blur-sm border border-white/10 transform transition-all duration-300 hover:scale-102">
+          <Card
+            className={`bg-card/50 backdrop-blur-sm border border-white/10 transform transition-all duration-500 delay-500 hover:scale-102 ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             <CardContent className="p-6 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-500/10 to-slate-500/5"></div>
               <h3 className="text-xl font-medium mb-2 relative z-10">
@@ -199,7 +282,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
               <Button
                 disabled
                 variant="outline"
-                className="opacity-50 relative z-10"
+                className="opacity-50 relative z-10 border-white/20 bg-white/5"
               >
                 Em breve
               </Button>

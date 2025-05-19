@@ -7,6 +7,7 @@ export const lessonData: Record<string, LessonData> = {
     description:
       "Aprenda a trabalhar com expressões algébricas e suas propriedades.",
     xp: 150,
+    difficulty: "beginner",
     questions: [
       {
         id: "alg-1-q1",
@@ -19,6 +20,8 @@ export const lessonData: Record<string, LessonData> = {
           { id: "a4", text: "6", isCorrect: false },
         ],
         correctAnswer: "a1",
+        explanation:
+          "Substituindo x = 4 na expressão 3x + 2, temos 3(4) + 2 = 12 + 2 = 14.",
       },
       {
         id: "alg-1-q2",
@@ -111,6 +114,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Equações do 1º Grau",
     description: "Domine as técnicas para resolver equações de primeiro grau.",
     xp: 200,
+    difficulty: "beginner",
     questions: [
       {
         id: "alg-2-q1",
@@ -218,6 +222,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Números Naturais e Inteiros",
     description: "Compreenda os conjuntos numéricos e suas propriedades.",
     xp: 100,
+    difficulty: "beginner",
     questions: [
       {
         id: "arit-1-q1",
@@ -319,7 +324,373 @@ export const lessonData: Record<string, LessonData> = {
       },
     ],
   },
-  // Outros conjuntos de lições serão adicionados de forma similar para cada tópico
+  "aritmetica-2": {
+    id: "aritmetica-2",
+    title: "Frações e Números Decimais",
+    description: "Aprenda a trabalhar com frações e números decimais.",
+    xp: 150,
+    difficulty: "beginner",
+    questions: [
+      {
+        id: "arit-2-q1",
+        type: "multiple-choice",
+        question: "Qual é o resultado da soma 1/4 + 2/4?",
+        answers: [
+          { id: "a1", text: "1/2", isCorrect: false },
+          { id: "a2", text: "3/4", isCorrect: true },
+          { id: "a3", text: "1", isCorrect: false },
+          { id: "a4", text: "3/8", isCorrect: false },
+        ],
+        correctAnswer: "a2",
+        explanation:
+          "Como as frações têm o mesmo denominador (4), somamos os numeradores: 1/4 + 2/4 = 3/4.",
+      },
+      {
+        id: "arit-2-q2",
+        type: "true-false",
+        question: "A fração 3/6 é equivalente a 1/2.",
+        answers: [
+          { id: "a1", text: "Verdadeiro", isCorrect: true },
+          { id: "a2", text: "Falso", isCorrect: false },
+        ],
+        correctAnswer: "a1",
+        explanation:
+          "Para verificar se são equivalentes, simplificamos 3/6 dividindo numerador e denominador por 3: 3/6 = 1/2.",
+      },
+      {
+        id: "arit-2-q3",
+        type: "sort",
+        question: "Organize as frações em ordem crescente.",
+        instruction: "Arraste para reordenar as opções.",
+        answers: [
+          { id: "a1", text: "1/4", isCorrect: false },
+          { id: "a2", text: "1/2", isCorrect: false },
+          { id: "a3", text: "3/4", isCorrect: false },
+          { id: "a4", text: "1", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3", "a4"],
+        explanation:
+          "A ordem crescente correta é: 1/4 (0,25), 1/2 (0,5), 3/4 (0,75) e 1 (1,0).",
+      },
+      {
+        id: "arit-2-q4",
+        type: "sequence",
+        question: "Complete a sequência de frações equivalentes a 1/2.",
+        answers: [
+          { id: "a1", text: "1/2", isCorrect: false },
+          { id: "a2", text: "2/4", isCorrect: false },
+          { id: "a3", text: "3/6", isCorrect: false },
+          { id: "a4", text: "4/8", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3", "a4"],
+        explanation:
+          "Todas estas frações são equivalentes a 1/2, pois ao simplificarmos, todas resultam em 1/2.",
+      },
+      {
+        id: "arit-2-q5",
+        type: "match",
+        question: "Relacione as frações com seus equivalentes decimais:",
+        answers: [
+          { id: "a1", text: "1/4", isCorrect: false },
+          { id: "a2", text: "1/2", isCorrect: false },
+          { id: "a3", text: "3/4", isCorrect: false },
+          { id: "a4", text: "0,25", isCorrect: false },
+          { id: "a5", text: "0,5", isCorrect: false },
+          { id: "a6", text: "0,75", isCorrect: false },
+        ],
+        correctAnswer: ["a1=a4", "a2=a5", "a3=a6"],
+        explanation: "1/4 = 0,25; 1/2 = 0,5; 3/4 = 0,75",
+      },
+      {
+        id: "arit-2-q6",
+        type: "complete-number",
+        question: "Qual é o resultado de 0,75 + 0,25?",
+        answers: [],
+        correctAnswer: "1",
+        explanation: "0,75 + 0,25 = 1,00 = 1",
+      },
+      {
+        id: "arit-2-q7",
+        type: "tap-choice",
+        question: "Selecione todas as frações equivalentes a 1/3.",
+        answers: [
+          { id: "a1", text: "2/6", isCorrect: true },
+          { id: "a2", text: "3/9", isCorrect: true },
+          { id: "a3", text: "4/12", isCorrect: true },
+          { id: "a4", text: "2/5", isCorrect: false },
+          { id: "a5", text: "1/4", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3"],
+        explanation:
+          "2/6, 3/9 e 4/12 são equivalentes a 1/3 pois todas simplificam para 1/3.",
+      },
+      {
+        id: "arit-2-q8",
+        type: "drag-drop",
+        question: "Arraste os números decimais em ordem decrescente:",
+        answers: [
+          { id: "a1", text: "0,9", isCorrect: false },
+          { id: "a2", text: "0,75", isCorrect: false },
+          { id: "a3", text: "0,5", isCorrect: false },
+          { id: "a4", text: "0,25", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3", "a4"],
+        explanation: "A ordem decrescente é: 0,9 > 0,75 > 0,5 > 0,25",
+      },
+    ],
+  },
+  "geometria-1": {
+    id: "geometria-1",
+    title: "Formas Geométricas Básicas",
+    description:
+      "Explore propriedades de triângulos, quadriláteros e círculos.",
+    xp: 150,
+    difficulty: "beginner",
+    questions: [
+      {
+        id: "geo-1-q1",
+        type: "multiple-choice",
+        question: "Qual é a soma dos ângulos internos de um triângulo?",
+        answers: [
+          { id: "a1", text: "180°", isCorrect: true },
+          { id: "a2", text: "360°", isCorrect: false },
+          { id: "a3", text: "90°", isCorrect: false },
+          { id: "a4", text: "270°", isCorrect: false },
+        ],
+        correctAnswer: "a1",
+        explanation:
+          "A soma dos ângulos internos de qualquer triângulo é sempre 180°.",
+      },
+      {
+        id: "geo-1-q2",
+        type: "true-false",
+        question: "Todo quadrado é um retângulo.",
+        answers: [
+          { id: "a1", text: "Verdadeiro", isCorrect: true },
+          { id: "a2", text: "Falso", isCorrect: false },
+        ],
+        correctAnswer: "a1",
+        explanation:
+          "Um quadrado é um retângulo com todos os lados iguais, portanto, todo quadrado é um retângulo.",
+      },
+      {
+        id: "geo-1-q3",
+        type: "match",
+        question: "Relacione as formas geométricas com suas propriedades:",
+        answers: [
+          { id: "a1", text: "Triângulo", isCorrect: false },
+          { id: "a2", text: "Quadrado", isCorrect: false },
+          { id: "a3", text: "Círculo", isCorrect: false },
+          { id: "a4", text: "3 lados", isCorrect: false },
+          { id: "a5", text: "4 lados iguais", isCorrect: false },
+          { id: "a6", text: "Sem lados retos", isCorrect: false },
+        ],
+        correctAnswer: ["a1=a4", "a2=a5", "a3=a6"],
+        explanation:
+          "Um triângulo tem 3 lados, um quadrado tem 4 lados iguais, e um círculo não tem lados retos.",
+      },
+      {
+        id: "geo-1-q4",
+        type: "complete-number",
+        question:
+          "Se um retângulo tem largura 3 cm e comprimento 5 cm, qual é sua área em cm²?",
+        answers: [],
+        correctAnswer: "15",
+        explanation:
+          "Área do retângulo = largura × comprimento = 3 × 5 = 15 cm².",
+      },
+      {
+        id: "geo-1-q5",
+        type: "tap-choice",
+        question: "Selecione todos os quadriláteros:",
+        answers: [
+          { id: "a1", text: "Quadrado", isCorrect: true },
+          { id: "a2", text: "Retângulo", isCorrect: true },
+          { id: "a3", text: "Trapézio", isCorrect: true },
+          { id: "a4", text: "Triângulo", isCorrect: false },
+          { id: "a5", text: "Círculo", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3"],
+        explanation:
+          "Quadriláteros são polígonos com 4 lados, como quadrado, retângulo e trapézio.",
+      },
+      {
+        id: "geo-1-q6",
+        type: "sequence",
+        question:
+          "Ordene estas figuras pelo número de lados, do menor para o maior.",
+        answers: [
+          { id: "a1", text: "Triângulo", isCorrect: false },
+          { id: "a2", text: "Quadrado", isCorrect: false },
+          { id: "a3", text: "Pentágono", isCorrect: false },
+          { id: "a4", text: "Hexágono", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3", "a4"],
+        explanation:
+          "Triângulo (3 lados), Quadrado (4 lados), Pentágono (5 lados), Hexágono (6 lados).",
+      },
+    ],
+  },
+  "funcoes-1": {
+    id: "funcoes-1",
+    title: "Introdução às Funções",
+    description: "Entenda os conceitos básicos de funções matemáticas.",
+    xp: 180,
+    difficulty: "intermediate",
+    questions: [
+      {
+        id: "func-1-q1",
+        type: "multiple-choice",
+        question: "O que define uma função matemática?",
+        answers: [
+          {
+            id: "a1",
+            text: "Uma regra que associa cada elemento do domínio a exatamente um elemento do contradomínio",
+            isCorrect: true,
+          },
+          { id: "a2", text: "Um conjunto de números reais", isCorrect: false },
+          {
+            id: "a3",
+            text: "Uma expressão com várias incógnitas",
+            isCorrect: false,
+          },
+          {
+            id: "a4",
+            text: "Uma equação com duas variáveis",
+            isCorrect: false,
+          },
+        ],
+        correctAnswer: "a1",
+        explanation:
+          "Uma função é uma relação entre conjuntos onde cada elemento do domínio está associado a exatamente um elemento do contradomínio.",
+      },
+      {
+        id: "func-1-q2",
+        type: "true-false",
+        question: "Na função f(x) = 2x + 1, se x = 3, então f(x) = 7.",
+        answers: [
+          { id: "a1", text: "Verdadeiro", isCorrect: true },
+          { id: "a2", text: "Falso", isCorrect: false },
+        ],
+        correctAnswer: "a1",
+        explanation:
+          "Substituindo x = 3 na função f(x) = 2x + 1, temos f(3) = 2(3) + 1 = 6 + 1 = 7.",
+      },
+      {
+        id: "func-1-q3",
+        type: "match",
+        question: "Relacione as funções com seus gráficos correspondentes:",
+        answers: [
+          { id: "a1", text: "f(x) = x", isCorrect: false },
+          { id: "a2", text: "f(x) = x²", isCorrect: false },
+          { id: "a3", text: "f(x) = |x|", isCorrect: false },
+          { id: "a4", text: "Reta", isCorrect: false },
+          { id: "a5", text: "Parábola", isCorrect: false },
+          { id: "a6", text: "V", isCorrect: false },
+        ],
+        correctAnswer: ["a1=a4", "a2=a5", "a3=a6"],
+        explanation:
+          "A função f(x) = x é representada por uma reta, f(x) = x² por uma parábola, e f(x) = |x| tem formato de V.",
+      },
+      {
+        id: "func-1-q4",
+        type: "complete-number",
+        question: "Se f(x) = 3x - 4, qual é o valor de f(4)?",
+        answers: [],
+        correctAnswer: "8",
+        explanation: "f(4) = 3(4) - 4 = 12 - 4 = 8",
+      },
+      {
+        id: "func-1-q5",
+        type: "sequence",
+        question: "Ordene os valores da função f(x) = x² para x = 0, 1, 2, 3.",
+        answers: [
+          { id: "a1", text: "f(0) = 0", isCorrect: false },
+          { id: "a2", text: "f(1) = 1", isCorrect: false },
+          { id: "a3", text: "f(2) = 4", isCorrect: false },
+          { id: "a4", text: "f(3) = 9", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3", "a4"],
+        explanation:
+          "f(0) = 0² = 0, f(1) = 1² = 1, f(2) = 2² = 4, f(3) = 3² = 9",
+      },
+    ],
+  },
+  "estatistica-1": {
+    id: "estatistica-1",
+    title: "Medidas de Tendência Central",
+    description: "Aprenda a calcular e interpretar média, mediana e moda.",
+    xp: 160,
+    difficulty: "beginner",
+    questions: [
+      {
+        id: "est-1-q1",
+        type: "multiple-choice",
+        question: "Qual é a média dos números 4, 7, 9, 3, 7?",
+        answers: [
+          { id: "a1", text: "6", isCorrect: true },
+          { id: "a2", text: "7", isCorrect: false },
+          { id: "a3", text: "5", isCorrect: false },
+          { id: "a4", text: "30", isCorrect: false },
+        ],
+        correctAnswer: "a1",
+        explanation: "Média = (4 + 7 + 9 + 3 + 7) ÷ 5 = 30 ÷ 5 = 6",
+      },
+      {
+        id: "est-1-q2",
+        type: "true-false",
+        question:
+          "A mediana de um conjunto com número par de elementos é sempre a média dos dois valores centrais.",
+        answers: [
+          { id: "a1", text: "Verdadeiro", isCorrect: true },
+          { id: "a2", text: "Falso", isCorrect: false },
+        ],
+        correctAnswer: "a1",
+        explanation:
+          "Para um conjunto com número par de elementos, a mediana é calculada como a média dos dois valores centrais após ordenação.",
+      },
+      {
+        id: "est-1-q3",
+        type: "tap-choice",
+        question: "Quais destas são medidas de tendência central?",
+        answers: [
+          { id: "a1", text: "Média", isCorrect: true },
+          { id: "a2", text: "Mediana", isCorrect: true },
+          { id: "a3", text: "Moda", isCorrect: true },
+          { id: "a4", text: "Desvio padrão", isCorrect: false },
+          { id: "a5", text: "Variância", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3"],
+        explanation:
+          "Média, mediana e moda são medidas de tendência central, enquanto desvio padrão e variância são medidas de dispersão.",
+      },
+      {
+        id: "est-1-q4",
+        type: "sort",
+        question: "Ordene os dados 8, 2, 5, 1, 9 para encontrar a mediana.",
+        answers: [
+          { id: "a1", text: "1", isCorrect: false },
+          { id: "a2", text: "2", isCorrect: false },
+          { id: "a3", text: "5", isCorrect: false },
+          { id: "a4", text: "8", isCorrect: false },
+          { id: "a5", text: "9", isCorrect: false },
+        ],
+        correctAnswer: ["a1", "a2", "a3", "a4", "a5"],
+        explanation:
+          "Ordenando: 1, 2, 5, 8, 9. A mediana é o valor central: 5.",
+      },
+      {
+        id: "est-1-q5",
+        type: "complete-number",
+        question:
+          "Em um conjunto de 7 números com média 15, a soma dos valores é igual a:",
+        answers: [],
+        correctAnswer: "105",
+        explanation: "Soma = média × quantidade = 15 × 7 = 105",
+      },
+    ],
+  },
+  // ... keep existing code (other lessons mapping)
 };
 
 // Função auxiliar para obter conjuntos de lições por planeta

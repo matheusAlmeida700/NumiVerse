@@ -29,16 +29,8 @@ export const useUpdateStreak = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      userId,
-      streak,
-    }: {
-      userId: string;
-      streak: {
-        current: number;
-        lastUpdate: string;
-      };
-    }) => userDataService.updateStreak(userId, streak),
+    mutationFn: ({ userId }: { userId: string }) =>
+      userDataService.updateStreak(userId),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["user", variables.userId] });
     },

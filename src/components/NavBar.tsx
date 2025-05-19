@@ -9,10 +9,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import Logo from "/src/assets/numi/numi-ship.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserData } from "@/hooks/useUserData";
-import MusicPlayer from "./MusicPlayer";
+import { planets } from "@/data/planetsData";
 
 const NavBar = () => {
   const location = useLocation();
@@ -70,6 +77,31 @@ const NavBar = () => {
                   </NavLink>
                 ))}
 
+                {/* Mobile Planets Menu */}
+                <div className="mt-4 space-y-2">
+                  <h3 className="text-sm font-semibold text-white/50 uppercase">
+                    Planetas
+                  </h3>
+                  {planets.map((planet) => (
+                    <NavLink
+                      key={planet.id}
+                      to={`/planet/${planet.id}`}
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 text-lg ${
+                          isActive
+                            ? "text-white font-medium"
+                            : "text-white/70 hover:text-white"
+                        }`
+                      }
+                    >
+                      <div
+                        className={`w-3 h-3 rounded-full ${planet.color}`}
+                      ></div>
+                      {planet.name}
+                    </NavLink>
+                  ))}
+                </div>
+
                 <div className="border-t border-white/10 pt-4 mt-4">
                   {isAuthenticated ? (
                     <div className="flex flex-col gap-3">
@@ -118,6 +150,37 @@ const NavBar = () => {
                 {link.label}
               </NavLink>
             ))}
+
+            {/* Planets Navigation Dropdown */}
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-white/80 hover:text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
+                    Planetas
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid grid-cols-2 gap-3 p-4 w-[400px] bg-card/95 backdrop-blur-md">
+                      {planets.map((planet) => (
+                        <Link
+                          key={planet.id}
+                          to={`/planet/${planet.id}`}
+                          className="flex items-center gap-2 p-2 rounded-md hover:bg-white/10 transition-all group"
+                        >
+                          <div
+                            className={`w-8 h-8 rounded-full ${planet.color} flex items-center justify-center`}
+                          >
+                            {planet.icon && planet.icon()}
+                          </div>
+                          <span className="font-medium group-hover:text-white transition-colors">
+                            {planet.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
           {/* User Stats & Profile */}
@@ -159,7 +222,7 @@ const NavBar = () => {
             )}
 
             <Link to={isAuthenticated ? "/perfil" : "/login"}>
-              <Avatar className="w-8 h-8 border border-space-purple cursor-pointer">
+              <Avatar className="w-8 h-8 border border-space-purple cursor-pointer hover:ring-2 hover:ring-space-purple/50 transition-all">
                 <AvatarImage src={userData?.avatarUrl || ""} />
                 <AvatarFallback className="bg-space-blue text-white text-xs">
                   {userData?.name?.substring(0, 2).toUpperCase() || "NU"}
