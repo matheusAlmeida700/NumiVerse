@@ -46,27 +46,6 @@ const SolarSystemPage = () => {
             />
           </h2>
         </div>
-
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bg-white rounded-full opacity-20"
-              style={{
-                width: `${Math.random() * 3 + 1}px`,
-                height: `${Math.random() * 3 + 1}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `twinkle ${Math.random() * 5 + 3}s infinite ${
-                  Math.random() * 5
-                }s`,
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 bg-purple-900/10 rounded-full blur-[100px] pointer-events-none"></div>
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 bg-blue-900/15 rounded-full blur-[150px] pointer-events-none"></div>
       </main>
     </div>
   );

@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 
 const Header = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
+    <nav className="fixed poppins top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link
           to="/"

@@ -1,4 +1,3 @@
-import { UserStreak } from "@/types/user";
 import { api } from "../apiClient";
 
 interface CreateUserData {

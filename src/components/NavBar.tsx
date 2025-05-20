@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star, Rocket, Menu, X, Flame } from "lucide-react";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
@@ -16,10 +16,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import Logo from "/src/assets/numi/numi-ship.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserData } from "@/hooks/useUserData";
 import { planets } from "@/data/planetsData";
+import Logo from "@/assets/numi/numi-ship.png";
+import Streak from "@/assets/nav/streak.png";
+import Xp from "@/assets/nav/xp.png";
+import UserProfile from "@/assets/nav/user-profile.png";
 
 const NavBar = () => {
   const location = useLocation();
@@ -39,7 +42,7 @@ const NavBar = () => {
   }, [location.pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
+    <nav className="fixed poppins top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link
           to="/"
@@ -62,15 +65,15 @@ const NavBar = () => {
               side="right"
               className="bg-card/90 backdrop-blur-md border-white/10"
             >
-              <div className="flex flex-col gap-6 pt-6">
+              <div className="flex flex-col gap-6 pt-6 poppins font-bold">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.path}
                     to={link.path}
                     className={({ isActive }) =>
-                      `text-lg ${
+                      `${
                         isActive
-                          ? "text-white font-medium"
+                          ? "text-purple-500"
                           : "text-white/70 hover:text-white"
                       }`
                     }
@@ -80,7 +83,7 @@ const NavBar = () => {
                 ))}
 
                 <div className="mt-4 space-y-2">
-                  <h3 className="text-md font-semibold text-white/50 uppercase">
+                  <h3 className="text-md font-semibold text-white/70 uppercase">
                     PLANETAS
                   </h3>
                   {planets.map((planet) => (
@@ -90,7 +93,7 @@ const NavBar = () => {
                       className={({ isActive }) =>
                         `flex items-center gap-2 text-lg ${
                           isActive
-                            ? "text-white font-medium"
+                            ? "text-white"
                             : "text-white/70 hover:text-white"
                         }`
                       }
@@ -107,16 +110,12 @@ const NavBar = () => {
                   {isAuthenticated ? (
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-2">
-                        <Star className="w-4 h-4 text-yellow-300" />
-                        <span className="text-yellow-100">
-                          {userData?.xp} XP
-                        </span>
+                        <img src={Xp} className="w-8 h-8" alt="" />
+                        <span className="text-xl">{userData?.xp} XP</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Rocket className="w-4 h-4 text-space-blue" />
-                        <span className="text-space-blue">
-                          Sequência: {userData?.streak?.current ?? 0}
-                        </span>
+                        <img src={Streak} className="w-8 h-8" alt="XP" />
+                        <span className="text-xl">{userData?.xp} dias</span>
                       </div>
                     </div>
                   ) : (
@@ -140,9 +139,9 @@ const NavBar = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-lg ${
+                  `font-bold ${
                     isActive
-                      ? "text-white font-medium"
+                      ? "text-purple-500"
                       : "text-white/80 hover:text-white transition"
                   }`
                 }
@@ -154,11 +153,11 @@ const NavBar = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-md text-white/80 hover:text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
+                  <NavigationMenuTrigger className="text-md font-bold text-white/80 hover:text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
                     PLANETAS
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid grid-cols-2 gap-3 p-4 w-[400px] bg-card/95 backdrop-blur-md">
+                    <div className="grid grid-cols-2 gap-3 p-4 w-[400px] text-sm bg-card/95 backdrop-blur-md">
                       {planets.map((planet) => (
                         <Link
                           key={planet.id}
@@ -188,11 +187,9 @@ const NavBar = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="hidden sm:flex items-center gap-2 bg-yellow-700/20 py-2 px-3 rounded-full">
-                        <Star className="w-6 h-6 text-yellow-300" />
-                        <span className="text-yellow-100 font-bold">
-                          {userData?.xp}XP
-                        </span>
+                      <div className="hidden sm:flex items-end gap-2 rounded-full hover:scale-110 transition-all">
+                        <img src={Xp} className="w-8 h-8" alt="XP" />
+                        <span className="font-bold">{userData?.xp}XP</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -204,8 +201,12 @@ const NavBar = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="hidden sm:flex items-center gap-2 bg-space-purple/20 py-2 px-3 rounded-full">
-                        <Flame className="w-6 h-6 text-space-purple" />
+                      <div className="hidden sm:flex items-end gap-2 px-3 rounded-full hover:scale-110 transition-all">
+                        <img
+                          src={Streak}
+                          className="rounded-full w-8 h-8"
+                          alt="Dias consecutivos"
+                        />
                         <span className="font-bold">
                           {userData?.streak?.current ?? 0}
                         </span>
@@ -220,11 +221,8 @@ const NavBar = () => {
             )}
 
             <Link to={isAuthenticated ? "/perfil" : "/login"}>
-              <Avatar className="w-8 h-8 border border-space-purple cursor-pointer hover:ring-2 hover:ring-space-purple/50 transition-all">
-                <AvatarImage src={userData?.avatarUrl || ""} />
-                <AvatarFallback className="bg-space-blue text-white text-xs">
-                  {userData?.name?.substring(0, 2).toUpperCase() || "NU"}
-                </AvatarFallback>
+              <Avatar className="w-10 h-10 cursor-pointer hover:scale-110 hover:ring-space-purple transition-all">
+                <AvatarImage src={UserProfile || ""} />
               </Avatar>
             </Link>
           </div>

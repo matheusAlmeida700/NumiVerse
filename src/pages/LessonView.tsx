@@ -18,7 +18,6 @@ const LessonView = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-space-gradient">
-      {/* Space background */}
       <div className="space-stars"></div>
 
       <NavBar />

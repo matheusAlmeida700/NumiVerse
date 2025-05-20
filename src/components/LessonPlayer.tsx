@@ -15,10 +15,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { lessonData, lessonToPlanetMap } from "@/data/lessonData";
-import {
-  updateUserProgress,
-  calculateXpForLesson,
-} from "@/data/userProgressData";
+import { calculateXpForLesson } from "@/data/userProgressData";
 import {
   isLessonCompleted,
   useUpdateProgress,

@@ -35,7 +35,7 @@ const MusicPlayerButton = () => {
               <Button
                 variant="outline"
                 size="icon"
-                className={`h-22 w-22 rounded-full bg-card/80 backdrop-blur-md border-2 border-white/10 shadow-lg hover:shadow-purple-500/20 transition-all duration-300 ${
+                className={`h-22 w-22 rounded-full bg-card/80 backdrop-blur-md border-2 border-white/10 shadow-lg hover:shadow-purple-500/20 transition-all hover:scale-110 ${
                   isPlaying ? "playing-song" : "text-white"
                 }`}
                 onClick={() => setExpanded(!expanded)}

@@ -1,9 +1,3 @@
-import {
-  UserAchievements,
-  UserProgress,
-  UserStreak,
-  UserXP,
-} from "@/types/user";
 import { QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient({

@@ -43,7 +43,6 @@ const AchievementsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { user } = useAuth();
-  console.log(user._id);
 
   const { data: userData, refetch } = useQuery({
     queryKey: ["user", user?.id],
@@ -51,8 +50,6 @@ const AchievementsPage = () => {
     enabled: !!user?.id,
     staleTime: 5 * 60 * 1000,
   });
-
-  console.log(user);
 
   useEffect(() => {
     document.title = "NumiVerse - Conquistas";
@@ -181,7 +178,7 @@ const AchievementsPage = () => {
       <div className="space-stars"></div>
       <NavBar />
 
-      <main className="flex-1 pt-24 pb-16 container mx-auto px-4">
+      <main className="flex-1 pt-32 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center">
             Conquistas
