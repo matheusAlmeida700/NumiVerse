@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useAudio } from "@/hooks/useAudio";
+import NumiDJ from "@/assets/numi/numi-dj.png";
 
 const MusicPlayerButton = () => {
   const [expanded, setExpanded] = useState(false);
@@ -34,16 +35,12 @@ const MusicPlayerButton = () => {
               <Button
                 variant="outline"
                 size="icon"
-                className={`h-12 w-12 rounded-full bg-card/80 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-purple-500/20 transition-all duration-300 ${
-                  expanded ? "rotate-90" : ""
+                className={`h-22 w-22 rounded-full bg-card/80 backdrop-blur-md border-2 border-white/10 shadow-lg hover:shadow-purple-500/20 transition-all duration-300 ${
+                  isPlaying ? "playing-song" : "text-white"
                 }`}
                 onClick={() => setExpanded(!expanded)}
               >
-                <Music
-                  className={`h-5 w-5 ${
-                    isPlaying ? "text-space-purple" : "text-white"
-                  }`}
-                />
+                <img className={"h-16"} src={NumiDJ} alt="Numi DJ" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="left">

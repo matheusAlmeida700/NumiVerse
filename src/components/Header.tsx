@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import Logo from "/src/assets/numi/numi-ship.png";
 import { Button } from "./ui/button";
-import { ArrowUpRight, RocketIcon } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const Header = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-4">
+        <Link
+          to="/"
+          className="flex items-center space-x-4 hover:scale-110 transition-transform"
+        >
           <img src={Logo} alt="Logo" className="w-16 h-16 rotate-6" />
           <span className="text-2xl font-bold text-white text-glow">
             NumiVerse

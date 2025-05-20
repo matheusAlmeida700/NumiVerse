@@ -47,7 +47,6 @@ export const initializeUserProgress = async (): Promise<UserProgress> => {
   };
 };
 
-// This function is updated to use API services instead of localStorage
 export const updateUserProgress = async (
   lessonId: string,
   correctAnswers: number,
@@ -55,9 +54,6 @@ export const updateUserProgress = async (
   xpEarned: number
 ): Promise<void> => {
   try {
-    // In a real implementation we would use the API service to update progress
-    // Since we're just fixing build errors, we'll keep this as a placeholder
-    // that shows a toast notification
     toast({
       title: "Progresso salvo",
       description: `Você ganhou ${xpEarned} XP!`,

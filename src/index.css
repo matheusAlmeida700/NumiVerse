@@ -133,3 +133,18 @@
 .animate-bounces {
   animation: bounces 7s infinite;
 }
+
+@keyframes smooth-rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.playing-song {
+  animation: smooth-rotation 10s linear infinite;
+  transform-origin: center center;
+}

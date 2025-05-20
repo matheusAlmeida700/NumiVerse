@@ -138,7 +138,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                 }`}
               >
                 <CardContent className="p-6 relative overflow-hidden">
-                  {/* Animated background glow */}
                   <div
                     className={`absolute inset-0 opacity-10 ${
                       isCompleted
@@ -149,7 +148,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                     } filter blur-md`}
                   ></div>
 
-                  {/* Star particles for completed lessons */}
                   {isCompleted && (
                     <div className="absolute inset-0 overflow-hidden">
                       {[...Array(5)].map((_, i) => (

@@ -27,7 +27,7 @@ const SolarSystemPage = () => {
             loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-extrabold text-center mt-24 mb-6 relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-space-purple via-purple-600 to-purple-700 drop-shadow-[0_0_20px_rgba(255,255,255,0.45)] tracking-wide glow-font">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-center mt-32 mb-6 relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-space-purple via-purple-600 to-purple-700 drop-shadow-[0_0_20px_rgba(255,255,255,0.45)] tracking-wide glow-font">
             <Typewriter
               words={[
                 "Bem-vindo ao NumiVerse.",
@@ -65,7 +65,6 @@ const SolarSystemPage = () => {
           ))}
         </div>
 
-        {/* Glow accents */}
         <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 bg-purple-900/10 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 bg-blue-900/15 rounded-full blur-[150px] pointer-events-none"></div>
       </main>

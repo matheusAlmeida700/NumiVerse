@@ -30,8 +30,8 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: "/solar", label: "Sistema Solar" },
-    { path: "/achievements", label: "Conquistas" },
+    { path: "/solar", label: "SISTEMA SOLAR" },
+    { path: "/achievements", label: "CONQUISTAS" },
   ];
 
   useEffect(() => {
@@ -41,14 +41,16 @@ const NavBar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <img src={Logo} alt="Logo" className="w-12 h-12 rotate-6" />
-          <span className="text-xl font-bold text-white text-glow">
+        <Link
+          to="/"
+          className="flex items-center space-x-4 hover:scale-110 transition-transform"
+        >
+          <img src={Logo} alt="Logo" className="w-14 h-14 rotate-6" />
+          <span className="text-2xl font-bold text-white text-glow">
             NumiVerse
           </span>
         </Link>
 
-        {/* Mobile Menu Button */}
         <div className="md:hidden">
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
@@ -77,10 +79,9 @@ const NavBar = () => {
                   </NavLink>
                 ))}
 
-                {/* Mobile Planets Menu */}
                 <div className="mt-4 space-y-2">
-                  <h3 className="text-sm font-semibold text-white/50 uppercase">
-                    Planetas
+                  <h3 className="text-md font-semibold text-white/50 uppercase">
+                    PLANETAS
                   </h3>
                   {planets.map((planet) => (
                     <NavLink
@@ -133,14 +134,13 @@ const NavBar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `${
+                  `text-lg ${
                     isActive
                       ? "text-white font-medium"
                       : "text-white/80 hover:text-white transition"
@@ -151,12 +151,11 @@ const NavBar = () => {
               </NavLink>
             ))}
 
-            {/* Planets Navigation Dropdown */}
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-white/80 hover:text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
-                    Planetas
+                  <NavigationMenuTrigger className="text-md text-white/80 hover:text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
+                    PLANETAS
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-3 p-4 w-[400px] bg-card/95 backdrop-blur-md">
@@ -183,7 +182,6 @@ const NavBar = () => {
             </NavigationMenu>
           </div>
 
-          {/* User Stats & Profile */}
           <div className="flex items-center gap-4">
             {isAuthenticated && (
               <>
