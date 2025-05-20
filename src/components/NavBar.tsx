@@ -84,7 +84,7 @@ const NavBar = () => {
 
                 <div className="mt-4 space-y-2">
                   <h3 className="text-md font-semibold text-white/70 uppercase">
-                    PLANETAS
+                    ASTROS
                   </h3>
                   {planets.map((planet) => (
                     <NavLink
@@ -98,9 +98,9 @@ const NavBar = () => {
                         }`
                       }
                     >
-                      <div
-                        className={`w-3 h-3 rounded-full ${planet.color}`}
-                      ></div>
+                      <div className="w-8 h-8 rounded-full">
+                        {planet.icon && planet.icon()}
+                      </div>
                       {planet.name}
                     </NavLink>
                   ))}
@@ -154,7 +154,7 @@ const NavBar = () => {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-md font-bold text-white/80 hover:text-white bg-transparent hover:bg-white/10 data-[state=open]:bg-white/10">
-                    PLANETAS
+                    ASTROS
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-3 p-4 w-[400px] text-sm bg-card/95 backdrop-blur-md">
@@ -165,7 +165,7 @@ const NavBar = () => {
                           className="flex items-center gap-2 p-2 rounded-md hover:bg-white/10 transition-all group"
                         >
                           <div
-                            className={`w-8 h-8 rounded-full ${planet.color} flex items-center justify-center`}
+                            className={`w-12 h-10 rounded-full ${planet.color} flex items-center justify-center`}
                           >
                             {planet.icon && planet.icon()}
                           </div>
