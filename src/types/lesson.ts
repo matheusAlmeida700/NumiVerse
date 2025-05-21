@@ -34,7 +34,7 @@ export interface LessonData {
   description: string;
   questions: Question[];
   xp: number;
-  difficulty?: "beginner" | "intermediate" | "advanced";
+  difficulty?: "iniciante" | "intermediário" | "avançado";
 }
 
 export interface LessonProgress {

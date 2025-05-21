@@ -94,7 +94,7 @@ export const planets = [
       <img
         src="/planets/netune.png"
         alt="Netuno (Geometria)"
-        className="w-6 h-6"
+        className="w-7 h-6"
       />
     ),
     position: { x: -200, y: 150 },

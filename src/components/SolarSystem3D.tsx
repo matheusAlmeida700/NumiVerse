@@ -26,7 +26,7 @@ const SolarSystem3D = () => {
     if (!planet) {
       toast({
         title: "Planeta Bloqueado",
-        description: `Complete os planetas anteriores para desbloquear ${planet.name}!`,
+        description: `Complete os planetas anteriores para desbloquear ${planet?.name}!`,
         variant: "destructive",
       });
       return;
@@ -44,6 +44,7 @@ const SolarSystem3D = () => {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a0a18);
+    scene.fog = new THREE.FogExp2(0x0a0a18, 0.0003);
 
     const camera = new THREE.PerspectiveCamera(
       60,
@@ -59,14 +60,23 @@ const SolarSystem3D = () => {
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
     canvasRef.current.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
+    const ambientLight = new THREE.AmbientLight(0x404040, 3);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.PointLight(0xfff9c4, 3, 2000, 1);
+    const sunLight = new THREE.PointLight(0xfff9c4, 5, 2000, 1);
     sunLight.position.set(0, 0, 0);
+    sunLight.castShadow = true;
     scene.add(sunLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(500, 300, 500);
+    scene.add(directionalLight);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -77,26 +87,33 @@ const SolarSystem3D = () => {
     controls.enablePan = false;
 
     const starGeometry = new THREE.BufferGeometry();
-    const starMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 1,
-      sizeAttenuation: true,
-    });
-
-    const starsCount = 5000;
+    const starsCount = 7000;
     const positions = new Float32Array(starsCount * 3);
+    const sizes = new Float32Array(starsCount);
 
     for (let i = 0; i < starsCount; i++) {
       const i3 = i * 3;
       positions[i3] = (Math.random() - 0.5) * 3000;
       positions[i3 + 1] = (Math.random() - 0.5) * 3000;
       positions[i3 + 2] = (Math.random() - 0.5) * 3000;
+
+      sizes[i] = Math.random() * 2 + 0.5;
     }
 
     starGeometry.setAttribute(
       "position",
       new THREE.BufferAttribute(positions, 3)
     );
+    starGeometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+
+    const starMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 1.5,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.8,
+    });
+
     const starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
@@ -108,26 +125,38 @@ const SolarSystem3D = () => {
     const sunGeometry = new THREE.SphereGeometry(50, 64, 64);
     const sunMaterial = new THREE.MeshBasicMaterial({
       map: sunTexture,
+      emissive: 0xffee88,
+      emissiveIntensity: 0.6,
     });
+
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
     planetObjects[planets[0].id] = sun;
 
-    const sunGlow = new THREE.Sprite(
-      new THREE.SpriteMaterial({
-        map: textureLoader.load("/textures/circle.png"),
-        color: 0xffee00,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-      })
-    );
-    sunGlow.scale.set(150, 150, 1);
-    sun.add(sunGlow);
+    const createSunGlow = (size: number, color: number, opacity: number) => {
+      const glow = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: textureLoader.load("/textures/circle.png"),
+          color: color,
+          transparent: true,
+          blending: THREE.AdditiveBlending,
+          opacity: opacity,
+        })
+      );
+      glow.scale.set(size, size, 1);
+      sun.add(glow);
+      return glow;
+    };
+
+    createSunGlow(150, 0xffee00, 0.6);
+    createSunGlow(180, 0xff9900, 0.3);
+    createSunGlow(220, 0xff5500, 0.1);
 
     const orbits: THREE.Line[] = [];
 
     planets.slice(1).forEach((planet, index) => {
       const orbitRadius = 120 + (index + 1) * 80;
+
       const orbitGeometry = new THREE.BufferGeometry();
       const orbitPoints = [];
 
@@ -144,9 +173,10 @@ const SolarSystem3D = () => {
 
       orbitGeometry.setFromPoints(orbitPoints);
       const orbitMaterial = new THREE.LineBasicMaterial({
-        color: 0x444444,
-        transparent: true,
-        opacity: 0.3,
+        color: 0x666666,
+        transparent: false,
+        opacity: 0.4,
+        linewidth: 1,
       });
       const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
       orbit.rotation.x = Math.PI / 1;
@@ -173,13 +203,18 @@ const SolarSystem3D = () => {
 
       const planetSize = planet.size / 3 + 10;
       const planetGeometry = new THREE.SphereGeometry(planetSize, 32, 32);
+
       const planetMaterial = new THREE.MeshStandardMaterial({
         map: planetTexture,
         metalness: 0.1,
-        roughness: 0.8,
+        roughness: 0.7,
+        emissive: 0xffffff,
+        emissiveIntensity: 0.1,
       });
 
       const planetMesh = new THREE.Mesh(planetGeometry, planetMaterial);
+      planetMesh.castShadow = true;
+      planetMesh.receiveShadow = true;
 
       const angle = index * ((2 * Math.PI) / (planets.length - 1));
       const x = Math.cos(angle) * orbitRadius;
@@ -197,13 +232,15 @@ const SolarSystem3D = () => {
           planetSize + 20,
           64
         );
+
         const ringMaterial = new THREE.MeshBasicMaterial({
           map: ringTexture,
           color: 0xffffff,
           side: THREE.DoubleSide,
           transparent: true,
-          opacity: 0.4,
+          opacity: 0.6,
         });
+
         const ring = new THREE.Mesh(ringGeometry, ringMaterial);
         ring.rotation.x = Math.PI / 2;
         planetMesh.add(ring);
@@ -212,7 +249,7 @@ const SolarSystem3D = () => {
       const glowColor = new THREE.Color(
         planet.glowColor.replace("bg-", "").replace("/40", "")
       );
-      const glowIntensity = 0.1;
+      const glowIntensity = 0.2;
 
       const glowSprite = new THREE.Sprite(
         new THREE.SpriteMaterial({
@@ -286,7 +323,7 @@ const SolarSystem3D = () => {
           planetMesh.position.x = Math.cos(angle) * orbitRadius;
           planetMesh.position.z = Math.sin(angle) * orbitRadius;
 
-          planetMesh.rotation.y += 0.005;
+          planetMesh.rotation.y += 0.005 / (index + 1);
         });
       }
 

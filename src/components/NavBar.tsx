@@ -35,6 +35,7 @@ const NavBar = () => {
   const navLinks = [
     { path: "/solar", label: "SISTEMA SOLAR" },
     { path: "/achievements", label: "CONQUISTAS" },
+    { path: "/ranking", label: "RANKING" },
   ];
 
   useEffect(() => {
@@ -165,7 +166,7 @@ const NavBar = () => {
                           className="flex items-center gap-2 p-2 rounded-md hover:bg-white/10 transition-all group"
                         >
                           <div
-                            className={`w-12 h-10 rounded-full ${planet.color} flex items-center justify-center`}
+                            className={`w-12 aspect-square rounded-full ${planet.color} flex items-center justify-center`}
                           >
                             {planet.icon && planet.icon()}
                           </div>

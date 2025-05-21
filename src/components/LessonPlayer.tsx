@@ -1,615 +1,615 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/components/ui/use-toast";
-import {
-  CheckCircle,
-  XCircle,
-  Award,
-  Zap,
-  Heart,
-  ArrowUp,
-  ArrowDown,
-  Sparkles,
-} from "lucide-react";
-import { lessonData, lessonToPlanetMap } from "@/data/lessonData";
-import { calculateXpForLesson } from "@/data/userProgressData";
-import {
-  isLessonCompleted,
-  useUpdateProgress,
-  useUpdateUserXp,
-  useUserData,
-  useUpdateStreak,
-} from "@/hooks/useUserData";
+// import { useState, useEffect } from "react";
+// import { useNavigate, useParams } from "react-router-dom";
+// import { Button } from "@/components/ui/button";
+// import { Progress } from "@/components/ui/progress";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { toast } from "@/components/ui/use-toast";
+// import {
+//   CheckCircle,
+//   XCircle,
+//   Award,
+//   Zap,
+//   Heart,
+//   ArrowUp,
+//   ArrowDown,
+//   Sparkles,
+// } from "lucide-react";
+// import { lessonData, lessonToPlanetMap } from "@/data/lessonData";
+// import { calculateXpForLesson } from "@/data/userProgressData";
+// import {
+//   isLessonCompleted,
+//   useUpdateProgress,
+//   useUpdateUserXp,
+//   useUserData,
+//   useUpdateStreak,
+// } from "@/hooks/useUserData";
 
-const correctSound = new Audio("/sounds/correct.mp3");
-const incorrectSound = new Audio("/sounds/incorrect.mp3");
-const completionSound = new Audio("/sounds/completion.mp3");
+// const correctSound = new Audio("/sounds/correct.mp3");
+// const incorrectSound = new Audio("/sounds/incorrect.mp3");
+// const completionSound = new Audio("/sounds/completion.mp3");
 
-const STREAK_MILESTONE = 5;
+// const STREAK_MILESTONE = 5;
 
-const LessonPlayer = () => {
-  const { lessonId } = useParams<{ lessonId: string }>();
-  const navigate = useNavigate();
+// const LessonPlayer = () => {
+//   const { lessonId } = useParams<{ lessonId: string }>();
+//   const navigate = useNavigate();
 
-  const [currentLesson, setCurrentLesson] = useState<any | null>(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [showStreak, setShowStreak] = useState(false);
-  const [results, setResults] = useState<{
-    correct: number;
-    total: number;
-    xp: number;
-  }>({ correct: 0, total: 0, xp: 0 });
-  const [completed, setCompleted] = useState(false);
-  const [feedbackMessage, setFeedbackMessage] = useState("");
-  const [sortableItems, setSortableItems] = useState<string[]>([]);
+//   const [currentLesson, setCurrentLesson] = useState<any | null>(null);
+//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+//   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+//   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+//   const [showFeedback, setShowFeedback] = useState(false);
+//   const [progress, setProgress] = useState(0);
+//   const [streak, setStreak] = useState(0);
+//   const [showStreak, setShowStreak] = useState(false);
+//   const [results, setResults] = useState<{
+//     correct: number;
+//     total: number;
+//     xp: number;
+//   }>({ correct: 0, total: 0, xp: 0 });
+//   const [completed, setCompleted] = useState(false);
+//   const [feedbackMessage, setFeedbackMessage] = useState("");
+//   const [sortableItems, setSortableItems] = useState<string[]>([]);
 
-  const { data: userData, isLoading: isUserDataLoading } = useUserData();
-  const updateProgress = useUpdateProgress();
-  const updateXp = useUpdateUserXp();
-  const updateStreak = useUpdateStreak();
+//   const { data: userData, isLoading: isUserDataLoading } = useUserData();
+//   const updateProgress = useUpdateProgress();
+//   const updateXp = useUpdateUserXp();
+//   const updateStreak = useUpdateStreak();
 
-  const correctFeedbacks = [
-    "Muito bem!",
-    "Excelente!",
-    "Incrível!",
-    "Perfeito!",
-    "Você é demais!",
-    "Acertou!",
-    "Sensacional!",
-    "Continue assim!",
-  ];
+//   const correctFeedbacks = [
+//     "Muito bem!",
+//     "Excelente!",
+//     "Incrível!",
+//     "Perfeito!",
+//     "Você é demais!",
+//     "Acertou!",
+//     "Sensacional!",
+//     "Continue assim!",
+//   ];
 
-  const incorrectFeedbacks = [
-    "Não foi dessa vez",
-    "Quase lá!",
-    "Tente novamente!",
-    "Não desista!",
-    "Você consegue!",
-    "Continue tentando!",
-  ];
+//   const incorrectFeedbacks = [
+//     "Não foi dessa vez",
+//     "Quase lá!",
+//     "Tente novamente!",
+//     "Não desista!",
+//     "Você consegue!",
+//     "Continue tentando!",
+//   ];
 
-  useEffect(() => {
-    if (lessonId && lessonData[lessonId]) {
-      setCurrentLesson(lessonData[lessonId]);
-      document.title = `NumiVerse - ${lessonData[lessonId].title}`;
+//   useEffect(() => {
+//     if (lessonId && lessonData[lessonId]) {
+//       setCurrentLesson(lessonData[lessonId]);
+//       document.title = `NumiVerse - ${lessonData[lessonId].title}`;
 
-      const wasAlreadyCompleted =
-        userData && isLessonCompleted(userData.progress, lessonId);
+//       const wasAlreadyCompleted =
+//         userData && isLessonCompleted(userData.progress, lessonId);
 
-      if (userData && userData.streak) {
-        setStreak(userData.streak.current || 0);
-      }
-    } else {
-      toast({
-        title: "Erro",
-        description: "Lição não encontrada",
-        variant: "destructive",
-      });
-      navigate("/");
-    }
-  }, [lessonId, navigate, userData]);
+//       if (userData && userData.streak) {
+//         setStreak(userData.streak.current || 0);
+//       }
+//     } else {
+//       toast({
+//         title: "Erro",
+//         description: "Lição não encontrada",
+//         variant: "destructive",
+//       });
+//       navigate("/");
+//     }
+//   }, [lessonId, navigate, userData]);
 
-  useEffect(() => {
-    if (currentQuestion?.type === "sort" && sortableItems.length === 0) {
-      const shuffled = [...currentQuestion.answers]
-        .map((answer) => answer.id)
-        .sort(() => Math.random() - 0.5);
-      setSortableItems(shuffled);
-    } else if (currentQuestion?.type !== "sort") {
-      setSortableItems([]);
-    }
-  }, [currentQuestionIndex, currentLesson]);
+//   useEffect(() => {
+//     if (currentQuestion?.type === "sort" && sortableItems.length === 0) {
+//       const shuffled = [...currentQuestion.answers]
+//         .map((answer) => answer.id)
+//         .sort(() => Math.random() - 0.5);
+//       setSortableItems(shuffled);
+//     } else if (currentQuestion?.type !== "sort") {
+//       setSortableItems([]);
+//     }
+//   }, [currentQuestionIndex, currentLesson]);
 
-  const currentQuestion = currentLesson?.questions[currentQuestionIndex];
+//   const currentQuestion = currentLesson?.questions[currentQuestionIndex];
 
-  const checkAnswer = () => {
-    if (!currentQuestion) return;
+//   const checkAnswer = () => {
+//     if (!currentQuestion) return;
 
-    let correct = false;
+//     let correct = false;
 
-    switch (currentQuestion.type) {
-      case "multiple-choice":
-      case "fill-blank":
-      case "true-false":
-        correct = selectedAnswers[0] === currentQuestion.correctAnswer;
-        break;
-      case "complete-number":
-        correct = selectedAnswers[0] === currentQuestion.correctAnswer;
-        break;
-      case "match":
-        const matchPairs = currentQuestion.correctAnswer as string[];
-        correct =
-          matchPairs.every((pair) => {
-            const [a, b] = pair.split("=");
-            return selectedAnswers.includes(`${a}=${b}`);
-          }) && selectedAnswers.length === matchPairs.length;
-        break;
-      case "drag-drop":
-      case "sort":
-        const correctOrder = currentQuestion.correctAnswer as string[];
-        correct =
-          JSON.stringify(selectedAnswers) === JSON.stringify(correctOrder) ||
-          JSON.stringify(sortableItems) === JSON.stringify(correctOrder);
-        break;
-      case "tap-choice":
-        const correctTaps = currentQuestion.correctAnswer as string[];
-        correct =
-          correctTaps.every((answer) => selectedAnswers.includes(answer)) &&
-          selectedAnswers.length === correctTaps.length;
-        break;
-      case "sequence":
-        const correctSequence = currentQuestion.correctAnswer as string[];
-        correct =
-          JSON.stringify(selectedAnswers) === JSON.stringify(correctSequence);
-        break;
-      case "connect-dots":
-        const correctConnections = currentQuestion.correctAnswer as string[];
-        const allConnectionsCorrect = correctConnections.every((conn) =>
-          selectedAnswers.includes(conn)
-        );
-        const noExtraConnections =
-          selectedAnswers.length === correctConnections.length;
-        correct = allConnectionsCorrect && noExtraConnections;
-        break;
-    }
+//     switch (currentQuestion.type) {
+//       case "multiple-choice":
+//       case "fill-blank":
+//       case "true-false":
+//         correct = selectedAnswers[0] === currentQuestion.correctAnswer;
+//         break;
+//       case "complete-number":
+//         correct = selectedAnswers[0] === currentQuestion.correctAnswer;
+//         break;
+//       case "match":
+//         const matchPairs = currentQuestion.correctAnswer as string[];
+//         correct =
+//           matchPairs.every((pair) => {
+//             const [a, b] = pair.split("=");
+//             return selectedAnswers.includes(`${a}=${b}`);
+//           }) && selectedAnswers.length === matchPairs.length;
+//         break;
+//       case "drag-drop":
+//       case "sort":
+//         const correctOrder = currentQuestion.correctAnswer as string[];
+//         correct =
+//           JSON.stringify(selectedAnswers) === JSON.stringify(correctOrder) ||
+//           JSON.stringify(sortableItems) === JSON.stringify(correctOrder);
+//         break;
+//       case "tap-choice":
+//         const correctTaps = currentQuestion.correctAnswer as string[];
+//         correct =
+//           correctTaps.every((answer) => selectedAnswers.includes(answer)) &&
+//           selectedAnswers.length === correctTaps.length;
+//         break;
+//       case "sequence":
+//         const correctSequence = currentQuestion.correctAnswer as string[];
+//         correct =
+//           JSON.stringify(selectedAnswers) === JSON.stringify(correctSequence);
+//         break;
+//       case "connect-dots":
+//         const correctConnections = currentQuestion.correctAnswer as string[];
+//         const allConnectionsCorrect = correctConnections.every((conn) =>
+//           selectedAnswers.includes(conn)
+//         );
+//         const noExtraConnections =
+//           selectedAnswers.length === correctConnections.length;
+//         correct = allConnectionsCorrect && noExtraConnections;
+//         break;
+//     }
 
-    setIsCorrect(correct);
-    setShowFeedback(true);
+//     setIsCorrect(correct);
+//     setShowFeedback(true);
 
-    if (correct) {
-      correctSound.play();
-      const newStreak = streak + 1;
-      setStreak(newStreak);
-      setResults((prev) => ({ ...prev, correct: prev.correct + 1 }));
+//     if (correct) {
+//       correctSound.play();
+//       const newStreak = streak + 1;
+//       setStreak(newStreak);
+//       setResults((prev) => ({ ...prev, correct: prev.correct + 1 }));
 
-      const randomIndex = Math.floor(Math.random() * correctFeedbacks.length);
-      setFeedbackMessage(correctFeedbacks[randomIndex]);
+//       const randomIndex = Math.floor(Math.random() * correctFeedbacks.length);
+//       setFeedbackMessage(correctFeedbacks[randomIndex]);
 
-      if (newStreak % STREAK_MILESTONE === 0) {
-        setShowStreak(true);
-        setTimeout(() => setShowStreak(false), 2000);
-      }
-    } else {
-      incorrectSound.play();
-      setStreak(0);
+//       if (newStreak % STREAK_MILESTONE === 0) {
+//         setShowStreak(true);
+//         setTimeout(() => setShowStreak(false), 2000);
+//       }
+//     } else {
+//       incorrectSound.play();
+//       setStreak(0);
 
-      const randomIndex = Math.floor(Math.random() * incorrectFeedbacks.length);
-      setFeedbackMessage(incorrectFeedbacks[randomIndex]);
-    }
+//       const randomIndex = Math.floor(Math.random() * incorrectFeedbacks.length);
+//       setFeedbackMessage(incorrectFeedbacks[randomIndex]);
+//     }
 
-    setTimeout(() => {
-      nextQuestion();
-    }, 2000);
-  };
+//     setTimeout(() => {
+//       nextQuestion();
+//     }, 2000);
+//   };
 
-  const nextQuestion = () => {
-    setShowFeedback(false);
-    setIsCorrect(null);
-    setSelectedAnswers([]);
-    setSortableItems([]);
-    setFeedbackMessage("");
+//   const nextQuestion = () => {
+//     setShowFeedback(false);
+//     setIsCorrect(null);
+//     setSelectedAnswers([]);
+//     setSortableItems([]);
+//     setFeedbackMessage("");
 
-    if (
-      currentLesson &&
-      currentQuestionIndex < currentLesson.questions.length - 1
-    ) {
-      setCurrentQuestionIndex((prev) => {
-        const newIndex = prev + 1;
-        setProgress(
-          Math.round((newIndex / (currentLesson.questions.length - 1)) * 100)
-        );
-        return newIndex;
-      });
-    } else {
-      completionSound.play();
-      setCompleted(true);
-      setProgress(100);
+//     if (
+//       currentLesson &&
+//       currentQuestionIndex < currentLesson.questions.length - 1
+//     ) {
+//       setCurrentQuestionIndex((prev) => {
+//         const newIndex = prev + 1;
+//         setProgress(
+//           Math.round((newIndex / (currentLesson.questions.length - 1)) * 100)
+//         );
+//         return newIndex;
+//       });
+//     } else {
+//       completionSound.play();
+//       setCompleted(true);
+//       setProgress(100);
 
-      if (currentLesson && lessonId) {
-        const earnedXp = calculateXpForLesson(
-          results.correct,
-          currentLesson.questions.length,
-          currentLesson.xp
-        );
+//       if (currentLesson && lessonId) {
+//         const earnedXp = calculateXpForLesson(
+//           results.correct,
+//           currentLesson.questions.length,
+//           currentLesson.xp
+//         );
 
-        handleLessonCompletion(
-          lessonId,
-          results.correct,
-          currentLesson.questions.length,
-          earnedXp
-        );
+//         handleLessonCompletion(
+//           lessonId,
+//           results.correct,
+//           currentLesson.questions.length,
+//           earnedXp
+//         );
 
-        setResults((prev) => ({
-          ...prev,
-          total: currentLesson.questions.length,
-          xp: earnedXp,
-        }));
-      }
-    }
-  };
+//         setResults((prev) => ({
+//           ...prev,
+//           total: currentLesson.questions.length,
+//           xp: earnedXp,
+//         }));
+//       }
+//     }
+//   };
 
-  const handleLessonCompletion = async (
-    lessonId: string,
-    correctAnswers: number,
-    totalQuestions: number,
-    earnedXp: number
-  ) => {
-    if (!userData?._id) return;
+//   const handleLessonCompletion = async (
+//     lessonId: string,
+//     correctAnswers: number,
+//     totalQuestions: number,
+//     earnedXp: number
+//   ) => {
+//     if (!userData?._id) return;
 
-    try {
-      updateXp.mutate({ userId: userData._id, xpToAdd: earnedXp });
-      updateProgress.mutate({ userId: userData._id, lessonId });
-      updateStreak.mutate({ userId: userData._id });
-    } catch (error) {
-      console.error("Error updating user data:", error);
+//     try {
+//       updateXp.mutate({ userId: userData._id, xpToAdd: earnedXp });
+//       updateProgress.mutate({ userId: userData._id, lessonId });
+//       updateStreak.mutate({ userId: userData._id });
+//     } catch (error) {
+//       console.error("Error updating user data:", error);
 
-      toast({
-        title: "Atenção",
-        description: "Sincronização com o servidor falhou.",
-        variant: "destructive",
-      });
-    }
-  };
+//       toast({
+//         title: "Atenção",
+//         description: "Sincronização com o servidor falhou.",
+//         variant: "destructive",
+//       });
+//     }
+//   };
 
-  const handleAnswerSelection = (answerId: string) => {
-    if (showFeedback) return;
+//   const handleAnswerSelection = (answerId: string) => {
+//     if (showFeedback) return;
 
-    if (!currentQuestion) return;
+//     if (!currentQuestion) return;
 
-    switch (currentQuestion.type) {
-      case "multiple-choice":
-      case "fill-blank":
-      case "complete-number":
-      case "true-false":
-        setSelectedAnswers([answerId]);
-        break;
-      case "tap-choice":
-        setSelectedAnswers((prev) =>
-          prev.includes(answerId)
-            ? prev.filter((id) => id !== answerId)
-            : [...prev, answerId]
-        );
-        break;
-      case "match":
-        setSelectedAnswers((prev) => [...prev, answerId]);
-        break;
-      case "drag-drop":
-      case "sequence":
-        setSelectedAnswers((prev) => [...prev, answerId]);
-        break;
-      case "connect-dots":
-        if (selectedAnswers.length % 2 === 0) {
-          setSelectedAnswers((prev) => [...prev, answerId]);
-        } else {
-          const prevPoint = selectedAnswers[selectedAnswers.length - 1];
-          const connection = `${prevPoint}-${answerId}`;
-          setSelectedAnswers((prev) => [...prev, answerId, connection]);
-        }
-        break;
-    }
-  };
+//     switch (currentQuestion.type) {
+//       case "multiple-choice":
+//       case "fill-blank":
+//       case "complete-number":
+//       case "true-false":
+//         setSelectedAnswers([answerId]);
+//         break;
+//       case "tap-choice":
+//         setSelectedAnswers((prev) =>
+//           prev.includes(answerId)
+//             ? prev.filter((id) => id !== answerId)
+//             : [...prev, answerId]
+//         );
+//         break;
+//       case "match":
+//         setSelectedAnswers((prev) => [...prev, answerId]);
+//         break;
+//       case "drag-drop":
+//       case "sequence":
+//         setSelectedAnswers((prev) => [...prev, answerId]);
+//         break;
+//       case "connect-dots":
+//         if (selectedAnswers.length % 2 === 0) {
+//           setSelectedAnswers((prev) => [...prev, answerId]);
+//         } else {
+//           const prevPoint = selectedAnswers[selectedAnswers.length - 1];
+//           const connection = `${prevPoint}-${answerId}`;
+//           setSelectedAnswers((prev) => [...prev, answerId, connection]);
+//         }
+//         break;
+//     }
+//   };
 
-  const moveItemInSortList = (index: number, direction: "up" | "down") => {
-    if (!currentQuestion || currentQuestion.type !== "sort") return;
+//   const moveItemInSortList = (index: number, direction: "up" | "down") => {
+//     if (!currentQuestion || currentQuestion.type !== "sort") return;
 
-    const newOrder = [...sortableItems];
-    if (direction === "up" && index > 0) {
-      [newOrder[index], newOrder[index - 1]] = [
-        newOrder[index - 1],
-        newOrder[index],
-      ];
-    } else if (direction === "down" && index < newOrder.length - 1) {
-      [newOrder[index], newOrder[index + 1]] = [
-        newOrder[index + 1],
-        newOrder[index],
-      ];
-    }
+//     const newOrder = [...sortableItems];
+//     if (direction === "up" && index > 0) {
+//       [newOrder[index], newOrder[index - 1]] = [
+//         newOrder[index - 1],
+//         newOrder[index],
+//       ];
+//     } else if (direction === "down" && index < newOrder.length - 1) {
+//       [newOrder[index], newOrder[index + 1]] = [
+//         newOrder[index + 1],
+//         newOrder[index],
+//       ];
+//     }
 
-    setSortableItems(newOrder);
-  };
+//     setSortableItems(newOrder);
+//   };
 
-  const handleFinish = () => {
-    if (lessonId && lessonToPlanetMap[lessonId]) {
-      navigate(`/planet/${lessonToPlanetMap[lessonId]}`);
-    } else {
-      navigate("/");
-    }
-  };
+//   const handleFinish = () => {
+//     if (lessonId && lessonToPlanetMap[lessonId]) {
+//       navigate(`/planet/${lessonToPlanetMap[lessonId]}`);
+//     } else {
+//       navigate("/");
+//     }
+//   };
 
-  const handleRetry = () => {
-    setCurrentQuestionIndex(0);
-    setProgress(0);
-    setResults({ correct: 0, total: 0, xp: 0 });
-    setCompleted(false);
-  };
+//   const handleRetry = () => {
+//     setCurrentQuestionIndex(0);
+//     setProgress(0);
+//     setResults({ correct: 0, total: 0, xp: 0 });
+//     setCompleted(false);
+//   };
 
-  const renderCurrentQuestion = () => {
-    if (!currentQuestion) return null;
+//   const renderCurrentQuestion = () => {
+//     if (!currentQuestion) return null;
 
-    return (
-      <div className="flex flex-col items-center w-full max-w-xl mx-auto">
-        {currentQuestion.instruction && (
-          <p className="text-sm text-white/60 mb-2">
-            {currentQuestion.instruction}
-          </p>
-        )}
+//     return (
+//       <div className="flex flex-col items-center w-full max-w-xl mx-auto">
+//         {currentQuestion.instruction && (
+//           <p className="text-sm text-white/60 mb-2">
+//             {currentQuestion.instruction}
+//           </p>
+//         )}
 
-        <h3 className="text-xl md:text-2xl font-medium text-center mb-6">
-          {currentQuestion.question}
-        </h3>
+//         <h3 className="text-xl md:text-2xl font-medium text-center mb-6">
+//           {currentQuestion.question}
+//         </h3>
 
-        {currentQuestion.image && (
-          <div className="w-full max-w-md mb-6">
-            <img
-              src={currentQuestion.image}
-              alt="Questão"
-              className="w-full rounded-lg"
-            />
-          </div>
-        )}
+//         {currentQuestion.image && (
+//           <div className="w-full max-w-md mb-6">
+//             <img
+//               src={currentQuestion.image}
+//               alt="Questão"
+//               className="w-full rounded-lg"
+//             />
+//           </div>
+//         )}
 
-        {currentQuestion.type === "sort" && (
-          <div className="w-full space-y-2">
-            {sortableItems.map((itemId, index) => {
-              const answer = currentQuestion.answers.find(
-                (a) => a.id === itemId
-              );
-              return (
-                <div
-                  key={itemId}
-                  className="flex items-center gap-2 p-3 bg-card/70 border border-white/10 rounded-lg"
-                >
-                  <div className="flex flex-col">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => moveItemInSortList(index, "up")}
-                      disabled={index === 0 || showFeedback}
-                      className="h-7 w-7"
-                    >
-                      <ArrowUp className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => moveItemInSortList(index, "down")}
-                      disabled={
-                        index === sortableItems.length - 1 || showFeedback
-                      }
-                      className="h-7 w-7"
-                    >
-                      <ArrowDown className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <span className="flex-1">{answer?.text}</span>
-                </div>
-              );
-            })}
-          </div>
-        )}
+//         {currentQuestion.type === "sort" && (
+//           <div className="w-full space-y-2">
+//             {sortableItems.map((itemId, index) => {
+//               const answer = currentQuestion.answers.find(
+//                 (a) => a.id === itemId
+//               );
+//               return (
+//                 <div
+//                   key={itemId}
+//                   className="flex items-center gap-2 p-3 bg-card/70 border border-white/10 rounded-lg"
+//                 >
+//                   <div className="flex flex-col">
+//                     <Button
+//                       variant="ghost"
+//                       size="icon"
+//                       onClick={() => moveItemInSortList(index, "up")}
+//                       disabled={index === 0 || showFeedback}
+//                       className="h-7 w-7"
+//                     >
+//                       <ArrowUp className="h-4 w-4" />
+//                     </Button>
+//                     <Button
+//                       variant="ghost"
+//                       size="icon"
+//                       onClick={() => moveItemInSortList(index, "down")}
+//                       disabled={
+//                         index === sortableItems.length - 1 || showFeedback
+//                       }
+//                       className="h-7 w-7"
+//                     >
+//                       <ArrowDown className="h-4 w-4" />
+//                     </Button>
+//                   </div>
+//                   <span className="flex-1">{answer?.text}</span>
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         )}
 
-        {currentQuestion.type !== "sort" && (
-          <div
-            className={`grid ${
-              currentQuestion.type === "match" ? "grid-cols-2" : "grid-cols-1"
-            } gap-3 w-full`}
-          >
-            {currentQuestion.answers.map((answer) => (
-              <Button
-                key={answer.id}
-                variant={
-                  showFeedback
-                    ? (isCorrect && selectedAnswers.includes(answer.id)) ||
-                      (isCorrect === false && answer.isCorrect)
-                      ? "default"
-                      : isCorrect === false &&
-                        selectedAnswers.includes(answer.id)
-                      ? "destructive"
-                      : "outline"
-                    : selectedAnswers.includes(answer.id)
-                    ? "default"
-                    : "outline"
-                }
-                className={`p-4 h-auto text-left justify-start transition-all ${
-                  currentQuestion.type === "tap-choice" ? "rounded-full" : ""
-                } ${
-                  showFeedback &&
-                  ((isCorrect && selectedAnswers.includes(answer.id)) ||
-                    (!isCorrect && answer.isCorrect))
-                    ? "ring-2 ring-green-500"
-                    : ""
-                }`}
-                onClick={() => handleAnswerSelection(answer.id)}
-                disabled={showFeedback}
-              >
-                {answer.imageUrl && (
-                  <img
-                    src={answer.imageUrl}
-                    alt={answer.text}
-                    className="w-8 h-8 mr-2 object-contain"
-                  />
-                )}
-                {answer.text}
-              </Button>
-            ))}
+//         {currentQuestion.type !== "sort" && (
+//           <div
+//             className={`grid ${
+//               currentQuestion.type === "match" ? "grid-cols-2" : "grid-cols-1"
+//             } gap-3 w-full`}
+//           >
+//             {currentQuestion.answers.map((answer) => (
+//               <Button
+//                 key={answer.id}
+//                 variant={
+//                   showFeedback
+//                     ? (isCorrect && selectedAnswers.includes(answer.id)) ||
+//                       (isCorrect === false && answer.isCorrect)
+//                       ? "default"
+//                       : isCorrect === false &&
+//                         selectedAnswers.includes(answer.id)
+//                       ? "destructive"
+//                       : "outline"
+//                     : selectedAnswers.includes(answer.id)
+//                     ? "default"
+//                     : "outline"
+//                 }
+//                 className={`p-4 h-auto text-left justify-start transition-all ${
+//                   currentQuestion.type === "tap-choice" ? "rounded-full" : ""
+//                 } ${
+//                   showFeedback &&
+//                   ((isCorrect && selectedAnswers.includes(answer.id)) ||
+//                     (!isCorrect && answer.isCorrect))
+//                     ? "ring-2 ring-green-500"
+//                     : ""
+//                 }`}
+//                 onClick={() => handleAnswerSelection(answer.id)}
+//                 disabled={showFeedback}
+//               >
+//                 {answer.imageUrl && (
+//                   <img
+//                     src={answer.imageUrl}
+//                     alt={answer.text}
+//                     className="w-8 h-8 mr-2 object-contain"
+//                   />
+//                 )}
+//                 {answer.text}
+//               </Button>
+//             ))}
 
-            {currentQuestion.type === "complete-number" && (
-              <div className="mt-4 w-full">
-                <input
-                  type="text"
-                  className="w-full p-4 bg-background border border-border rounded-md text-center text-xl"
-                  placeholder="Digite sua resposta"
-                  value={selectedAnswers[0] || ""}
-                  onChange={(e) => setSelectedAnswers([e.target.value])}
-                  disabled={showFeedback}
-                />
-              </div>
-            )}
-          </div>
-        )}
+//             {currentQuestion.type === "complete-number" && (
+//               <div className="mt-4 w-full">
+//                 <input
+//                   type="text"
+//                   className="w-full p-4 bg-background border border-border rounded-md text-center text-xl"
+//                   placeholder="Digite sua resposta"
+//                   value={selectedAnswers[0] || ""}
+//                   onChange={(e) => setSelectedAnswers([e.target.value])}
+//                   disabled={showFeedback}
+//                 />
+//               </div>
+//             )}
+//           </div>
+//         )}
 
-        {!showFeedback && (
-          <Button
-            onClick={checkAnswer}
-            className="mt-6 w-full max-w-xs bg-space-purple hover:bg-space-purple/80"
-            disabled={
-              currentQuestion.type !== "sort" && selectedAnswers.length === 0
-            }
-          >
-            Verificar
-          </Button>
-        )}
+//         {!showFeedback && (
+//           <Button
+//             onClick={checkAnswer}
+//             className="mt-6 w-full max-w-xs bg-space-purple hover:bg-space-purple/80"
+//             disabled={
+//               currentQuestion.type !== "sort" && selectedAnswers.length === 0
+//             }
+//           >
+//             Verificar
+//           </Button>
+//         )}
 
-        {showFeedback && (
-          <div className="mt-6 flex flex-col items-center justify-center w-full">
-            {isCorrect ? (
-              <div className="flex flex-col items-center text-green-500 animate-fade-in">
-                <CheckCircle className="w-16 h-16 animate-bounce" />
-                <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
-                {currentQuestion.explanation && (
-                  <p className="mt-4 text-sm text-white/80 p-3 bg-green-500/10 rounded-lg">
-                    {currentQuestion.explanation}
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center text-red-500 animate-fade-in">
-                <XCircle className="w-16 h-16 animate-bounce" />
-                <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
-                {currentQuestion.explanation && (
-                  <p className="mt-4 text-sm text-white/80 p-3 bg-red-500/10 rounded-lg">
-                    {currentQuestion.explanation}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
+//         {showFeedback && (
+//           <div className="mt-6 flex flex-col items-center justify-center w-full">
+//             {isCorrect ? (
+//               <div className="flex flex-col items-center text-green-500 animate-fade-in">
+//                 <CheckCircle className="w-16 h-16 animate-bounce" />
+//                 <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
+//                 {currentQuestion.explanation && (
+//                   <p className="mt-4 text-sm text-white/80 p-3 bg-green-500/10 rounded-lg">
+//                     {currentQuestion.explanation}
+//                   </p>
+//                 )}
+//               </div>
+//             ) : (
+//               <div className="flex flex-col items-center text-red-500 animate-fade-in">
+//                 <XCircle className="w-16 h-16 animate-bounce" />
+//                 <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>
+//                 {currentQuestion.explanation && (
+//                   <p className="mt-4 text-sm text-white/80 p-3 bg-red-500/10 rounded-lg">
+//                     {currentQuestion.explanation}
+//                   </p>
+//                 )}
+//               </div>
+//             )}
+//           </div>
+//         )}
+//       </div>
+//     );
+//   };
 
-  const renderResults = () => {
-    const percentage = Math.round((results.correct / results.total) * 100);
-    let motivationalMessage = "";
+//   const renderResults = () => {
+//     const percentage = Math.round((results.correct / results.total) * 100);
+//     let motivationalMessage = "";
 
-    if (percentage >= 90) {
-      motivationalMessage = "Excelente! Você dominou este conteúdo!";
-    } else if (percentage >= 70) {
-      motivationalMessage =
-        "Muito bom! Continue praticando para se aperfeiçoar!";
-    } else if (percentage >= 50) {
-      motivationalMessage = "Bom trabalho! Você está progredindo bem!";
-    } else {
-      motivationalMessage = "Continue tentando! A prática leva à perfeição!";
-    }
+//     if (percentage >= 90) {
+//       motivationalMessage = "Excelente! Você dominou este conteúdo!";
+//     } else if (percentage >= 70) {
+//       motivationalMessage =
+//         "Muito bom! Continue praticando para se aperfeiçoar!";
+//     } else if (percentage >= 50) {
+//       motivationalMessage = "Bom trabalho! Você está progredindo bem!";
+//     } else {
+//       motivationalMessage = "Continue tentando! A prática leva à perfeição!";
+//     }
 
-    return (
-      <div className="flex flex-col items-center w-full max-w-xl mx-auto">
-        <div className="w-48 h-48 mb-8 relative">
-          <Award
-            className={`w-full h-full ${
-              percentage >= 80 ? "text-yellow-400" : "text-blue-400"
-            } animate-pulse`}
-          />
-          {percentage >= 90 && (
-            <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-300 w-32 h-32 animate-pulse" />
-          )}
-        </div>
+//     return (
+//       <div className="flex flex-col items-center w-full max-w-xl mx-auto">
+//         <div className="w-48 h-48 mb-8 relative">
+//           <Award
+//             className={`w-full h-full ${
+//               percentage >= 80 ? "text-yellow-400" : "text-blue-400"
+//             } animate-pulse`}
+//           />
+//           {percentage >= 90 && (
+//             <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-300 w-32 h-32 animate-pulse" />
+//           )}
+//         </div>
 
-        <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-          {motivationalMessage}
-        </h2>
+//         <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+//           {motivationalMessage}
+//         </h2>
 
-        <Card className="w-full mb-8 bg-card/80 backdrop-blur-md border border-white/20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 z-0"></div>
-          <CardContent className="p-6 relative z-10">
-            <div className="flex flex-col space-y-4">
-              <div className="flex justify-between items-center">
-                <span>Questões respondidas:</span>
-                <span className="font-bold">{results.total}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Respostas corretas:</span>
-                <span className="font-bold text-green-500">
-                  {results.correct}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Porcentagem de acertos:</span>
-                <span className="font-bold">{percentage}%</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>XP ganho:</span>
-                <div className="flex items-center font-bold text-yellow-500">
-                  {results.xp} <Zap className="ml-1 w-4 h-4 fill-yellow-500" />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+//         <Card className="w-full mb-8 bg-card/80 backdrop-blur-md border border-white/20 overflow-hidden">
+//           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 z-0"></div>
+//           <CardContent className="p-6 relative z-10">
+//             <div className="flex flex-col space-y-4">
+//               <div className="flex justify-between items-center">
+//                 <span>Questões respondidas:</span>
+//                 <span className="font-bold">{results.total}</span>
+//               </div>
+//               <div className="flex justify-between items-center">
+//                 <span>Respostas corretas:</span>
+//                 <span className="font-bold text-green-500">
+//                   {results.correct}
+//                 </span>
+//               </div>
+//               <div className="flex justify-between items-center">
+//                 <span>Porcentagem de acertos:</span>
+//                 <span className="font-bold">{percentage}%</span>
+//               </div>
+//               <div className="flex justify-between items-center">
+//                 <span>XP ganho:</span>
+//                 <div className="flex items-center font-bold text-yellow-500">
+//                   {results.xp} <Zap className="ml-1 w-4 h-4 fill-yellow-500" />
+//                 </div>
+//               </div>
+//             </div>
+//           </CardContent>
+//         </Card>
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <Button
-            onClick={handleRetry}
-            className="w-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300"
-            variant="outline"
-          >
-            Tentar Novamente
-          </Button>
+//         <div className="flex flex-col sm:flex-row gap-4 w-full">
+//           <Button
+//             onClick={handleRetry}
+//             className="w-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300"
+//             variant="outline"
+//           >
+//             Tentar Novamente
+//           </Button>
 
-          <Button
-            onClick={handleFinish}
-            className="w-full bg-space-purple hover:bg-space-purple/80 shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:shadow-[0_0_20px_rgba(139,92,246,0.8)] transition-all duration-300"
-          >
-            Continuar
-          </Button>
-        </div>
-      </div>
-    );
-  };
+//           <Button
+//             onClick={handleFinish}
+//             className="w-full bg-space-purple hover:bg-space-purple/80 shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:shadow-[0_0_20px_rgba(139,92,246,0.8)] transition-all duration-300"
+//           >
+//             Continuar
+//           </Button>
+//         </div>
+//       </div>
+//     );
+//   };
 
-  if (!currentLesson) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-      </div>
-    );
-  }
+//   if (!currentLesson) {
+//     return (
+//       <div className="flex items-center justify-center h-screen">
+//         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+//       </div>
+//     );
+//   }
 
-  return (
-    <div className="min-h-screen pt-16 pb-16 px-4 bg-space-gradient">
-      <div className="space-stars"></div>
+//   return (
+//     <div className="min-h-screen pt-16 pb-16 px-4 bg-space-gradient">
+//       <div className="space-stars"></div>
 
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8 w-full">
-          <Progress value={progress} className="h-3" />
-          <p className="text-xs text-white/60 text-right mt-1">
-            {currentQuestionIndex + 1} de {currentLesson.questions.length}
-          </p>
-        </div>
+//       <div className="max-w-4xl mx-auto">
+//         <div className="mb-8 w-full">
+//           <Progress value={progress} className="h-3" />
+//           <p className="text-xs text-white/60 text-right mt-1">
+//             {currentQuestionIndex + 1} de {currentLesson.questions.length}
+//           </p>
+//         </div>
 
-        {showStreak && (
-          <div className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/90 text-white px-6 py-3 rounded-full animate-bounce z-50 flex items-center">
-            <Heart className="w-5 h-5 mr-2 fill-white" /> {streak} acertos
-            seguidos! Incrível!
-          </div>
-        )}
+//         {showStreak && (
+//           <div className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/90 text-white px-6 py-3 rounded-full animate-bounce z-50 flex items-center">
+//             <Heart className="w-5 h-5 mr-2 fill-white" /> {streak} acertos
+//             seguidos! Incrível!
+//           </div>
+//         )}
 
-        <div className="bg-card/80 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8 shadow-lg shadow-purple-500/10">
-          {completed ? renderResults() : renderCurrentQuestion()}
-        </div>
-      </div>
-    </div>
-  );
-};
+//         <div className="bg-card/80 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8 shadow-lg shadow-purple-500/10">
+//           {completed ? renderResults() : renderCurrentQuestion()}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
-export default LessonPlayer;
+// export default LessonPlayer;

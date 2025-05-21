@@ -13,6 +13,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import SolarSystemPage from "./pages/SolarSystemPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import MusicPlayerButton from "./components/MusicPlayerButton";
+import RankingPage from "./pages/RankingPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/lesson/:lessonId" element={<LessonView />} />
 
             <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/ranking" element={<RankingPage />} />
             <Route
               path="/perfil"
               element={

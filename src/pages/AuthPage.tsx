@@ -46,10 +46,6 @@ const AuthPage = () => {
     try {
       if (activeTab === "login") {
         await login(formData.email, formData.password);
-        toast({
-          title: "Login bem-sucedido",
-          description: "Bem Vindo ao Corretor de Redações!",
-        });
         navigate("/solar");
       } else {
         if (!formData.name || formData.name.trim() === "") {

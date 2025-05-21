@@ -118,7 +118,7 @@ export const api = {
 
     try {
       const response = await apiFetch(url);
-      const items = response;
+      const items = response.users;
 
       if (!items || !Array.isArray(items)) {
         console.error("Invalid response format from API");

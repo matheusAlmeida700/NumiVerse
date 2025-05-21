@@ -7,6 +7,7 @@ import { CheckCircle, Lock, Star, Sparkles, Rocket } from "lucide-react";
 import { getPlanetById } from "@/data/planetsData";
 import { getLessonsByPlanet } from "@/data/lessonData";
 import { isLessonCompleted, useUserData } from "@/hooks/useUserData";
+import Xp from "@/assets/nav/xp.png";
 
 interface PlanetContentProps {
   planetId: string;
@@ -69,27 +70,24 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
   };
 
   return (
-    <div className="container mx-auto px-4">
-      {/* Planet Header */}
+    <div className="container mx-auto px-4 poppins">
       <div
         className={`mb-10 text-center transition-all duration-700 ${
           loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
         }`}
       >
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 mt-12 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 pt-12 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
           {planet.name}
         </h1>
         <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
           {planet.description}
         </p>
 
-        {/* Decorative elements */}
         <div className="relative w-full max-w-md mx-auto mt-8 h-1">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-space-purple to-transparent"></div>
         </div>
       </div>
 
-      {/* Lessons List */}
       <div className="mb-12">
         <div
           className={`flex items-center justify-between mb-6 transition-all duration-700 delay-100 ${
@@ -99,7 +97,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
           <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-yellow-400" /> Lições
           </h2>
-          <div className="text-sm text-white/60 flex items-center gap-2">
+          <div className="text-white/60 flex items-center gap-2">
             <span>
               {
                 lessons.filter((lesson) => checkLessonCompleted(lesson.id))
@@ -166,10 +164,10 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
                   <div className="flex items-center justify-between mb-4 relative z-10">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-xl font-medium">{lesson.title}</h3>
+                      <h3 className="text-xl font-bold">{lesson.title}</h3>
                       {lesson.difficulty && (
                         <span
-                          className={`text-xs px-2 py-0.5 rounded-full text-white ${getDifficultyColor(
+                          className={`text-sm px-2 py-1 rounded-full mr-4 text-white ${getDifficultyColor(
                             lesson.difficulty
                           )}`}
                         >
@@ -194,7 +192,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
                   {isCompleted && (
                     <div className="mb-4 relative z-10">
-                      <div className="flex justify-between text-xs text-white/60 mb-1">
+                      <div className="flex justify-between text-sm text-white/60 mb-2">
                         <span>Precisão</span>
                         <span>100%</span>
                       </div>
@@ -203,9 +201,13 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                   )}
 
                   <div className="flex items-center justify-between relative z-10">
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 mr-1" />
-                      <span className="text-sm text-white/80">
+                    <div className="flex items-end">
+                      <img
+                        className="w-8 h-8 text-yellow-400 mr-2"
+                        src={Xp}
+                        alt="Coin"
+                      />
+                      <span className="text-md text-white/80 font-bold">
                         {lesson.xp} XP
                       </span>
                     </div>
@@ -232,7 +234,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
         </div>
       </div>
 
-      {/* Games Section */}
       <div className="mb-12">
         <h2
           className={`text-2xl md:text-3xl font-bold mb-6 text-white flex items-center gap-2 transition-all duration-700 delay-300 ${

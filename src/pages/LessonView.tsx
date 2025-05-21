@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import LessonPlayer from "@/components/LessonPlayer";
+import LessonPlayer from "@/components/LessonPlayer/index";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { lessonData } from "@/data/lessonData";

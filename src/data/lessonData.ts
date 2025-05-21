@@ -7,7 +7,7 @@ export const lessonData: Record<string, LessonData> = {
     description:
       "Aprenda a trabalhar com expressões algébricas e suas propriedades.",
     xp: 150,
-    difficulty: "beginner",
+    difficulty: "iniciante",
     questions: [
       {
         id: "alg-1-q1",
@@ -114,7 +114,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Equações do 1º Grau",
     description: "Domine as técnicas para resolver equações de primeiro grau.",
     xp: 200,
-    difficulty: "beginner",
+    difficulty: "iniciante",
     questions: [
       {
         id: "alg-2-q1",
@@ -222,7 +222,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Números Naturais e Inteiros",
     description: "Compreenda os conjuntos numéricos e suas propriedades.",
     xp: 100,
-    difficulty: "beginner",
+    difficulty: "iniciante",
     questions: [
       {
         id: "arit-1-q1",
@@ -329,7 +329,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Frações e Números Decimais",
     description: "Aprenda a trabalhar com frações e números decimais.",
     xp: 150,
-    difficulty: "beginner",
+    difficulty: "iniciante",
     questions: [
       {
         id: "arit-2-q1",
@@ -445,7 +445,7 @@ export const lessonData: Record<string, LessonData> = {
     description:
       "Explore propriedades de triângulos, quadriláteros e círculos.",
     xp: 150,
-    difficulty: "beginner",
+    difficulty: "iniciante",
     questions: [
       {
         id: "geo-1-q1",
@@ -536,7 +536,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Introdução às Funções",
     description: "Entenda os conceitos básicos de funções matemáticas.",
     xp: 180,
-    difficulty: "intermediate",
+    difficulty: "intermediário",
     questions: [
       {
         id: "func-1-q1",
@@ -621,7 +621,7 @@ export const lessonData: Record<string, LessonData> = {
     title: "Medidas de Tendência Central",
     description: "Aprenda a calcular e interpretar média, mediana e moda.",
     xp: 160,
-    difficulty: "beginner",
+    difficulty: "iniciante",
     questions: [
       {
         id: "est-1-q1",
@@ -690,17 +690,14 @@ export const lessonData: Record<string, LessonData> = {
       },
     ],
   },
-  // ... keep existing code (other lessons mapping)
 };
 
-// Função auxiliar para obter conjuntos de lições por planeta
 export const getLessonsByPlanet = (planetId: string): LessonData[] => {
   return Object.values(lessonData).filter((lesson) =>
     lesson.id.startsWith(planetId)
   );
 };
 
-// Mapeamento de IDs de lições para IDs de planetas
 export const lessonToPlanetMap: Record<string, string> = {
   "algebra-1": "algebra",
   "algebra-2": "algebra",
