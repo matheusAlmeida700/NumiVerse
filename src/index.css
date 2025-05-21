@@ -73,6 +73,7 @@
   }
 
   @keyframes bounces {
+
     0%,
     100% {
       transform: translateY(-25%);
@@ -114,24 +115,39 @@
     }
   }
 
-  .space-stars {
-    @apply absolute inset-0 overflow-hidden pointer-events-none;
-    background-image: radial-gradient(
-        2px 2px at 25px 80px,
-        white,
-        rgba(255, 255, 255, 0)
-      ),
-      radial-gradient(2.5px 2.5px at 50px 150px, white, rgba(255, 255, 255, 0)),
-      radial-gradient(2px 2px at 125px 230px, white, rgba(255, 255, 255, 0)),
-      radial-gradient(3px 3px at 215px 40px, white, rgba(255, 255, 255, 0)),
-      radial-gradient(2px 2px at 280px 95px, white, rgba(255, 255, 255, 0)),
-      radial-gradient(2.5px 2.5px at 320px 180px, white, rgba(255, 255, 255, 0)),
-      radial-gradient(3px 3px at 380px 230px, white, rgba(255, 255, 255, 0)),
-      radial-gradient(2px 2px at 440px 80px, white, rgba(255, 255, 255, 0));
-    background-size: 500px 500px;
-    animation: space-stars-move 100s linear infinite;
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0)
+    }
+
+    50% {
+      transform: translateY(-10px)
+    }
+  }
+
+  .floating {
+    animation: float 2s ease-in-out infinite;
   }
 }
+
+.space-stars {
+  @apply absolute inset-0 overflow-hidden pointer-events-none;
+  background-image: radial-gradient(2px 2px at 25px 80px,
+      white,
+      rgba(255, 255, 255, 0)),
+    radial-gradient(2.5px 2.5px at 50px 150px, white, rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 125px 230px, white, rgba(255, 255, 255, 0)),
+    radial-gradient(3px 3px at 215px 40px, white, rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 280px 95px, white, rgba(255, 255, 255, 0)),
+    radial-gradient(2.5px 2.5px at 320px 180px, white, rgba(255, 255, 255, 0)),
+    radial-gradient(3px 3px at 380px 230px, white, rgba(255, 255, 255, 0)),
+    radial-gradient(2px 2px at 440px 80px, white, rgba(255, 255, 255, 0));
+  background-size: 500px 500px;
+  animation: space-stars-move 100s linear infinite;
+}
+
 
 ::-webkit-scrollbar {
   width: 8px;

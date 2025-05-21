@@ -184,7 +184,7 @@ const LessonPlayer = () => {
 
     setTimeout(() => {
       nextQuestion();
-    }, 3000); // Increased the timeout to give users time to see the feedback
+    }, 3000);
   };
 
   const nextQuestion = () => {

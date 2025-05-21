@@ -8,14 +8,38 @@ interface LessonFeedbackProps {
 }
 
 const correctImages = [
-  "images/feedback/correct1.png",
-  "images/feedback/correct2.png",
-  "images/feedback/correct3.png",
+  "/images/feedback/correct1.png",
+  "/images/feedback/correct2.png",
+  "/images/feedback/correct3.png",
+  "/images/feedback/correct4.png",
+  "/images/feedback/correct5.png",
+  "/images/feedback/correct6.png",
+  "/images/feedback/correct7.png",
+  "/images/feedback/correct8.png",
+  "/images/feedback/correct9.png",
+  "/images/feedback/correct10.png",
+  "/images/feedback/correct11.png",
+  "/images/feedback/correct12.png",
+  "/images/feedback/correct13.png",
+  "/images/feedback/correct15.png",
 ];
 
 const incorrectImages = [
-  "images/feedback/incorrect1.png",
-  "images/feedback/incorrect2.png",
+  "/images/feedback/incorrect1.png",
+  "/images/feedback/incorrect2.png",
+  "/images/feedback/incorrect3.png",
+  "/images/feedback/incorrect4.png",
+  "/images/feedback/incorrect5.png",
+  "/images/feedback/incorrect6.png",
+  "/images/feedback/incorrect7.png",
+  "/images/feedback/incorrect8.png",
+  "/images/feedback/incorrect9.png",
+  "/images/feedback/incorrect10.png",
+  "/images/feedback/incorrect11.png",
+  "/images/feedback/incorrect12.png",
+  "/images/feedback/incorrect13.png",
+  "/images/feedback/incorrect14.png",
+  "/images/feedback/incorrect15.png",
 ];
 
 const LessonFeedback = ({
@@ -31,15 +55,14 @@ const LessonFeedback = ({
   const feedbackImage = images[randomImageIndex];
 
   return (
-    <div className="mt-6 flex flex-col items-center justify-center w-full">
+    <div className="mt-8 flex flex-col items-center justify-center w-full">
       {isCorrect ? (
         <div className="flex flex-col items-center text-green-500 animate-fade-in">
           <div className="relative">
-            <CheckCircle className="w-16 h-16 animate-bounce" />
             <img
               src={feedbackImage}
-              alt="Correct!"
-              className="w-32 h-32 object-contain mt-2 animate-scale-in"
+              alt="Correto!"
+              className="w-64 h-64 object-contain mt-2 animate-scale-in"
               onError={() =>
                 console.log("Erro ao carregar imagem:", feedbackImage)
               }
@@ -54,12 +77,11 @@ const LessonFeedback = ({
         </div>
       ) : (
         <div className="flex flex-col items-center text-red-500 animate-fade-in">
-          <div className="relative">
-            <XCircle className="w-16 h-16 animate-bounce" />
+          <div className="relative floating">
             <img
               src={feedbackImage}
-              alt="Incorrect!"
-              className="w-32 h-32 object-contain mt-2 animate-scale-in"
+              alt="Incorreto!"
+              className="w-64 h-64 object-contain mt-2 animate-scale-in"
             />
           </div>
           <p className="mt-2 text-lg font-medium">{feedbackMessage}</p>

@@ -15,7 +15,7 @@ const tracks: Track[] = [
     title: "Rainy Lofi City",
     artist: "Kaveesha Senanayake",
     url: "/audio/songs/rainy-lofi-city.mp3",
-    cover: "images/covers/rainy-lofi-city-cover.jpg",
+    cover: "/images/covers/rainy-lofi-city-cover.jpg",
     duration: 240,
   },
   {
@@ -23,7 +23,7 @@ const tracks: Track[] = [
     title: "Can a cute cat help you focus?",
     artist: "Milli Cozy Lofi",
     url: "/audio/songs/can-a-cute-cat-help-you-focus.mp3",
-    cover: "images/covers/can-a-cute-cat-help-you-focus.jpg",
+    cover: "/images/covers/can-a-cute-cat-help-you-focus.jpg",
     duration: 303.6,
   },
   {
@@ -31,7 +31,7 @@ const tracks: Track[] = [
     title: "Resonance",
     artist: "Home",
     url: "/audio/songs/resonance.mp3",
-    cover: "images/covers/resonance.jpg",
+    cover: "/images/covers/resonance.jpg",
     duration: 199.8,
   },
   {
@@ -39,7 +39,7 @@ const tracks: Track[] = [
     title: "Forest Sounds",
     artist: "Chill Pills Studio",
     url: "/audio/songs/forest-sounds.mp3",
-    cover: "images/covers/forest-sounds.jpg",
+    cover: "/images/covers/forest-sounds.jpg",
     duration: 307.8,
   },
   {
@@ -47,7 +47,7 @@ const tracks: Track[] = [
     title: "Moon",
     artist: "Lee",
     url: "/audio/songs/moon.mp3",
-    cover: "images/covers/moon.jpg",
+    cover: "/images/covers/moon.jpg",
     duration: 250.2,
   },
   {
@@ -55,7 +55,7 @@ const tracks: Track[] = [
     title: "Reve Lucide",
     artist: "Lune",
     url: "/audio/songs/reve-lucide.mp3",
-    cover: "images/covers/reve-lucide.png",
+    cover: "/images/covers/reve-lucide.png",
     duration: 200.4,
   },
 ];

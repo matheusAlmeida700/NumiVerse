@@ -94,10 +94,10 @@ const AuthPage = () => {
   return (
     <PageTransition>
       <div className="space-stars"></div>
-      <div className="min-h-screen bg-space-gradient flex flex-col">
-        <header className="w-full px-6 pt-6 flex justify-between items-center z-10">
+      <div className="min-h-screen bg-space-gradient flex flex-col poppins">
+        <header className="w-full pl-12 pt-6 flex justify-between items-center z-10">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={Logo} alt="Logo" className="w-12 h-12 rotate-6" />
+            <img src={Logo} alt="Logo" className="w-14 h-14 rotate-6" />
             <span className="text-xl font-bold text-white text-glow">
               NumiVerse
             </span>
@@ -169,7 +169,7 @@ const AuthPage = () => {
                     </CardDescription>
 
                     {error && (
-                      <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
+                      <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-md">
                         {error}
                       </div>
                     )}
@@ -177,7 +177,7 @@ const AuthPage = () => {
                     <form onSubmit={handleSubmit} className="space-y-4">
                       {activeTab === "signup" && (
                         <div className="space-y-2">
-                          <label htmlFor="name" className="text-sm font-medium">
+                          <label htmlFor="name" className="text-md font-medium">
                             Nome Completo
                           </label>
                           <div className="relative">
@@ -197,7 +197,7 @@ const AuthPage = () => {
                       )}
 
                       <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium">
+                        <label htmlFor="email" className="text-md font-medium">
                           Email
                         </label>
                         <div className="relative">
@@ -218,7 +218,7 @@ const AuthPage = () => {
                       <div className="space-y-2">
                         <label
                           htmlFor="password"
-                          className="text-sm font-medium"
+                          className="text-md font-medium"
                         >
                           Senha
                         </label>
