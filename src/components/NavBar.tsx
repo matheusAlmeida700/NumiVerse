@@ -112,11 +112,13 @@ const NavBar = () => {
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-2">
                         <img src={Xp} className="w-8 h-8" alt="" />
-                        <span className="text-xl">{userData?.xp} XP</span>
+                        <span className="text-xl">{userData?.xp ?? 0} XP</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <img src={Streak} className="w-8 h-8" alt="XP" />
-                        <span className="text-xl">{userData?.xp} dias</span>
+                        <span className="text-xl">
+                          {userData?.streak ?? 0} dias
+                        </span>
                       </div>
                     </div>
                   ) : (

@@ -3,8 +3,6 @@ export interface Achievement {
   title: string;
   description: string;
   icon: string;
-  unlocked: boolean;
-  unlockedAt?: string;
   rarity: "common" | "rare" | "epic" | "legendary";
   category: "lesson" | "streak" | "exploration" | "mastery";
   secret?: boolean;
@@ -16,8 +14,6 @@ export const achievements: Achievement[] = [
     title: "Primeiro Passo",
     description: "Complete sua primeira lição",
     icon: "🎓",
-    unlocked: true,
-    unlockedAt: "2025-05-01T15:30:00.000Z",
     rarity: "common",
     category: "lesson",
   },
@@ -26,7 +22,6 @@ export const achievements: Achievement[] = [
     title: "Estudante Dedicado",
     description: "Complete 10 lições",
     icon: "📚",
-    unlocked: false,
     rarity: "common",
     category: "lesson",
   },
@@ -35,8 +30,6 @@ export const achievements: Achievement[] = [
     title: "Perfeição",
     description: "Complete uma lição com 100% de acerto",
     icon: "💯",
-    unlocked: true,
-    unlockedAt: "2025-05-03T12:15:00.000Z",
     rarity: "rare",
     category: "lesson",
   },
@@ -46,8 +39,6 @@ export const achievements: Achievement[] = [
     title: "Comprometido",
     description: "Mantenha uma sequência de aprendizado de 3 dias",
     icon: "🔥",
-    unlocked: true,
-    unlockedAt: "2025-05-05T18:20:00.000Z",
     rarity: "common",
     category: "streak",
   },
@@ -56,7 +47,6 @@ export const achievements: Achievement[] = [
     title: "Hábito Saudável",
     description: "Mantenha uma sequência de aprendizado de 7 dias",
     icon: "📅",
-    unlocked: false,
     rarity: "rare",
     category: "streak",
   },
@@ -65,7 +55,6 @@ export const achievements: Achievement[] = [
     title: "Inabalável",
     description: "Mantenha uma sequência de aprendizado de 30 dias",
     icon: "🏆",
-    unlocked: false,
     rarity: "legendary",
     category: "streak",
   },
@@ -75,7 +64,6 @@ export const achievements: Achievement[] = [
     title: "Explorador Espacial",
     description: "Visite todos os planetas",
     icon: "🚀",
-    unlocked: false,
     rarity: "epic",
     category: "exploration",
   },
@@ -84,7 +72,6 @@ export const achievements: Achievement[] = [
     title: "Mestre da Álgebra",
     description: "Complete todas as lições do planeta Álgebra",
     icon: "🌞",
-    unlocked: false,
     rarity: "rare",
     category: "exploration",
   },
@@ -93,7 +80,6 @@ export const achievements: Achievement[] = [
     title: "Mestre da Aritmética",
     description: "Complete todas as lições do planeta Aritmética",
     icon: "🌙",
-    unlocked: false,
     rarity: "rare",
     category: "exploration",
   },
@@ -103,7 +89,6 @@ export const achievements: Achievement[] = [
     title: "Aprendiz Estelar",
     description: "Alcance o nível 5",
     icon: "⭐",
-    unlocked: false,
     rarity: "rare",
     category: "mastery",
   },
@@ -112,7 +97,6 @@ export const achievements: Achievement[] = [
     title: "Sábio Cósmico",
     description: "Alcance o nível 10",
     icon: "🌌",
-    unlocked: false,
     rarity: "epic",
     category: "mastery",
   },
@@ -121,7 +105,6 @@ export const achievements: Achievement[] = [
     title: "A Perfeição Matemática",
     description: "Complete todas as lições de um planeta com 100% de acerto",
     icon: "👑",
-    unlocked: false,
     rarity: "legendary",
     category: "mastery",
   },
@@ -131,7 +114,6 @@ export const achievements: Achievement[] = [
     title: "???",
     description: "Descubra o segredo oculto na aplicação",
     icon: "🥚",
-    unlocked: false,
     rarity: "legendary",
     category: "exploration",
     secret: true,
@@ -142,12 +124,4 @@ export const getAchievementsByCategory = (category: string) => {
   return achievements.filter(
     (achievement) => achievement.category === category
   );
-};
-
-export const getUnlockedAchievements = () => {
-  return achievements.filter((achievement) => achievement.unlocked);
-};
-
-export const getLockedAchievements = () => {
-  return achievements.filter((achievement) => !achievement.unlocked);
 };

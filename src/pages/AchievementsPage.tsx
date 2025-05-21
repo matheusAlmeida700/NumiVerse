@@ -5,14 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   achievements,
   getAchievementsByCategory,
-  getUnlockedAchievements,
   Achievement,
 } from "@/data/achievementsData";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { useAuth } from "@/contexts/AuthContext";
-import { useQuery } from "@tanstack/react-query";
-import { userService } from "@/services/api";
+import { useUserData } from "@/hooks/useUserData";
 
 const LoadingPage = () => (
   <div className="min-h-screen flex flex-col bg-space-gradient">
@@ -42,14 +39,7 @@ const AchievementsPage = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { user } = useAuth();
-
-  const { data: userData, refetch } = useQuery({
-    queryKey: ["user", user?.id],
-    queryFn: () => userService.getById(user.id),
-    enabled: !!user?.id,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data: userData } = useUserData();
 
   useEffect(() => {
     document.title = "NumiVerse - Conquistas";
@@ -71,32 +61,10 @@ const AchievementsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && user?.achievements) {
-      setUnlockedCount(user.achievements.length);
-
-      const updateAchievementsWithUnlocked = (
-        achievementsList: Achievement[]
-      ) => {
-        return achievementsList.map((achievement) => ({
-          ...achievement,
-          unlocked: user.achievements.includes(achievement.id),
-          unlockedAt: achievement.unlocked
-            ? new Date().toISOString()
-            : undefined,
-        }));
-      };
-
-      setLessonAchievements((prev) => updateAchievementsWithUnlocked(prev));
-      setStreakAchievements((prev) => updateAchievementsWithUnlocked(prev));
-      setExplorationAchievements((prev) =>
-        updateAchievementsWithUnlocked(prev)
-      );
-      setMasteryAchievements((prev) => updateAchievementsWithUnlocked(prev));
-    } else if (!isLoading) {
-      const unlockedAchievements = getUnlockedAchievements();
-      setUnlockedCount(unlockedAchievements.length);
+    if (!isLoading && userData?.achievements) {
+      setUnlockedCount(userData.achievements.length);
     }
-  }, [user, isLoading]);
+  }, [userData, isLoading]);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -113,61 +81,50 @@ const AchievementsPage = () => {
     }
   };
 
-  const formatDate = (dateStr?: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    return date.toLocaleDateString();
-  };
+  const isUnlocked = (achievementId: string) =>
+    userData?.achievements.includes(achievementId);
 
-  const renderAchievementCard = (achievement: Achievement) => (
-    <Card
-      key={achievement.id}
-      className={`bg-card/50 backdrop-blur-sm border ${
-        achievement.unlocked ? "border-white/30" : "border-white/10 opacity-70"
-      }`}
-    >
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4">
-          <div
-            className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
-              achievement.unlocked ? "" : "grayscale"
-            }`}
-          >
-            {achievement.secret && !achievement.unlocked
-              ? "?"
-              : achievement.icon}
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <h3 className="text-lg font-medium">
-                {achievement.secret && !achievement.unlocked
-                  ? "???"
-                  : achievement.title}
-              </h3>
-              <Badge className={`${getRarityColor(achievement.rarity)}`}>
-                {achievement.rarity.charAt(0).toUpperCase() +
-                  achievement.rarity.slice(1)}
-              </Badge>
+  const renderAchievementCard = (achievement: Achievement) => {
+    const unlocked = isUnlocked(achievement.id);
+
+    return (
+      <Card
+        key={achievement.id}
+        className={`bg-card/50 backdrop-blur-sm border ${
+          unlocked ? "border-white/30" : "border-white/10 opacity-70"
+        }`}
+      >
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div
+              className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
+                unlocked ? "" : "grayscale"
+              }`}
+            >
+              {achievement.secret && !unlocked ? "?" : achievement.icon}
             </div>
-
-            <p className="text-sm text-white/70 mb-1">
-              {achievement.secret && !achievement.unlocked
-                ? "Esta conquista está oculta. Continue explorando para descobrir."
-                : achievement.description}
-            </p>
-
-            {achievement.unlocked && (
-              <div className="mt-2 flex justify-end">
-                <div className="inline-flex items-center px-2 py-1 bg-green-500/20 rounded text-xs text-green-400">
-                  Desbloqueado em {formatDate(achievement.unlockedAt)}
-                </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-lg font-medium">
+                  {achievement.secret && !unlocked ? "???" : achievement.title}
+                </h3>
+                <Badge className={`${getRarityColor(achievement.rarity)}`}>
+                  {achievement.rarity.charAt(0).toUpperCase() +
+                    achievement.rarity.slice(1)}
+                </Badge>
               </div>
-            )}
+
+              <p className="text-sm text-white/70 mb-1">
+                {achievement.secret && !unlocked
+                  ? "Esta conquista está oculta. Continue explorando para descobrir."
+                  : achievement.description}
+              </p>
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+        </CardContent>
+      </Card>
+    );
+  };
 
   if (isLoading) {
     return <LoadingPage />;
