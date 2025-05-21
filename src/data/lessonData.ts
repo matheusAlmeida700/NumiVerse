@@ -6,37 +6,54 @@ export const lessonData: Record<string, LessonData> = {
     title: "Expressões Algébricas",
     description:
       "Aprenda a trabalhar com expressões algébricas e suas propriedades.",
-    xp: 150,
+    xp: 30,
     difficulty: "iniciante",
     questions: [
       {
         id: "alg-1-q1",
         type: "multiple-choice",
-        question: "Qual é o valor da expressão 3x + 2 quando x = 4?",
+        question: "Qual é o valor de x na expressão 3x = 15?",
         answers: [
-          { id: "a1", text: "14", isCorrect: true },
-          { id: "a2", text: "10", isCorrect: false },
-          { id: "a3", text: "18", isCorrect: false },
+          { id: "a1", text: "3", isCorrect: false },
+          { id: "a2", text: "4", isCorrect: false },
+          { id: "a3", text: "5", isCorrect: true },
           { id: "a4", text: "6", isCorrect: false },
         ],
-        correctAnswer: "a1",
-        explanation:
-          "Substituindo x = 4 na expressão 3x + 2, temos 3(4) + 2 = 12 + 2 = 14.",
+        correctAnswer: "a3",
+        explanation: "3x = 15 → x = 15 ÷ 3 → x = 5",
       },
       {
         id: "alg-1-q2",
         type: "multiple-choice",
-        question: "Como podemos simplificar a expressão 5x + 3x?",
+        question:
+          "Qual expressão representa “o triplo de um número somado com 2”?",
         answers: [
-          { id: "a1", text: "8x", isCorrect: true },
-          { id: "a2", text: "8x²", isCorrect: false },
-          { id: "a3", text: "15x", isCorrect: false },
-          { id: "a4", text: "2x", isCorrect: false },
+          { id: "a1", text: "3x – 2", isCorrect: false },
+          { id: "a2", text: "3x + 2", isCorrect: true },
+          { id: "a3", text: "x + 3 + 2", isCorrect: false },
+          { id: "a4", text: "2x + 3", isCorrect: false },
         ],
-        correctAnswer: "a1",
+        correctAnswer: "a2",
+        explanation:
+          "Triplo de um número = 3x → Somado com 2 = 3x + 2 → Expressão correta: 3x + 2",
       },
       {
         id: "alg-1-q3",
+        type: "multiple-choice",
+        question:
+          "Qual expressão representa “o triplo de um número somado com 2”?",
+        answers: [
+          { id: "a1", text: "3x – 2", isCorrect: false },
+          { id: "a2", text: "3x + 2", isCorrect: true },
+          { id: "a3", text: "x + 3 + 2", isCorrect: false },
+          { id: "a4", text: "2x + 3", isCorrect: false },
+        ],
+        correctAnswer: "a2",
+        explanation:
+          "Triplo de um número = 3x → Somado com 2 = 3x + 2 → Expressão correta: 3x + 2",
+      },
+      {
+        id: "alg-1-q4",
         type: "fill-blank",
         question: "Na expressão 2x + 3y, os números 2 e 3 são chamados de:",
         instruction: "Complete com a palavra correta",
@@ -49,7 +66,7 @@ export const lessonData: Record<string, LessonData> = {
         correctAnswer: "a1",
       },
       {
-        id: "alg-1-q4",
+        id: "alg-1-q5",
         type: "match",
         question: "Relacione as expressões com os resultados quando x = 2:",
         answers: [
@@ -63,7 +80,7 @@ export const lessonData: Record<string, LessonData> = {
         correctAnswer: ["a1=a5", "a2=a4", "a3=a6"],
       },
       {
-        id: "alg-1-q5",
+        id: "alg-1-q6",
         type: "drag-drop",
         question: "Organize os termos semelhantes:",
         answers: [
@@ -75,7 +92,7 @@ export const lessonData: Record<string, LessonData> = {
         correctAnswer: ["a1,a3", "a2,a4"],
       },
       {
-        id: "alg-1-q6",
+        id: "alg-1-q7",
         type: "tap-choice",
         question: "Selecione todos os termos da expressão 2x² + 3xy - 5y + 7:",
         answers: [
@@ -89,14 +106,14 @@ export const lessonData: Record<string, LessonData> = {
         correctAnswer: ["a1", "a2", "a3", "a4"],
       },
       {
-        id: "alg-1-q7",
+        id: "alg-1-q8",
         type: "complete-number",
         question: "Se x = 3 e y = 2, qual é o valor de 2x + 3y?",
         answers: [],
         correctAnswer: "12",
       },
       {
-        id: "alg-1-q8",
+        id: "alg-1-q9",
         type: "multiple-choice",
         question: "Qual é o grau da expressão 3x³ + 2x²y + 4y²?",
         answers: [

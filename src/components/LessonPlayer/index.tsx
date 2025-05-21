@@ -239,12 +239,12 @@ const LessonPlayer = () => {
     totalQuestions: number,
     earnedXp: number
   ) => {
-    if (!userData?.id) return;
+    if (!userData?._id) return;
 
     try {
-      updateXp.mutate({ userId: userData.id, xpToAdd: earnedXp });
-      updateProgress.mutate({ userId: userData.id, lessonId });
-      updateStreak.mutate({ userId: userData.id });
+      updateXp.mutate({ userId: userData._id, xpToAdd: earnedXp });
+      updateProgress.mutate({ userId: userData._id, lessonId });
+      updateStreak.mutate({ userId: userData._id });
     } catch (error) {
       console.error("Error updating user data:", error);
 

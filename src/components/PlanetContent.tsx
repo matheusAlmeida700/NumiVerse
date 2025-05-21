@@ -125,9 +125,9 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
             return (
               <Card
                 key={lesson.id}
-                className={`bg-card/50 backdrop-blur-sm transform transition-all duration-500 delay-${
+                className={`bg-card/50 backdrop-blur-sm transform transition-all delay-${
                   index * 100
-                } hover:scale-102 hover:shadow-lg border ${
+                } hover:shadow-lg border ${
                   isCompleted ? "border-green-500/30" : "border-white/10"
                 } ${
                   loaded
@@ -135,7 +135,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                     : "opacity-0 translate-y-8"
                 }`}
               >
-                <CardContent className="p-6 relative overflow-hidden">
+                <CardContent className="p-6 relative overflow-hidden h-full flex flex-col justify-between">
                   <div
                     className={`absolute inset-0 opacity-10 ${
                       isCompleted

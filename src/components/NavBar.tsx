@@ -190,7 +190,7 @@ const NavBar = () => {
                     <TooltipTrigger asChild>
                       <div className="hidden sm:flex items-end gap-2 rounded-full hover:scale-110 transition-all">
                         <img src={Xp} className="w-8 h-8" alt="XP" />
-                        <span className="font-bold">{userData?.xp}XP</span>
+                        <span className="font-bold">{userData?.xp ?? 0}XP</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
