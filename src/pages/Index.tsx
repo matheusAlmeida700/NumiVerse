@@ -10,11 +10,38 @@ import Cellphones from "@/assets/home/meteors.png";
 import Cellphone from "@/assets/home/cards-cellphone.png";
 import NumiShip from "@/assets/home/numi-ship.png";
 import NumiCell from "@/assets/home/cellphone-end.png";
-import Numi from "@/assets/home/numi-cellphone-end.png";
+import InnerNumi from "@/assets/home/numi-cellphone-end.png";
 import FeatureSection from "@/components/FeatureSection";
 import ParticleBackground from "@/components/ParticleBackground.jsx";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 const Index = () => {
+  const cellRef = useRef(null);
+  const [showInnerImage, setShowInnerImage] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio === 1) {
+          setShowInnerImage(true);
+        }
+      },
+      {
+        threshold: 1.0,
+      }
+    );
+
+    if (cellRef.current) {
+      observer.observe(cellRef.current);
+    }
+
+    return () => {
+      if (cellRef.current) {
+        observer.unobserve(cellRef.current);
+      }
+    };
+  }, []);
   return (
     <div className="min-h-screen flex flex-col bg-space-gradient relative">
       <ParticleBackground />
@@ -97,26 +124,43 @@ const Index = () => {
           />
         </section>
 
-        <div className="relative h-screen text-center mt-24 flex flex-col md:flex-row items-center justify-center">
+        <div className="relative h-screen mt-24 flex flex-col md:flex-row items-center justify-center text-center">
           <img
             className="absolute bottom-0 z-0"
             src="/bg-purple.png"
             alt="Purple Background"
           />
-          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md md:max-w-none">
+
+          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md">
             <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
               a
             </h2>
             <p className="text-xl">a</p>
           </div>
-          <div className="w-full z-10 md:flex-1 flex justify-center items-center">
+
+          <div
+            className="w-full z-10 md:flex-1 flex justify-center items-center relative"
+            ref={cellRef}
+          >
             <img
               src={NumiCell}
               alt="Numi Cellphone"
               className="w-full md:min-w-[900px]"
             />
+
+            {showInnerImage && (
+              <motion.img
+                src={InnerNumi}
+                alt="Inner Content"
+                className="absolute w-2/3 md:w-1/2"
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 120, damping: 10 }}
+              />
+            )}
           </div>
-          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md md:max-w-none">
+
+          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md">
             <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
               a
             </h2>

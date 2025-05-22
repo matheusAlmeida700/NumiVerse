@@ -109,7 +109,7 @@ const AuthPage = () => {
           alt="NumiShip"
         />
         <img
-          className="w-96 hidden md:block fixed top-44 right-20 animate-float"
+          className="w-96 hidden md:block fixed top-36 right-20 animate-float"
           src={Satelite}
           alt="Satelite"
         />
@@ -119,7 +119,7 @@ const AuthPage = () => {
           alt="Ship"
         />
         <img
-          className="w-96 hidden md:block fixed bottom-20 right-56 animate-float"
+          className="w-96 hidden md:block fixed bottom-20 right-36 animate-float"
           src={SaturnNumi}
           alt="SaturnNumi"
         />
