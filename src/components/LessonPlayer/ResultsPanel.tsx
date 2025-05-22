@@ -1,6 +1,8 @@
-import { Award, Zap, Sparkles } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { correctImages } from "@/data/feedbackImages";
+import Xp from "@/assets/nav/xp.png";
 
 interface ResultsPanelProps {
   results: {
@@ -13,6 +15,9 @@ interface ResultsPanelProps {
 }
 
 const ResultsPanel = ({ results, onRetry, onFinish }: ResultsPanelProps) => {
+  const randomImageIndex = Math.floor(Math.random() * correctImages.length);
+  const feedbackImage = correctImages[randomImageIndex];
+
   const percentage = Math.round((results.correct / results.total) * 100);
   let motivationalMessage = "";
 
@@ -27,44 +32,40 @@ const ResultsPanel = ({ results, onRetry, onFinish }: ResultsPanelProps) => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-xl mx-auto">
-      <div className="w-48 h-48 mb-8 relative">
-        <Award
-          className={`w-full h-full ${
-            percentage >= 80 ? "text-yellow-400" : "text-blue-400"
-          } animate-pulse`}
+    <div className="flex flex-col items-center w-full max-w-xl mx-auto poppins">
+      <div className="mb-6 relative floating">
+        <img
+          src={feedbackImage}
+          alt="Correto!"
+          className="w-64 h-64 object-contain animate-scale-in"
         />
-        {percentage >= 90 && (
-          <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-300 w-32 h-32 animate-pulse" />
-        )}
       </div>
 
-      <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+      <h2 className="text-3xl font-bold text-center mb-8 text-space-purple">
         {motivationalMessage}
       </h2>
 
-      <Card className="w-full mb-8 bg-card/80 backdrop-blur-md border border-white/20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 z-0"></div>
+      <Card className="w-full mb-8 bg-card/80 backdrop-blur-md border font-bold border-white/20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br"></div>
         <CardContent className="p-6 relative z-10">
           <div className="flex flex-col space-y-4">
             <div className="flex justify-between items-center">
               <span>Questões respondidas:</span>
-              <span className="font-bold">{results.total}</span>
+              <span>{results.total}</span>
             </div>
             <div className="flex justify-between items-center">
               <span>Respostas corretas:</span>
-              <span className="font-bold text-green-500">
-                {results.correct}
-              </span>
+              <span className="text-green-500">{results.correct}</span>
             </div>
             <div className="flex justify-between items-center">
               <span>Porcentagem de acertos:</span>
-              <span className="font-bold">{percentage}%</span>
+              <span>{percentage}%</span>
             </div>
             <div className="flex justify-between items-center">
               <span>XP ganho:</span>
-              <div className="flex items-center font-bold text-yellow-500">
-                {results.xp} <Zap className="ml-1 w-4 h-4 fill-yellow-500" />
+              <div className="flex items-center text-yellow-500">
+                <img className="w-8 h-8 mr-2" src={Xp} alt="Xp" />
+                {results.xp}
               </div>
             </div>
           </div>

@@ -18,9 +18,9 @@ import SortableQuestion from "./SortableQuestion";
 import StandardQuestion from "./StandardQuestion";
 import ResultsPanel from "./ResultsPanel";
 
-const correctSound = new Audio("/sounds/correct.mp3");
-const incorrectSound = new Audio("/sounds/incorrect.mp3");
-const completionSound = new Audio("/sounds/completion.mp3");
+const correctSound = new Audio("/audio/correct.mp3");
+const incorrectSound = new Audio("/audio/incorrect.mp3");
+const completionSound = new Audio("/audio/completion.mp3");
 
 const STREAK_MILESTONE = 5;
 

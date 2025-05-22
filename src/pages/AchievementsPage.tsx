@@ -68,13 +68,13 @@ const AchievementsPage = () => {
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case "common":
+      case "comum":
         return "bg-slate-500";
-      case "rare":
+      case "raro":
         return "bg-blue-500";
-      case "epic":
+      case "épico":
         return "bg-purple-500";
-      case "legendary":
+      case "lendário":
         return "bg-yellow-500";
       default:
         return "bg-slate-500";
@@ -91,34 +91,41 @@ const AchievementsPage = () => {
       <Card
         key={achievement.id}
         className={`bg-card/50 backdrop-blur-sm border ${
-          unlocked ? "border-white/30" : "border-white/10 opacity-70"
+          unlocked ? "border-white/30" : "border-white/10 opacity-50"
         }`}
       >
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
-                unlocked ? "" : "grayscale"
-              }`}
-            >
-              {achievement.secret && !unlocked ? "?" : achievement.icon}
+            <div className="w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+              {achievement.secret && !unlocked ? (
+                <span className="text-3xl">?</span>
+              ) : (
+                <img
+                  src={achievement.icon}
+                  alt={achievement.title}
+                  className={`w-full h-full object-cover ${
+                    unlocked ? "" : "grayscale"
+                  }`}
+                />
+              )}
             </div>
+
             <div className="flex-1">
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-medium">
                   {achievement.secret && !unlocked ? "???" : achievement.title}
                 </h3>
-                <Badge className={`${getRarityColor(achievement.rarity)}`}>
-                  {achievement.rarity.charAt(0).toUpperCase() +
-                    achievement.rarity.slice(1)}
-                </Badge>
               </div>
 
-              <p className="text-sm text-white/70 mb-1">
+              <p className="text-sm text-white/70 mb-4">
                 {achievement.secret && !unlocked
                   ? "Esta conquista está oculta. Continue explorando para descobrir."
                   : achievement.description}
               </p>
+              <Badge className={`${getRarityColor(achievement.rarity)}`}>
+                {achievement.rarity.charAt(0).toUpperCase() +
+                  achievement.rarity.slice(1)}
+              </Badge>
             </div>
           </div>
         </CardContent>
@@ -131,7 +138,7 @@ const AchievementsPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-space-gradient">
+    <div className="min-h-screen flex flex-col bg-space-gradient poppins">
       <div className="space-stars"></div>
       <NavBar />
 
@@ -159,20 +166,28 @@ const AchievementsPage = () => {
               <TabsTrigger value="mastery">Maestria</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="lesson" className="space-y-4">
-              {lessonAchievements.map(renderAchievementCard)}
+            <TabsContent value="lesson">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {lessonAchievements.map(renderAchievementCard)}
+              </div>
             </TabsContent>
 
-            <TabsContent value="streak" className="space-y-4">
-              {streakAchievements.map(renderAchievementCard)}
+            <TabsContent value="streak">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {streakAchievements.map(renderAchievementCard)}
+              </div>
             </TabsContent>
 
-            <TabsContent value="exploration" className="space-y-4">
-              {explorationAchievements.map(renderAchievementCard)}
+            <TabsContent value="exploration">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {explorationAchievements.map(renderAchievementCard)}
+              </div>
             </TabsContent>
 
-            <TabsContent value="mastery" className="space-y-4">
-              {masteryAchievements.map(renderAchievementCard)}
+            <TabsContent value="mastery">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {masteryAchievements.map(renderAchievementCard)}
+              </div>
             </TabsContent>
           </Tabs>
         </div>

@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Medal, Star, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { correctImages, incorrectImages } from "@/data/feedbackImages";
 
 interface UserRankingDisplay {
   id: string;
@@ -44,8 +45,6 @@ const RankingPage = () => {
     queryFn: () => userService.getAll(),
   });
 
-  console.log(allUsers);
-
   useEffect(() => {
     document.title = "NumiVerse - Classificação";
 
@@ -54,7 +53,6 @@ const RankingPage = () => {
         .map((userData) => ({
           id: userData.id,
           name: userData.name || "Astronauta",
-          avatarUrl: userData.avatarUrl,
           xp: userData.xp || 0,
           streak: userData.streak,
         }))
@@ -91,6 +89,10 @@ const RankingPage = () => {
     }
   };
 
+  const allImages = [...correctImages, ...incorrectImages];
+  const randomIndex = Math.floor(Math.random() * allImages.length);
+  const feedbackImage = allImages[randomIndex];
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -117,12 +119,7 @@ const RankingPage = () => {
                   </div>
 
                   <Avatar className="h-12 w-12 mr-4 border-2 border-white/30">
-                    <AvatarImage
-                      src={
-                        currentUserRank.avatarUrl ||
-                        "/assets/nav/user-profile.png"
-                      }
-                    />
+                    <AvatarImage src={feedbackImage} />
                   </Avatar>
 
                   <div className="flex-1">
@@ -163,22 +160,17 @@ const RankingPage = () => {
                     {getRankIcon(user.rank)}
                   </div>
 
-                  <Avatar
-                    className={`h-10 w-10 mr-4 ${
-                      user.rank <= 3 ? "border-2 border-yellow-400" : ""
-                    }`}
-                  >
-                    <AvatarImage
-                      src={user.avatarUrl || "/assets/nav/user-profile.png"}
-                    />
+                  <Avatar className={`h-12 w-12 mr-4`}>
+                    <AvatarImage src={feedbackImage} />
                   </Avatar>
 
                   <div className="flex-1">
                     <div className="flex items-center">
-                      <span className="font-bold">{user.name}</span>
+                      <span className="font-bold text-lg">{user.name}</span>
                       {user.streak?.current > 0 && (
-                        <Badge className="ml-2 bg-blue-500/80">
-                          {user.streak.current} dias
+                        <Badge className="ml-2 bg-space-purple">
+                          {user.streak.current}{" "}
+                          {user.streak.current === 1 ? "dia" : "dias"}
                         </Badge>
                       )}
                     </div>

@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <h4 className="font-bold text-white mb-4">NumiVerse</h4>
-            <p className="text-md text-white/60">
+            <p className="text-sm text-white/60">
               Explore a matemática através de uma aventura interestelar.
               Aprenda, jogue e conquiste o universo dos números.
             </p>
@@ -16,7 +16,7 @@ const Footer = () => {
 
           <div>
             <h5 className="font-medium text-white mb-4">Explorar</h5>
-            <ul className="space-y-2 text-md">
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   to="/planets"
@@ -46,7 +46,7 @@ const Footer = () => {
 
           <div>
             <h5 className="font-medium text-white mb-4">Recursos</h5>
-            <ul className="space-y-2 text-md">
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   to="/help"
