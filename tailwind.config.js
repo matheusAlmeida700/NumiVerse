@@ -74,9 +74,6 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      fontFamily: {
-        exo: ['"League Spartan"', "sans-serif"],
-      },
       keyframes: {
         "accordion-down": {
           from: {
@@ -130,6 +127,7 @@ export default {
         "space-gradient": "linear-gradient(to bottom, #0f172a, #121738)",
         "planet-glow":
           "radial-gradient(circle at center, rgba(139, 92, 246, 0.7), rgba(139, 92, 246, 0) 70%)",
+        "purple-image": "url(/bg-purple.png)",
       },
     },
   },

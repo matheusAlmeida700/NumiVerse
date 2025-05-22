@@ -117,7 +117,7 @@ const NavBar = () => {
                       <div className="flex items-center gap-2">
                         <img src={Streak} className="w-8 h-8" alt="XP" />
                         <span className="text-xl">
-                          {userData?.streak ?? 0} dias
+                          {userData?.streak?.current ?? 0} dias
                         </span>
                       </div>
                     </div>

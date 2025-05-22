@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "../assets/NumiVerse.png";
-import ParticleBackground from "@/components/ParticleBackground";
 import Rocket from "@/components/Rocket";
 import { RocketIcon } from "lucide-react";
-import NumiMath from "../assets/home/numi-math.png";
-import Cellphones from "../assets/home/meteors.png";
-import Cellphone from "../assets/home/cards-cellphone.png";
-import NumiShip from "../assets/home/numi-ship.png";
-import NumiCell from "../assets/home/cellphone-end.png";
+import NumiMath from "@/assets/home/numi-math.png";
+import Cellphones from "@/assets/home/meteors.png";
+import Cellphone from "@/assets/home/cards-cellphone.png";
+import NumiShip from "@/assets/home/numi-ship.png";
+import NumiCell from "@/assets/home/cellphone-end.png";
+import Numi from "@/assets/home/numi-cellphone-end.png";
 import FeatureSection from "@/components/FeatureSection";
+import ParticleBackground from "@/components/ParticleBackground.jsx";
 
 const Index = () => {
   return (
@@ -59,10 +60,10 @@ const Index = () => {
               <Rocket />
             </div>
             <div className="w-full md:flex-1 flex flex-col justify-center px-6 md:px-10 md:pr-24 max-w-md md:max-w-none">
-              <h2 className="text-2xl md:text-4xl mb-12 font-bold text-space-purple">
+              <h2 className="text-2xl md:text-3xl mb-12 font-bold text-space-purple">
                 Divertido, acessível e poderoso.
               </h2>
-              <p className="text-xl text-white/80">
+              <p className="text-lg text-white/80">
                 Aprender matemática com o NumiVerse é como embarcar em uma
                 aventura intergaláctica! Com desafios rápidos, lições
                 envolventes e um mascote que te acompanha em cada passo, você
@@ -96,25 +97,30 @@ const Index = () => {
           />
         </section>
 
-        <div className="relative text-center mt-24 flex flex-col md:flex-row items-center justify-center">
-          <div className="w-full md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md md:max-w-none">
-            <h2 className="text-2xl md:text-4xl mb-12 font-bold text-space-purple">
+        <div className="relative h-screen text-center mt-24 flex flex-col md:flex-row items-center justify-center">
+          <img
+            className="absolute bottom-0 z-0"
+            src="/bg-purple.png"
+            alt="Purple Background"
+          />
+          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md md:max-w-none">
+            <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
               a
             </h2>
-            <p className="text-xl text-white/80">a</p>
+            <p className="text-xl">a</p>
           </div>
-          <div className="w-full md:flex-1 flex justify-center items-center">
+          <div className="w-full z-10 md:flex-1 flex justify-center items-center">
             <img
               src={NumiCell}
               alt="Numi Cellphone"
-              className="w-full h-64 md:h-96 object-contain"
+              className="w-full md:min-w-[900px]"
             />
           </div>
-          <div className="w-full md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md md:max-w-none">
-            <h2 className="text-2xl md:text-4xl mb-12 font-bold text-space-purple">
+          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md md:max-w-none">
+            <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
               a
             </h2>
-            <p className="text-xl text-white/80">a</p>
+            <p className="text-xl">a</p>
           </div>
         </div>
       </main>

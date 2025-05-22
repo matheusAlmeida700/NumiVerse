@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Lock, Star, Sparkles, Rocket } from "lucide-react";
+import { CheckCircle, Star, Sparkles, Rocket } from "lucide-react";
 import { getPlanetById } from "@/data/planetsData";
 import { getLessonsByPlanet } from "@/data/lessonData";
 import { isLessonCompleted, useUserData } from "@/hooks/useUserData";
@@ -58,11 +58,11 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
   const getDifficultyColor = (difficulty: string | undefined) => {
     switch (difficulty) {
-      case "beginner":
+      case "iniciante":
         return "bg-green-500/80";
-      case "intermediate":
+      case "intermediário":
         return "bg-yellow-500/80";
-      case "advanced":
+      case "avançado":
         return "bg-red-500/80";
       default:
         return "bg-blue-500/80";
@@ -119,8 +119,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {lessons.map((lesson, index) => {
             const isCompleted = checkLessonCompleted(lesson.id);
-            const isLocked =
-              index > 0 && !checkLessonCompleted(lessons[index - 1].id);
 
             return (
               <Card
@@ -138,11 +136,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                 <CardContent className="p-6 relative overflow-hidden h-full flex flex-col justify-between">
                   <div
                     className={`absolute inset-0 opacity-10 ${
-                      isCompleted
-                        ? "bg-green-500"
-                        : isLocked
-                        ? "bg-gray-500"
-                        : "bg-blue-500"
+                      isCompleted ? "bg-green-500" : "bg-blue-500"
                     } filter blur-md`}
                   ></div>
 
@@ -178,8 +172,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                     <div className="flex items-center">
                       {isCompleted ? (
                         <CheckCircle className="w-6 h-6 text-green-500" />
-                      ) : isLocked ? (
-                        <Lock className="w-6 h-6 text-white/40" />
                       ) : (
                         <Star className="w-6 h-6 text-yellow-400 animate-pulse-glow" />
                       )}
@@ -214,12 +206,9 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
                     <Button
                       onClick={() => handleStartLesson(lesson.id)}
-                      variant={isLocked ? "outline" : "default"}
-                      disabled={isLocked}
+                      variant={"default"}
                       className={`transition-all duration-300 ${
-                        isLocked
-                          ? "opacity-50"
-                          : isCompleted
+                        isCompleted
                           ? "bg-green-600 hover:bg-green-700"
                           : "bg-space-purple hover:bg-space-purple/80 hover:shadow-glow-purple"
                       }`}

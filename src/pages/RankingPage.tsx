@@ -8,12 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Medal, Star, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { correctImages, incorrectImages } from "@/data/feedbackImages";
+import BlankPicture from "@/assets/blank-picture.png";
 
 interface UserRankingDisplay {
   id: string;
   name: string;
-  avatarUrl?: string;
   xp: number;
   streak?: {
     current: number;
@@ -51,7 +50,7 @@ const RankingPage = () => {
     if (allUsers) {
       const sortedUsers = [...allUsers]
         .map((userData) => ({
-          id: userData.id,
+          id: userData._id,
           name: userData.name || "Astronauta",
           xp: userData.xp || 0,
           streak: userData.streak,
@@ -89,10 +88,6 @@ const RankingPage = () => {
     }
   };
 
-  const allImages = [...correctImages, ...incorrectImages];
-  const randomIndex = Math.floor(Math.random() * allImages.length);
-  const feedbackImage = allImages[randomIndex];
-
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -119,7 +114,7 @@ const RankingPage = () => {
                   </div>
 
                   <Avatar className="h-12 w-12 mr-4 border-2 border-white/30">
-                    <AvatarImage src={feedbackImage} />
+                    <AvatarImage src={BlankPicture} />
                   </Avatar>
 
                   <div className="flex-1">
@@ -161,7 +156,7 @@ const RankingPage = () => {
                   </div>
 
                   <Avatar className={`h-12 w-12 mr-4`}>
-                    <AvatarImage src={feedbackImage} />
+                    <AvatarImage src={BlankPicture} />
                   </Avatar>
 
                   <div className="flex-1">

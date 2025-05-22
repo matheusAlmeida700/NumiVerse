@@ -159,10 +159,9 @@ const AchievementsPage = () => {
           </div>
 
           <Tabs defaultValue="lesson" className="mb-8">
-            <TabsList className="grid grid-cols-4 mb-6">
+            <TabsList className="grid grid-cols-3 mb-6">
               <TabsTrigger value="lesson">Lições</TabsTrigger>
               <TabsTrigger value="streak">Sequências</TabsTrigger>
-              <TabsTrigger value="exploration">Exploração</TabsTrigger>
               <TabsTrigger value="mastery">Maestria</TabsTrigger>
             </TabsList>
 
@@ -175,12 +174,6 @@ const AchievementsPage = () => {
             <TabsContent value="streak">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {streakAchievements.map(renderAchievementCard)}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="exploration">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {explorationAchievements.map(renderAchievementCard)}
               </div>
             </TabsContent>
 
