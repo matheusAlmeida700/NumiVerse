@@ -106,8 +106,8 @@ const RankingPage = () => {
 
           {currentUserRank && (
             <div className="mb-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-space-purple/20 to-space-blue/20 z-0 animate-pulse"></div>
-              <Card className="bg-card/50 backdrop-blur-md border border-white/30">
+              <div className="absolute inset-0"></div>
+              <Card className="bg-card/50 backdrop-blur-md border border-white/30 bg-gradient-to-r from-space-purple/20 to-space-blue/20 z-0 animate-pulse">
                 <CardContent className="p-4 flex items-center">
                   <div className="w-10 h-10 flex items-center justify-center mr-4">
                     {getRankIcon(currentUserRank.rank)}

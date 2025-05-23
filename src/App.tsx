@@ -14,6 +14,8 @@ import SolarSystemPage from "./pages/SolarSystemPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import MusicPlayerButton from "./components/MusicPlayerButton";
 import RankingPage from "./pages/RankingPage";
+import QandAListPage from "./pages/QandA/QandAListPage";
+import QandADetailPage from "./pages/QandA/QandADetailPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,31 +35,17 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-
             <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/ranking" element={<RankingPage />} />
             <Route path="/solar" element={<SolarSystemPage />} />
             <Route path="/planet/:planetId" element={<PlanetView />} />
             <Route path="/game/:gameId" element={<GamePage />} />
             <Route path="/lesson/:lessonId" element={<LessonView />} />
+            <Route path="/qanda" element={<QandAListPage />} />
+            <Route path="/qanda/:id" element={<QandADetailPage />} />
 
-            <Route path="/achievements" element={<AchievementsPage />} />
-            <Route path="/ranking" element={<RankingPage />} />
-            <Route
-              path="/perfil"
-              element={
-                <div className="min-h-screen pt-24 pb-12 px-4">
-                  <div className="max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center mb-8">
-                      Perfil do Usuário
-                    </h1>
-                    <p className="text-center text-white/70">
-                      Detalhes completos do perfil estarão disponíveis em breve.
-                    </p>
-                  </div>
-                </div>
-              }
-            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
@@ -23,10 +23,17 @@ import Logo from "@/assets/numi/numi-ship.png";
 import Streak from "@/assets/nav/streak.png";
 import Xp from "@/assets/nav/xp.png";
 import UserProfile from "@/assets/nav/user-profile.png";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const NavBar = () => {
   const location = useLocation();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const { data: userData, refetch } = useUserData();
 
@@ -36,11 +43,16 @@ const NavBar = () => {
     { path: "/solar", label: "SISTEMA SOLAR" },
     { path: "/achievements", label: "CONQUISTAS" },
     { path: "/ranking", label: "RANKING" },
+    { path: "/qanda", label: "DÚVIDAS" },
   ];
 
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <nav className="fixed poppins top-0 left-0 right-0 z-50 bg-card/70 backdrop-blur-md border-b border-white/10 py-4 px-6">
@@ -120,6 +132,14 @@ const NavBar = () => {
                           {userData?.streak?.current ?? 0} dias
                         </span>
                       </div>
+                      <Button
+                        variant="ghost"
+                        className="flex items-center gap-2 text-white/70 hover:text-white justify-start px-0"
+                        onClick={handleLogout}
+                      >
+                        <LogOut size={18} />
+                        <span>Sair</span>
+                      </Button>
                     </div>
                   ) : (
                     <NavLink
@@ -223,11 +243,30 @@ const NavBar = () => {
               </>
             )}
 
-            <Link to={isAuthenticated ? "/perfil" : "/login"}>
-              <Avatar className="w-10 h-10 cursor-pointer hover:scale-110 hover:ring-space-purple transition-all">
-                <AvatarImage src={UserProfile || ""} />
-              </Avatar>
-            </Link>
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="w-10 h-10 cursor-pointer hover:scale-110 hover:ring-space-purple transition-all">
+                    <AvatarImage src={UserProfile || ""} />
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-card/95 border-white/10 backdrop-blur-md">
+                  <DropdownMenuItem
+                    className="cursor-pointer text-red-500 flex items-center gap-2 font-bold"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={16} />
+                    Sair
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth">
+                <Avatar className="w-10 h-10 cursor-pointer hover:scale-110 hover:ring-space-purple transition-all">
+                  <AvatarImage src={UserProfile || ""} />
+                </Avatar>
+              </Link>
+            )}
           </div>
         </div>
       </div>

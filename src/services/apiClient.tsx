@@ -1,3 +1,4 @@
+import { Answer, Post } from "@/types/post";
 import { QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient({
@@ -34,6 +35,19 @@ export const API_ENDPOINTS = {
   progress: (id: string) => `${API_BASE_URL}/user/${id}/progress`,
   achievements: (id: string) => `${API_BASE_URL}/user/${id}/achievements`,
   xp: (id: string) => `${API_BASE_URL}/user/${id}/xp`,
+  posts: `${API_BASE_URL}/post`,
+  post: (id: string) => `${API_BASE_URL}/post/${id}`,
+  postByTarget: (targetId: string) => `${API_BASE_URL}/post/target/${targetId}`,
+  createPost: `${API_BASE_URL}/post`,
+  updatePost: (id: string) => `${API_BASE_URL}/post/${id}`,
+  updatePostByTarget: (targetId: string) =>
+    `${API_BASE_URL}/post/target/${targetId}`,
+  deletePost: (id: string) => `${API_BASE_URL}/post/${id}`,
+  addAnswer: (postId: string) => `${API_BASE_URL}/post/${postId}/answer`,
+  updateAnswer: (postId: string, answerId: string) =>
+    `${API_BASE_URL}/post/${postId}/answer/${answerId}`,
+  deleteAnswer: (postId: string, answerId: string) =>
+    `${API_BASE_URL}/post/${postId}/answer/${answerId}`,
 };
 
 const DEFAULT_HEADERS = {
@@ -305,25 +319,152 @@ export const api = {
     },
   },
 
-  lessons: {
-    getAll: async () => {
-      return apiFetch("/lessons");
-    },
-    getById: async (id: string) => {
-      return apiFetch(`/lessons/${id}`);
-    },
-    completeLesson: async (
-      lessonId: string,
-      stats: {
-        correctAnswers: number;
-        totalQuestions: number;
+  getAllPost: async () => {
+    const url = API_ENDPOINTS.posts;
+
+    try {
+      const response = await apiFetch(url);
+      const items = response.entries;
+
+      if (!items || !Array.isArray(items)) {
+        console.error("Invalid response format from API");
+        return [];
       }
-    ) => {
-      return apiFetch(`/lessons/${lessonId}/complete`, {
+
+      return items;
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      throw error;
+    }
+  },
+
+  getPostById: async (id: string) => {
+    try {
+      if (!id) {
+        throw new Error("Invalid ID format");
+      }
+
+      const url = API_ENDPOINTS.post(id);
+      const response = await apiFetch(url);
+      const item = response.entry;
+
+      if (!item || !(item._id || item.id)) {
+        throw new Error("Item not found or invalid data format");
+      }
+
+      return item;
+    } catch (error) {
+      console.error(`Error fetching item with ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  createPost: async (data: Post) => {
+    const url = API_ENDPOINTS.posts;
+    try {
+      const response = await apiFetch(url, {
         method: "POST",
-        body: JSON.stringify(stats),
+        body: JSON.stringify(data),
       });
-    },
+
+      return response;
+    } catch (error) {
+      console.error("Error creating item:", error);
+      throw error;
+    }
+  },
+
+  updatePostById: async (id: string, updates: Post) => {
+    try {
+      if (!id) {
+        throw new Error("Invalid ID format");
+      }
+
+      const url = API_ENDPOINTS.updatePost(id);
+      const response = await apiFetch(url, {
+        method: "PUT",
+        body: JSON.stringify(updates),
+      });
+
+      return response;
+    } catch (error) {
+      console.error(`Error updating item with ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  deletePostById: async (id: string) => {
+    try {
+      if (!id) {
+        throw new Error("Invalid ID format");
+      }
+
+      const url = API_ENDPOINTS.deletePost(id);
+      await apiFetch(url, { method: "DELETE" });
+
+      return true;
+    } catch (error) {
+      console.error(`Error deleting item with ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  addAnswer: async (postId: string, data: Answer) => {
+    try {
+      if (!postId) {
+        throw new Error("Invalid Post ID");
+      }
+
+      const url = API_ENDPOINTS.addAnswer(postId);
+      const response = await apiFetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      return response;
+    } catch (error) {
+      console.error("Error adding answer:", error);
+      throw error;
+    }
+  },
+
+  updateAnswerById: async (
+    postId: string,
+    answerId: string,
+    updates: Answer
+  ) => {
+    try {
+      if (!postId || !answerId) {
+        throw new Error("Invalid IDs");
+      }
+
+      const url = API_ENDPOINTS.updateAnswer(postId, answerId);
+      const response = await apiFetch(url, {
+        method: "PUT",
+        body: JSON.stringify(updates),
+      });
+
+      return response;
+    } catch (error) {
+      console.error(`Error updating answer with ID ${answerId}:`, error);
+      throw error;
+    }
+  },
+
+  deleteAnswer: async (postId: string, answerId: string) => {
+    try {
+      if (!postId || !answerId) {
+        throw new Error("Invalid IDs");
+      }
+
+      const url = API_ENDPOINTS.deleteAnswer(postId, answerId);
+      const response = await apiFetch(url, { method: "DELETE" });
+
+      return response;
+    } catch (error) {
+      console.error("Error deleting answer:", error);
+      throw error;
+    }
   },
 };
 
