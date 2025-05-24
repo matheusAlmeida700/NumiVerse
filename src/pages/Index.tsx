@@ -4,60 +4,22 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "../assets/NumiVerse.png";
 import Rocket from "@/components/Rocket";
-import { RocketIcon } from "lucide-react";
+import { RocketIcon, User } from "lucide-react";
 import NumiMath from "@/assets/home/numi-math.png";
 import Cellphones from "@/assets/home/meteors.png";
 import Cellphone from "@/assets/home/cards-cellphone.png";
 import NumiShip from "@/assets/home/numi-ship.png";
-import NumiCell from "@/assets/home/cellphone-end.png";
-import InnerNumi from "@/assets/home/numi-cellphone-end.png";
+import NumiCell from "@/assets/home/numi-cellphone.png";
 import FeatureSection from "@/components/FeatureSection";
 import ParticleBackground from "@/components/ParticleBackground.jsx";
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 
 const Index = () => {
-  const cellRef = useRef(null);
-  const [showInnerImage, setShowInnerImage] = useState(false);
-  const hasShownRef = useRef(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (
-          entry.isIntersecting &&
-          entry.intersectionRatio >= 0.9 &&
-          !hasShownRef.current
-        ) {
-          setShowInnerImage(true);
-          hasShownRef.current = true;
-        }
-      },
-      {
-        threshold: Array(101)
-          .fill(0)
-          .map((_, i) => i / 100),
-      }
-    );
-
-    if (cellRef.current) {
-      observer.observe(cellRef.current);
-    }
-
-    return () => {
-      if (cellRef.current) {
-        observer.unobserve(cellRef.current);
-      }
-    };
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col bg-space-gradient relative">
       <ParticleBackground />
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="relative pt-24 px-4 flex items-center min-h-screen">
           <div className="max-w-6xl mx-auto text-center">
             <h1 className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-bold poppins">
@@ -82,6 +44,7 @@ const Index = () => {
                   variant="outline"
                   className="text-md text-white px-8 py-6 border-white/20 hover:bg-white/5 hover:scale-105 hover:shadow-lg border-2 transition-all"
                 >
+                  <User />
                   JÁ TENHO UMA CONTA
                 </Button>
               </Link>
@@ -89,14 +52,13 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Features */}
         <section className="max-w-7xl mx-auto">
           <div className="relative flex flex-col md:flex-row items-center justify-center md:h-[750px]">
             <div className="w-full md:flex-1 h-full">
               <Rocket />
             </div>
             <div className="w-full md:flex-1 flex flex-col justify-center px-6 md:px-10 md:pr-24 max-w-md md:max-w-none">
-              <h2 className="text-2xl md:text-3xl mb-12 font-bold text-space-purple">
+              <h2 className="text-2xl md:text-3xl mb-6 font-bold text-space-purple">
                 Divertido, acessível e poderoso.
               </h2>
               <p className="text-lg text-white/80">
@@ -133,64 +95,38 @@ const Index = () => {
           />
         </section>
 
-        <div className="relative h-screen mt-24 flex flex-col md:flex-row items-center justify-center text-center overflow-x-hidden">
-          {/* Fundo roxo */}
+        <div className="relative mt-56 text-white text-2xl px-8 md:text-4xl font-semibold z-20 text-center">
+          <h2>Descubra o cosmos da matemática com o Numi</h2>
+        </div>
+
+        <div className="relative mt-10 py-16 flex flex-col items-center justify-center text-center overflow-x-hidden">
           <img
-            className="absolute inset-0 object-cover w-full h-full z-0"
+            className="absolute w-full h-full object-cover bottom-0 z-0"
             src="/bg-purple.png"
             alt="Purple Background"
             aria-hidden="true"
           />
 
-          {/* Texto esquerdo */}
-          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md">
-            <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
-              a
-            </h2>
-            <p className="text-xl">a</p>
-          </div>
-
-          {/* Container do celular */}
-          <div
-            className="w-full z-10 md:flex-1 flex justify-center items-center relative overflow-hidden max-w-[800px]"
-            ref={cellRef}
-            style={{ minHeight: "600px" }} // Garante que o container tenha altura fixa pra não mudar layout
-          >
-            <img
-              src={NumiCell}
-              alt="Numi Cellphone"
-              className="w-full max-w-[800px] object-contain"
-              draggable={false}
-            />
-
-            {/* Imagem interna animada dentro do celular */}
-            {showInnerImage && (
-              <motion.img
-                src={InnerNumi}
-                alt="Inner Content"
-                className="absolute"
-                style={{
-                  top: "20%", // Ajuste conforme seu design
-                  left: "15%", // Ajuste conforme seu design
-                  width: "70%", // Diminuído para não ultrapassar
-                  height: "60%", // Diminuído proporcionalmente
-                  objectFit: "contain",
-                  pointerEvents: "none",
-                  willChange: "transform, opacity",
-                }}
-                initial={{ y: 20, opacity: 0 }} // Menor deslocamento para evitar scroll automático
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 120, damping: 10 }}
+          <div className="w-full flex flex-col md:flex-row items-center justify-center text-center overflow-x-hidden">
+            <div className="w-full z-10 flex justify-center relative mt-10 md:mt-0">
+              <img
+                src="/images/feedback/correct11.png"
+                alt="Numi Cellphone"
+                draggable={false}
               />
-            )}
-          </div>
+            </div>
 
-          {/* Texto direito */}
-          <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md">
-            <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
-              a
-            </h2>
-            <p className="text-xl">a</p>
+            <div className="w-full z-10 flex justify-center relative mt-10 md:mt-0">
+              <img src={NumiCell} alt="Numi Cellphone" draggable={false} />
+            </div>
+
+            <div className="w-full z-10 flex justify-center relative mt-10 md:mt-0">
+              <img
+                src="/images/feedback/correct12.png"
+                alt="Numi Cellphone"
+                draggable={false}
+              />
+            </div>
           </div>
         </div>
       </main>

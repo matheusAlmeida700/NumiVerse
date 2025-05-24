@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import { useUserData } from "@/hooks/useUserData";
 import LoadingPage from "./LoadingPage";
 import { Trophy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const AchievementsPage = () => {
   const [lessonAchievements, setLessonAchievements] = useState<Achievement[]>(
@@ -28,9 +29,20 @@ const AchievementsPage = () => {
   );
   const [unlockedCount, setUnlockedCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingPage, setisLoadingPage] = useState(true);
+  const { toast } = useToast();
 
-  const { data: userData } = useUserData();
+  const { data: userData, isLoading, error, refetch } = useUserData();
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Falha ao carregar conquistas",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
+  }, [error]);
 
   useEffect(() => {
     document.title = "NumiVerse - Conquistas";
@@ -47,15 +59,15 @@ const AchievementsPage = () => {
     loadAchievements();
 
     setTimeout(() => {
-      setIsLoading(false);
+      setisLoadingPage(false);
     }, 500);
   }, []);
 
   useEffect(() => {
-    if (!isLoading && userData?.achievements) {
+    if (!isLoadingPage && userData?.achievements) {
       setUnlockedCount(userData.achievements.length);
     }
-  }, [userData, isLoading]);
+  }, [userData, isLoadingPage]);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -124,7 +136,7 @@ const AchievementsPage = () => {
     );
   };
 
-  if (isLoading) {
+  if (isLoadingPage) {
     return <LoadingPage />;
   }
 

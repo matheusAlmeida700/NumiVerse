@@ -10,6 +10,8 @@ import { Trophy, Medal, Star, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import BlankPicture from "@/assets/blank-picture.png";
 import LoadingPage from "./LoadingPage";
+import { useUser } from "@/hooks/useUserData";
+import { useToast } from "@/hooks/use-toast";
 
 interface UserRankingDisplay {
   id: string;
@@ -27,12 +29,20 @@ const RankingPage = () => {
   const [currentUserRank, setCurrentUserRank] =
     useState<UserRankingDisplay | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
   const { user } = useAuth();
 
-  const { data: allUsers } = useQuery({
-    queryKey: ["users"],
-    queryFn: () => userService.getAll(),
-  });
+  const { data: allUsers, error } = useUser();
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Falha ao carregar ranking",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
+  }, [error]);
 
   useEffect(() => {
     document.title = "NumiVerse - Classificação";
