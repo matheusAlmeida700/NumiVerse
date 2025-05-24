@@ -222,62 +222,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
           })}
         </div>
       </div>
-
-      <div className="mb-12">
-        <h2
-          className={`text-2xl md:text-3xl font-bold mb-6 text-white flex items-center gap-2 transition-all duration-700 delay-300 ${
-            loaded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
-          }`}
-        >
-          <Rocket className="w-6 h-6 text-blue-400" /> Jogos
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card
-            className={`bg-card/50 backdrop-blur-sm border border-white/10 transform transition-all duration-500 delay-400 hover:scale-102 hover:shadow-lg ${
-              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <CardContent className="p-6 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/5 animate-pulse-glow"></div>
-              <h3 className="text-xl font-medium mb-2 relative z-10">
-                Equações Mágicas
-              </h3>
-              <p className="text-sm text-white/70 mb-4 relative z-10">
-                Resolva equações em tempo real e salve o planeta da invasão!
-              </p>
-              <Button
-                onClick={() => navigate(`/game/equation-game`)}
-                className="bg-space-blue hover:bg-space-blue/80 transition-all duration-300 hover:shadow-glow-blue relative z-10"
-              >
-                Jogar
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card
-            className={`bg-card/50 backdrop-blur-sm border border-white/10 transform transition-all duration-500 delay-500 hover:scale-102 ${
-              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <CardContent className="p-6 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/10 to-slate-500/5"></div>
-              <h3 className="text-xl font-medium mb-2 relative z-10">
-                Quebra-Cabeças Numéricos
-              </h3>
-              <p className="text-sm text-white/70 mb-4 relative z-10">
-                Organize os números em ordem para resolver o enigma estelar.
-              </p>
-              <Button
-                disabled
-                variant="outline"
-                className="opacity-50 relative z-10 border-white/20 bg-white/5"
-              >
-                Em breve
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
     </div>
   );
 };

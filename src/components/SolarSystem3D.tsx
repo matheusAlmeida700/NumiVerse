@@ -188,7 +188,7 @@ const SolarSystem3D = () => {
       const orbitMaterial = new THREE.LineBasicMaterial({
         color: 0x666666,
         transparent: false,
-        opacity: 0.4,
+        opacity: 0.3,
         linewidth: 1,
       });
       const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
@@ -211,7 +211,7 @@ const SolarSystem3D = () => {
           planetTexture = textureLoader.load("/textures/uranus-map.jpg");
           break;
         default:
-          planetTexture = textureLoader.load("/textures/mercury-map.jpg");
+          planetTexture = textureLoader.load("/textures/uranus-map.jpg");
       }
 
       const planetSize = planet.size / 3 + 10;
@@ -219,7 +219,7 @@ const SolarSystem3D = () => {
 
       const planetMaterial = new THREE.MeshStandardMaterial({
         map: planetTexture,
-        metalness: 0.1,
+        metalness: 1,
         roughness: 0.7,
         emissive: 0xffffff,
         emissiveIntensity: 0.1,

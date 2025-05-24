@@ -108,7 +108,7 @@ const Index = () => {
           />
 
           <div className="w-full flex flex-col md:flex-row items-center justify-center text-center overflow-x-hidden">
-            <div className="w-full z-10 flex justify-center relative mt-10 md:mt-0">
+            <div className="w-44 md:w-full z-10 flex justify-center relative mt-10 md:mt-0">
               <img
                 src="/images/feedback/correct11.png"
                 alt="Numi Cellphone"
@@ -116,11 +116,11 @@ const Index = () => {
               />
             </div>
 
-            <div className="w-full z-10 flex justify-center relative mt-10 md:mt-0">
+            <div className="w-80 md:w-full z-10 flex justify-center relative mt-10 md:mt-0">
               <img src={NumiCell} alt="Numi Cellphone" draggable={false} />
             </div>
 
-            <div className="w-full z-10 flex justify-center relative mt-10 md:mt-0">
+            <div className="w-52 md:w-full z-10 flex justify-center relative mt-10 md:mt-0">
               <img
                 src="/images/feedback/correct12.png"
                 alt="Numi Cellphone"

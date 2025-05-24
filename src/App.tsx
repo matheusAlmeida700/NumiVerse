@@ -16,6 +16,7 @@ import MusicPlayerButton from "./components/MusicPlayerButton";
 import RankingPage from "./pages/RankingPage";
 import QandAListPage from "./pages/QandA/QandAListPage";
 import QandADetailPage from "./pages/QandA/QandADetailPage";
+import GamesPage from "./pages/GamesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,8 @@ const App = () => (
             <Route path="/lesson/:lessonId" element={<LessonView />} />
             <Route path="/qanda" element={<QandAListPage />} />
             <Route path="/qanda/:id" element={<QandADetailPage />} />
+            <Route path="/games" element={<GamesPage />} />
+            <Route path="/game/:gameId" element={<GamePage />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

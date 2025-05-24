@@ -1,8 +1,8 @@
-import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { correctImages } from "@/data/feedbackImages";
+import { correctImages, incorrectImages } from "@/data/feedbackImages";
 import Xp from "@/assets/nav/xp.png";
+import { useEffect, useState } from "react";
 
 interface ResultsPanelProps {
   results: {
@@ -15,10 +15,16 @@ interface ResultsPanelProps {
 }
 
 const ResultsPanel = ({ results, onRetry, onFinish }: ResultsPanelProps) => {
-  const randomImageIndex = Math.floor(Math.random() * correctImages.length);
-  const feedbackImage = correctImages[randomImageIndex];
-
   const percentage = Math.round((results.correct / results.total) * 100);
+
+  const [feedbackImage, setFeedbackImage] = useState<string>("");
+
+  useEffect(() => {
+    const allImages = [...correctImages, ...incorrectImages];
+    const randomIndex = Math.floor(Math.random() * allImages.length);
+    setFeedbackImage(allImages[randomIndex]);
+  }, []);
+
   let motivationalMessage = "";
 
   if (percentage >= 90) {

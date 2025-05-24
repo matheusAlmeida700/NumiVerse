@@ -30,17 +30,30 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
 
 const NavBar = () => {
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
+  const { toast } = useToast();
 
-  const { data: userData, refetch } = useUserData();
+  const { data: userData, error, refetch } = useUserData();
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Falha ao carregar dados do usuário",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
+  }, [error]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
     { path: "/solar", label: "SISTEMA SOLAR" },
+    { path: "/games", label: "JOGOS" },
     { path: "/achievements", label: "CONQUISTAS" },
     { path: "/ranking", label: "RANKING" },
     { path: "/qanda", label: "DÚVIDAS" },
@@ -134,7 +147,7 @@ const NavBar = () => {
                       </div>
                       <Button
                         variant="ghost"
-                        className="flex items-center gap-2 text-white/70 hover:text-white justify-start px-0"
+                        className="flex items-center gap-2 text-red-500 hover:text-white justify-start px-2 font-bold"
                         onClick={handleLogout}
                       >
                         <LogOut size={18} />

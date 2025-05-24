@@ -24,7 +24,7 @@ const Rockets = ({ isMobile }) => {
       <primitive
         object={scene}
         scale={isMobile ? 7 : 8}
-        position={isMobile ? [0, -1.9, 0] : [0, -1, 0]}
+        position={isMobile ? [0, -1.8, 0] : [0, -1, 0]}
         rotation={[0, 400, 0]}
       />
     </group>
