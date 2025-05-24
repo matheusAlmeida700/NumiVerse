@@ -13,7 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { postService } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   text: z
@@ -30,6 +30,7 @@ interface AnswerFormProps {
 const AnswerForm = ({ postId, onSuccess }: AnswerFormProps) => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,7 +41,11 @@ const AnswerForm = ({ postId, onSuccess }: AnswerFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!user?.id) {
-      toast.error("Você precisa estar logado para responder");
+      toast({
+        title: "Erro ao adicionar resposta",
+        description: "Você precisa estar logado para responder.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -54,7 +59,11 @@ const AnswerForm = ({ postId, onSuccess }: AnswerFormProps) => {
       onSuccess();
     } catch (error) {
       console.error("Error adding answer:", error);
-      toast.error("Erro ao adicionar resposta");
+      toast({
+        title: "Erro ao adicionar resposta",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }

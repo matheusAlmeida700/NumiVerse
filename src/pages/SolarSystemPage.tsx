@@ -9,7 +9,7 @@ const SolarSystemPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoaded(true);
-    }, 500);
+    }, 300);
     return () => clearTimeout(timer);
   }, []);
 
@@ -18,6 +18,12 @@ const SolarSystemPage = () => {
       <NavBar />
 
       <main className="flex-1 relative">
+        {!loaded && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+          </div>
+        )}
+
         <div className="absolute inset-0">
           <SolarSystem3D />
         </div>

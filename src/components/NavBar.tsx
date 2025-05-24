@@ -251,6 +251,9 @@ const NavBar = () => {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-card/95 border-white/10 backdrop-blur-md">
+                  <DropdownMenuItem className="items-center gap-2 font-bold focus:bg-trasparent">
+                    {userData?.name ?? ""}
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer text-red-500 flex items-center gap-2 font-bold"
                     onClick={handleLogout}

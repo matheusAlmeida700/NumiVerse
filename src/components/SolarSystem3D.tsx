@@ -5,6 +5,19 @@ import { useToast } from "@/components/ui/use-toast";
 import { planets } from "@/data/planetsData";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
+
+const LoadingPage = () => (
+  <div className="min-h-screen flex flex-col bg-space-gradient">
+    <div className="space-stars"></div>
+    <NavBar />
+    <main className="flex-1 pt-24 pb-16 container mx-auto px-4 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+    </main>
+    <Footer />
+  </div>
+);
 
 const SolarSystem3D = () => {
   const navigate = useNavigate();

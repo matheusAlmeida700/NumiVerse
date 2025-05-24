@@ -1,44 +1,36 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { MessageCircleQuestion, PlusCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { postService } from "@/services/api";
 import NavBar from "@/components/NavBar";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import PostForm from "@/components/QandA/PostForm";
+import usePost from "@/hooks/usePost";
+import { Post } from "@/types/post";
 
 const QandAListPage = () => {
   const { isAuthenticated } = useAuth();
   const [showForm, setShowForm] = useState(false);
+  const { toast } = useToast();
 
-  const {
-    data: posts = [],
-    isLoading,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: ["posts"],
-    queryFn: postService.getAll,
-  });
+  const { data: posts = [], isLoading, error, refetch } = usePost();
 
   useEffect(() => {
     if (error) {
-      toast.error("Falha ao carregar dúvidas", {
-        description: "Tente novamente mais tarde",
+      toast({
+        title: "Falha ao carregar dúvidas",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
       });
     }
   }, [error]);
@@ -46,7 +38,10 @@ const QandAListPage = () => {
   const handlePostCreated = () => {
     setShowForm(false);
     refetch();
-    toast.success("Dúvida postada com sucesso!");
+    toast({
+      title: "Dúvida postada",
+      description: "Sua dúvida foi postada com sucesso",
+    });
   };
 
   const getCategoryName = (category: string) => {
@@ -75,12 +70,14 @@ const QandAListPage = () => {
 
   return (
     <div className="min-h-screen bg-space-gradient">
+      <div className="space-stars"></div>
       <NavBar />
 
       <div className="max-w-5xl mx-auto pt-32 px-4 pb-16">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="flex items-center text-3xl font-bold text-white mb-2">
+              <MessageCircleQuestion className="w-10 h-10 text-space-purple mr-3" />
               Dúvidas da Comunidade
             </h1>
             <p className="text-white/80">
@@ -138,7 +135,7 @@ const QandAListPage = () => {
           </Card>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {posts.map((post: any) => (
+            {posts.map((post: Post) => (
               <Link key={post._id} to={`/qanda/${post._id}`}>
                 <Card className="border-white/10 bg-card/80 backdrop-blur-sm hover:bg-card/90 transition-all hover:scale-[1.01]">
                   <CardHeader className="pb-2">

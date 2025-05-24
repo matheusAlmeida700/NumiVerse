@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trophy, Medal, Star, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import BlankPicture from "@/assets/blank-picture.png";
+import LoadingPage from "./LoadingPage";
 
 interface UserRankingDisplay {
   id: string;
@@ -20,17 +21,6 @@ interface UserRankingDisplay {
   };
   rank: number;
 }
-
-const LoadingPage = () => (
-  <div className="min-h-screen flex flex-col bg-space-gradient">
-    <div className="space-stars"></div>
-    <NavBar />
-    <main className="flex-1 pt-24 pb-16 container mx-auto px-4 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-    </main>
-    <Footer />
-  </div>
-);
 
 const RankingPage = () => {
   const [usersRanking, setUsersRanking] = useState<UserRankingDisplay[]>([]);
@@ -100,7 +90,7 @@ const RankingPage = () => {
       <main className="flex-1 pt-32 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-center mb-8">
-            <Award className="w-8 h-8 text-yellow-400 mr-3" />
+            <Award className="w-12 h-12 text-yellow-400 mr-3" />
             <h1 className="text-3xl md:text-4xl font-bold">Classificação</h1>
           </div>
 
@@ -113,7 +103,7 @@ const RankingPage = () => {
                     {getRankIcon(currentUserRank.rank)}
                   </div>
 
-                  <Avatar className="h-12 w-12 mr-4 border-2 border-white/30">
+                  <Avatar className="h-12 w-12 mr-4">
                     <AvatarImage src={BlankPicture} />
                   </Avatar>
 

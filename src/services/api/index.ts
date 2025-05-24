@@ -41,6 +41,8 @@ export const postService = {
   create: (data: Post) => api.createPost(data),
   update: (id: string, updates: Post) => api.updatePostById(id, updates),
   delete: (id: string) => api.deletePostById(id),
+  getAnswer: (postId: string, answerId: string) =>
+    api.getAnswerById(postId, answerId),
   addAnswer: (postId: string, data: Answer) => api.addAnswer(postId, data),
   updateAnswer: (postId: string, answerId: string, updates: Answer) =>
     api.updateAnswerById(postId, answerId, updates),

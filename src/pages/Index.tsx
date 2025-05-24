@@ -19,16 +19,24 @@ import { motion } from "framer-motion";
 const Index = () => {
   const cellRef = useRef(null);
   const [showInnerImage, setShowInnerImage] = useState(false);
+  const hasShownRef = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio === 1) {
+        if (
+          entry.isIntersecting &&
+          entry.intersectionRatio >= 0.9 &&
+          !hasShownRef.current
+        ) {
           setShowInnerImage(true);
+          hasShownRef.current = true;
         }
       },
       {
-        threshold: 1.0,
+        threshold: Array(101)
+          .fill(0)
+          .map((_, i) => i / 100),
       }
     );
 
@@ -42,6 +50,7 @@ const Index = () => {
       }
     };
   }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-space-gradient relative">
       <ParticleBackground />
@@ -124,13 +133,16 @@ const Index = () => {
           />
         </section>
 
-        <div className="relative h-screen mt-24 flex flex-col md:flex-row items-center justify-center text-center">
+        <div className="relative h-screen mt-24 flex flex-col md:flex-row items-center justify-center text-center overflow-x-hidden">
+          {/* Fundo roxo */}
           <img
-            className="absolute bottom-0 z-0"
+            className="absolute inset-0 object-cover w-full h-full z-0"
             src="/bg-purple.png"
             alt="Purple Background"
+            aria-hidden="true"
           />
 
+          {/* Texto esquerdo */}
           <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md">
             <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
               a
@@ -138,28 +150,42 @@ const Index = () => {
             <p className="text-xl">a</p>
           </div>
 
+          {/* Container do celular */}
           <div
-            className="w-full z-10 md:flex-1 flex justify-center items-center relative"
+            className="w-full z-10 md:flex-1 flex justify-center items-center relative overflow-hidden max-w-[800px]"
             ref={cellRef}
+            style={{ minHeight: "600px" }} // Garante que o container tenha altura fixa pra não mudar layout
           >
             <img
               src={NumiCell}
               alt="Numi Cellphone"
-              className="w-full md:min-w-[900px]"
+              className="w-full max-w-[800px] object-contain"
+              draggable={false}
             />
 
+            {/* Imagem interna animada dentro do celular */}
             {showInnerImage && (
               <motion.img
                 src={InnerNumi}
                 alt="Inner Content"
-                className="absolute w-2/3 md:w-1/2"
-                initial={{ y: 100, opacity: 0 }}
+                className="absolute"
+                style={{
+                  top: "20%", // Ajuste conforme seu design
+                  left: "15%", // Ajuste conforme seu design
+                  width: "70%", // Diminuído para não ultrapassar
+                  height: "60%", // Diminuído proporcionalmente
+                  objectFit: "contain",
+                  pointerEvents: "none",
+                  willChange: "transform, opacity",
+                }}
+                initial={{ y: 20, opacity: 0 }} // Menor deslocamento para evitar scroll automático
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 120, damping: 10 }}
               />
             )}
           </div>
 
+          {/* Texto direito */}
           <div className="w-full z-10 md:flex-1 flex flex-col justify-center px-6 md:px-8 max-w-md">
             <h2 className="text-2xl md:text-4xl font-bold text-space-purple">
               a

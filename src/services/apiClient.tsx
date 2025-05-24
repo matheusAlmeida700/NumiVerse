@@ -43,6 +43,8 @@ export const API_ENDPOINTS = {
   updatePostByTarget: (targetId: string) =>
     `${API_BASE_URL}/post/target/${targetId}`,
   deletePost: (id: string) => `${API_BASE_URL}/post/${id}`,
+  getAnswer: (postId: string, answerId: string) =>
+    `${API_BASE_URL}/post/${postId}/answer/${answerId}`,
   addAnswer: (postId: string) => `${API_BASE_URL}/post/${postId}/answer`,
   updateAnswer: (postId: string, answerId: string) =>
     `${API_BASE_URL}/post/${postId}/answer/${answerId}`,
@@ -405,6 +407,24 @@ export const api = {
       return true;
     } catch (error) {
       console.error(`Error deleting item with ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  getAnswerById: async (postId: string, answerId: string) => {
+    try {
+      if (!postId || !answerId) {
+        throw new Error("Invalid IDs");
+      }
+
+      const url = API_ENDPOINTS.getAnswer(postId, answerId);
+      const response = await apiFetch(url, {
+        method: "GET",
+      });
+
+      return response;
+    } catch (error) {
+      console.error(`Error fetching answer with ID ${answerId}:`, error);
       throw error;
     }
   },

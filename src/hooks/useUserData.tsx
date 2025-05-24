@@ -13,6 +13,20 @@ export function useUserData() {
   });
 }
 
+export const useUser = (id?: string) => {
+  const isFetchingSingle = !!id;
+
+  const query = useQuery({
+    queryKey: isFetchingSingle ? ["user", id] : ["users"],
+    queryFn: isFetchingSingle
+      ? () => userService.getById(id!)
+      : userService.getAll,
+    enabled: isFetchingSingle ? !!id : true,
+  });
+
+  return query;
+};
+
 export const useUpdateProgress = () => {
   const queryClient = useQueryClient();
 

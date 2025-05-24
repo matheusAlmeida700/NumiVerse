@@ -10,17 +10,8 @@ import {
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { useUserData } from "@/hooks/useUserData";
-
-const LoadingPage = () => (
-  <div className="min-h-screen flex flex-col bg-space-gradient">
-    <div className="space-stars"></div>
-    <NavBar />
-    <main className="flex-1 pt-24 pb-16 container mx-auto px-4 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-    </main>
-    <Footer />
-  </div>
-);
+import LoadingPage from "./LoadingPage";
+import { Trophy } from "lucide-react";
 
 const AchievementsPage = () => {
   const [lessonAchievements, setLessonAchievements] = useState<Achievement[]>(
@@ -144,9 +135,12 @@ const AchievementsPage = () => {
 
       <main className="flex-1 pt-32 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center">
-            Conquistas
-          </h1>
+          <div className="flex items-end justify-center mb-8">
+            <Trophy className="w-12 h-12 mr-3 text-amber-500" />
+            <h1 className="text-3xl md:text-4xl font-bold text-center">
+              Conquistas
+            </h1>
+          </div>
           <p className="text-white/70 text-center mb-3">
             {unlockedCount} de {totalCount} conquistas desbloqueadas
           </p>

@@ -21,7 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { postService } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   category: z.enum([
@@ -46,6 +46,7 @@ interface PostFormProps {
 const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,7 +58,11 @@ const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!user?.id) {
-      toast.error("Você precisa estar logado para postar uma dúvida");
+      toast({
+        title: "Erro ao postar dúvida",
+        description: "Você precisa estar logado para postar uma dúvida.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -71,7 +76,11 @@ const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
       onSuccess();
     } catch (error) {
       console.error("Error creating post:", error);
-      toast.error("Erro ao criar postagem");
+      toast({
+        title: "Erro ao criar postagem",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }
