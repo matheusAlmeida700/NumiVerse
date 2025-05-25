@@ -28,7 +28,7 @@ const QandAListPage = () => {
   useEffect(() => {
     if (error) {
       toast({
-        title: "Falha ao carregar dúvidas",
+        title: "Erro ao carregar dúvidas",
         description: "Tente novamente mais tarde.",
         variant: "destructive",
       });

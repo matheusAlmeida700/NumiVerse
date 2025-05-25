@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
-import { Grid3X3, RotateCcw, Trophy, Shuffle } from "lucide-react";
+import { Grid3X3, Trophy, Shuffle } from "lucide-react";
 
 interface SlidingPuzzleGameProps {
   onComplete: (score: number) => void;
@@ -21,7 +21,6 @@ const SlidingPuzzleGame = ({ onComplete }: SlidingPuzzleGameProps) => {
 
   const initializeBoard = () => {
     let newBoard = [...winningBoard];
-    // Shuffle the board
     for (let i = 0; i < 1000; i++) {
       const emptyIndex = newBoard.indexOf(0);
       const validMoves = getValidMoves(emptyIndex);
@@ -42,10 +41,10 @@ const SlidingPuzzleGame = ({ onComplete }: SlidingPuzzleGameProps) => {
     const row = Math.floor(emptyIndex / 4);
     const col = emptyIndex % 4;
 
-    if (row > 0) validMoves.push(emptyIndex - 4); // Up
-    if (row < 3) validMoves.push(emptyIndex + 4); // Down
-    if (col > 0) validMoves.push(emptyIndex - 1); // Left
-    if (col < 3) validMoves.push(emptyIndex + 1); // Right
+    if (row > 0) validMoves.push(emptyIndex - 4);
+    if (row < 3) validMoves.push(emptyIndex + 4);
+    if (col > 0) validMoves.push(emptyIndex - 1);
+    if (col < 3) validMoves.push(emptyIndex + 1);
 
     return validMoves;
   };

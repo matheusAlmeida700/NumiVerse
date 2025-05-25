@@ -107,7 +107,7 @@ const Index = () => {
             aria-hidden="true"
           />
 
-          <div className="w-full flex flex-col md:flex-row items-center justify-center text-center overflow-x-hidden">
+          <div className="w-full flex flex-col md:flex-row items-center justify-center text-center floating overflow-x-hidden">
             <div className="w-44 md:w-full z-10 flex justify-center relative mt-10 md:mt-0">
               <img
                 src="/images/feedback/correct11.png"

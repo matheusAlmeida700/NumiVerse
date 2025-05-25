@@ -37,7 +37,7 @@ const RankingPage = () => {
   useEffect(() => {
     if (error) {
       toast({
-        title: "Falha ao carregar ranking",
+        title: "Erro ao carregar ranking",
         description: "Tente novamente mais tarde.",
         variant: "destructive",
       });

@@ -52,7 +52,7 @@ const QandADetailPage = () => {
     if (postError) {
       toast({
         title: "Erro ao carregar",
-        description: "Falha ao carregar detalhes da dúvida",
+        description: "Erro ao carregar detalhes da dúvida",
         variant: "destructive",
       });
       navigate("/qanda");

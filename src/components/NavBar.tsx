@@ -42,7 +42,7 @@ const NavBar = () => {
   useEffect(() => {
     if (error) {
       toast({
-        title: "Falha ao carregar dados do usuário",
+        title: "Erro ao carregar dados do usuário",
         description: "Tente novamente mais tarde.",
         variant: "destructive",
       });

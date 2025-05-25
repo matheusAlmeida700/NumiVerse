@@ -49,16 +49,11 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
     },
     {
       id: 3,
-      question:
-        "Três deusas estão em um templo. Uma sempre fala a verdade, uma sempre mente, e uma às vezes fala a verdade e às vezes mente. Você pode fazer três perguntas de sim/não para descobrir qual é qual. Qual é a estratégia?",
-      answer: "perguntar indiretamente",
-      hints: [
-        "Use perguntas que se referenciem mutuamente",
-        "Pergunte o que uma deusa diria sobre outra",
-        "A estratégia envolve usar as respostas para eliminar possibilidades",
-      ],
-      difficulty: "hard",
-      category: "Lógica",
+      question: "O que tem pés, mas não anda?",
+      answer: "mesa",
+      hints: ["Fica parada", "Tem quatro pés", "Está na sala"],
+      difficulty: "easy",
+      category: "Objeto",
     },
     {
       id: 4,
@@ -97,6 +92,114 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
       ],
       difficulty: "easy",
       category: "Conceito",
+    },
+    {
+      id: 7,
+      question: "Quanto é 2 + 2 × 2?",
+      answer: "6",
+      hints: [
+        "Siga a ordem das operações",
+        "Multiplicação vem antes",
+        "Não é 8",
+      ],
+      difficulty: "easy",
+      category: "Matemática",
+    },
+    {
+      id: 8,
+      question: "O que sempre sobe, mas nunca desce?",
+      answer: "idade",
+      hints: ["Todos têm", "Aumenta com o tempo", "Não diminui"],
+      difficulty: "easy",
+      category: "Conceito",
+    },
+    {
+      id: 9,
+      question: "O que você quebra só de falar?",
+      answer: "silêncio",
+      hints: ["É invisível", "Depende de som", "Você ouve"],
+      difficulty: "easy",
+      category: "Conceito",
+    },
+    {
+      id: 10,
+      question: "Qual número falta: 1, 4, 9, 16, ?, 36",
+      answer: "25",
+      hints: ["Quadrados perfeitos", "5 ao quadrado", "Segue a sequência"],
+      difficulty: "medium",
+      category: "Matemática",
+    },
+    {
+      id: 11,
+      question: "Qual é o próximo número da sequência: 2, 3, 5, 9, 17, ?",
+      answer: "33",
+      hints: [
+        "Observe a diferença entre os números",
+        "A diferença entre os termos também está crescendo",
+        "A sequência dobra e subtrai 1",
+      ],
+      difficulty: "medium",
+      category: "Matemática",
+    },
+    {
+      id: 12,
+      question:
+        "Estou cheio de buracos, mas ainda consigo segurar água. O que sou?",
+      answer: "esponja",
+      hints: ["Usado na pia", "Macio", "Absorve"],
+      difficulty: "medium",
+      category: "Objeto",
+    },
+    {
+      id: 13,
+      question:
+        "O pai de Maria tem cinco filhas: Nana, Nene, Nini, Nono. Qual é o nome da quinta filha?",
+      answer: "Maria",
+      hints: [
+        "Está na primeira frase",
+        "A pergunta induz ao erro",
+        "Leia com atenção",
+      ],
+      difficulty: "easy",
+      category: "Pegadinha",
+    },
+    {
+      id: 14,
+      question:
+        "Tenho chaves, mas não tranco nada. Tenho espaço, mas não há nada dentro. Posso te deixar preso, mas não sou uma cela. O que sou?",
+      answer: "teclado",
+      hints: [
+        "É um objeto que você usa diariamente",
+        "Tem letras, mas não escreve sozinho",
+        "Está ligado a tecnologia",
+      ],
+      difficulty: "easy",
+      category: "Objeto",
+    },
+    {
+      id: 15,
+      question:
+        "Se você me tem, quer me compartilhar. Se me compartilha, não me tem. O que sou?",
+      answer: "segredo",
+      hints: ["É confidencial", "Só você sabe", "Pode ser contado"],
+      difficulty: "medium",
+      category: "Conceito",
+    },
+    {
+      id: 16,
+      question: "Tem asas, mas não voa. O que é?",
+      answer: "avião",
+      hints: ["É máquina", "Depende de piloto", "Não voa sozinho"],
+      difficulty: "easy",
+      category: "Objeto",
+    },
+    {
+      id: 17,
+      question: "O que tem linhas, mas não escreve?",
+      answer: "zebra",
+      hints: ["É animal", "Tem listras", "Corre rápido"],
+      difficulty: "easy",
+      category: "Animal",
     },
   ]);
 

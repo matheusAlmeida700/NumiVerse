@@ -37,7 +37,7 @@ const AchievementsPage = () => {
   useEffect(() => {
     if (error) {
       toast({
-        title: "Falha ao carregar conquistas",
+        title: "Erro ao carregar conquistas",
         description: "Tente novamente mais tarde.",
         variant: "destructive",
       });
