@@ -5,11 +5,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, Trophy, Brain } from "lucide-react";
 
-interface LogicRiddlesGameProps {
+export interface LogicRiddlesGameProps {
   onComplete: (score: number) => void;
 }
 
-interface Riddle {
+export interface Riddle {
   id: number;
   question: string;
   answer: string;
@@ -37,33 +37,33 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
     {
       id: 2,
       question:
-        "Um homem vive no 20º andar de um prédio. Todo dia ele pega o elevador até o térreo. Quando volta, se estiver chovendo ou se houver outras pessoas no elevador, ele vai direto ao 20º andar. Caso contrário, ele vai ao 10º andar e sobe o resto a pé. Por quê?",
-      answer: "anão",
+        "Em um carro há quatro romanos e um inglês. Qual o nome da motorista?",
+      answer: "Ivone",
       hints: [
-        "Tem a ver com limitações físicas",
-        "O problema está em alcançar algo",
-        "Outras pessoas ou um objeto (guarda-chuva) podem ajudar",
+        "Preste atenção nos idiomas envolvidos na pergunta",
+        "Os números também são importantes",
+        "Leia em voz alta os termos 'quatro romanos e um inglês'",
       ],
-      difficulty: "medium",
+      difficulty: "hard",
       category: "Lógica",
     },
     {
       id: 3,
       question: "O que tem pés, mas não anda?",
       answer: "mesa",
-      hints: ["Fica parada", "Tem quatro pés", "Está na sala"],
+      hints: ["Fica parada", "Tem quatro pés", "Está na sala de jantar"],
       difficulty: "easy",
       category: "Objeto",
     },
     {
       id: 4,
       question:
-        "Em uma sala escura há 100 lâmpadas, todas apagadas. Você passa 100 vezes pela sala. Na primeira passada, liga todas as lâmpadas. Na segunda, desliga toda segunda lâmpada. Na terceira, muda o estado de toda terceira lâmpada. Continua assim até a 100ª passada. Quantas lâmpadas ficam acesas?",
-      answer: "10",
+        "Há um pato entre dois patos, um pato atrás de um pato e um pato na frente de outro pato. De quantos patos estamos falando?",
+      answer: "3",
       hints: [
-        "Pense em quantas vezes cada lâmpada é tocada",
-        "Uma lâmpada fica acesa se for tocada um número ímpar de vezes",
-        "Tem a ver com divisores de números",
+        "Tente visualizar a posição dos patos",
+        "A mesma ave pode estar em mais de uma posição descrita",
+        "Não é necessário imaginar muitos patos",
       ],
       difficulty: "hard",
       category: "Matemática",
@@ -187,7 +187,7 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
     },
     {
       id: 16,
-      question: "Tem asas, mas não voa. O que é?",
+      question: "Tem asas, mas não voa sozinho. O que é?",
       answer: "avião",
       hints: ["É máquina", "Depende de piloto", "Não voa sozinho"],
       difficulty: "easy",
@@ -200,6 +200,97 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
       hints: ["É animal", "Tem listras", "Corre rápido"],
       difficulty: "easy",
       category: "Animal",
+    },
+    {
+      id: 17,
+      question:
+        "O Sr. Smith tem 4 filhas. Cada uma de suas filhas tem 1 irmão. Quantos filhos Sr. Smith tem ao todo?",
+      answer: "5",
+      hints: [
+        "Todas as filhas compartilham o mesmo irmão",
+        "Pense em filhos no total, não apenas filhas",
+        "Não há um irmão para cada filha",
+      ],
+      difficulty: "easy",
+      category: "Lógica",
+    },
+    {
+      id: 18,
+      question:
+        "Caminhando ao fim da tarde, uma senhora contou 20 casas em uma rua à sua direita. No regresso, ela contou 20 casas à sua esquerda. Quantas casas ela viu no total?",
+      answer: "20",
+      hints: [
+        "Considere o trajeto de ida e volta",
+        "Ela passou pelas mesmas casas nos dois sentidos",
+        "Os lados mudam conforme a direção do caminho",
+      ],
+      difficulty: "hard",
+      category: "Lógica",
+    },
+    {
+      id: 19,
+      question:
+        "No táxi que entrei havia 8 passageiros. Pouco depois, 3 pessoas desceram e duas entraram. Quantas pessoas há no táxi?",
+      answer: "9",
+      hints: [
+        "Inclua o motorista na contagem",
+        "Três saíram, dois entraram — ajuste o total",
+        "A pergunta é sobre quantas pessoas estão no táxi agora",
+      ],
+      difficulty: "medium",
+      category: "Lógica",
+    },
+    {
+      id: 20,
+      question:
+        "Um pequeno caminhão pode carregar 50 sacos de areia ou 400 tijolos. Se foram colocados no caminhão 32 sacos de areia, quantos tijolos pode ainda ele carregar?",
+      answer: "144",
+      hints: [
+        "A capacidade é proporcional: 50 sacos = 400 tijolos",
+        "Descubra quantos tijolos equivalem a 1 saco de areia",
+        "Subtraia esse valor proporcional da capacidade total em tijolos",
+      ],
+      difficulty: "hard",
+      category: "Matemática",
+    },
+    {
+      id: 21,
+      question:
+        "Quando eu tinha 8 anos, a minha irmã tinha a metade da minha idade. Agora que tenho 55 anos, com quantos anos minha irmã está?",
+      answer: "51",
+      hints: [
+        "A diferença de idade permanece constante",
+        "A diferença entre 8 e 4 é 4 anos",
+        "Se você tem 55, ela tem 55 - 4",
+      ],
+      difficulty: "medium",
+      category: "Matemática",
+    },
+    {
+      id: 22,
+      question:
+        "Maria comprou um vaso de flores por 20 reais e o vendeu por 25 reais. Arrependida da venda, comprou o mesmo vaso por 35 reais, mas logo decidiu vendê-lo por 40 reais. No final, quanto ela lucrou?",
+      answer: "10",
+      hints: [
+        "Separe as duas transações",
+        "Na primeira venda, ela lucrou 5 reais",
+        "Na segunda venda, também teve um lucro de 5 reais",
+      ],
+      difficulty: "medium",
+      category: "Matemática",
+    },
+    {
+      id: 23,
+      question:
+        "Tenho rabo, mas não sou cão, não tenho asas, mas sei voar. Se me largarem, não subo, mas saio ao vento a brincar. Quem sou eu?",
+      answer: "pipa",
+      hints: [
+        "É comum nas brincadeiras ao ar livre",
+        "Precisa de vento para funcionar",
+        "Fica presa por uma linha e pode voar alto",
+      ],
+      difficulty: "hard",
+      category: "Objeto",
     },
   ]);
 
@@ -217,12 +308,24 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
     "easy" | "medium" | "hard" | "all"
   >("all");
 
-  const getRandomRiddle = (difficulty: "easy" | "medium" | "hard" | "all") => {
+  const getRandomRiddle = (
+    difficulty: "easy" | "medium" | "hard" | "all",
+    excludeRiddle?: Riddle
+  ) => {
     const filteredRiddles =
       difficulty === "all"
         ? riddles
         : riddles.filter((r) => r.difficulty === difficulty);
-    return filteredRiddles[Math.floor(Math.random() * filteredRiddles.length)];
+
+    let newRiddle =
+      filteredRiddles[Math.floor(Math.random() * filteredRiddles.length)];
+
+    while (filteredRiddles.length > 1 && newRiddle.id === excludeRiddle?.id) {
+      newRiddle =
+        filteredRiddles[Math.floor(Math.random() * filteredRiddles.length)];
+    }
+
+    return newRiddle;
   };
 
   const startGame = (difficulty: "easy" | "medium" | "hard" | "all") => {
@@ -240,7 +343,7 @@ const LogicRiddlesGame = ({ onComplete }: LogicRiddlesGameProps) => {
   };
 
   const nextRiddle = () => {
-    const riddle = getRandomRiddle(selectedDifficulty);
+    const riddle = getRandomRiddle(selectedDifficulty, currentRiddle);
     setCurrentRiddle(riddle);
     setUserAnswer("");
     setHintsRevealed(0);

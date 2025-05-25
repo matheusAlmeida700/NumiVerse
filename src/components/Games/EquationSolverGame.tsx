@@ -106,7 +106,7 @@ const EquationSolverGame = ({
 
   const handleAnswer = (selectedAnswer: number) => {
     if (selectedAnswer === equation.answer) {
-      const points = 10 + streak * 2;
+      const points = 2 + streak;
       setScore(score + points);
       setStreak(streak + 1);
       toast({

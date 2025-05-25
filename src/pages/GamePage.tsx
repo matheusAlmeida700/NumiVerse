@@ -22,7 +22,7 @@ const GamePage = () => {
   const handleGameComplete = (score: number) => {
     toast({
       title: "Jogo Concluído!",
-      description: `Você ganhou ${score} pontos de XP!`,
+      description: `Você ganhou ${score} pontos!`,
     });
   };
 
@@ -65,7 +65,7 @@ const GamePage = () => {
 
       <NavBar />
 
-      <main className="flex-1 pt-24 pb-12 px-4">
+      <main className="flex-1 pt-8 pb-12 px-4">
         <div className="max-w-6xl mx-auto pt-32">
           <div className="mb-12">{renderGame()}</div>
 

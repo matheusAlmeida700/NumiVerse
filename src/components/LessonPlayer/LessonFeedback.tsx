@@ -23,7 +23,7 @@ const LessonFeedback = ({
     <div className="mt-8 flex flex-col items-center justify-center w-full">
       {isCorrect ? (
         <div className="flex flex-col items-center text-green-500 animate-fade-in">
-          <div className="relative">
+          <div className="relative floating">
             <img
               src={feedbackImage}
               alt="Correto!"

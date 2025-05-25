@@ -7,7 +7,6 @@ import { Heart } from "lucide-react";
 import { lessonData, lessonToPlanetMap } from "@/data/lessonData";
 import { calculateXpForLesson } from "@/data/userProgressData";
 import {
-  isLessonCompleted,
   useUpdateProgress,
   useUpdateUserXp,
   useUserData,
@@ -21,8 +20,6 @@ import ResultsPanel from "./ResultsPanel";
 const correctSound = new Audio("/audio/correct.mp3");
 const incorrectSound = new Audio("/audio/incorrect.mp3");
 const completionSound = new Audio("/audio/completion.mp3");
-
-const STREAK_MILESTONE = 5;
 
 const LessonPlayer = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -74,9 +71,6 @@ const LessonPlayer = () => {
     if (lessonId && lessonData[lessonId]) {
       setCurrentLesson(lessonData[lessonId]);
       document.title = `NumiVerse - ${lessonData[lessonId].title}`;
-
-      const wasAlreadyCompleted =
-        userData && isLessonCompleted(userData.progress, lessonId);
 
       if (userData && userData.streak) {
         setStreak(userData.streak.current || 0);
@@ -169,11 +163,6 @@ const LessonPlayer = () => {
 
       const randomIndex = Math.floor(Math.random() * correctFeedbacks.length);
       setFeedbackMessage(correctFeedbacks[randomIndex]);
-
-      if (newStreak % STREAK_MILESTONE === 0) {
-        setShowStreak(true);
-        setTimeout(() => setShowStreak(false), 2000);
-      }
     } else {
       incorrectSound.play();
       setStreak(0);
@@ -412,13 +401,6 @@ const LessonPlayer = () => {
             {currentQuestionIndex + 1} de {currentLesson.questions.length}
           </p>
         </div>
-
-        {showStreak && (
-          <div className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/90 text-white px-6 py-3 rounded-full animate-bounce z-50 flex items-center">
-            <Heart className="w-5 h-5 mr-2 fill-white" /> {streak} acertos
-            seguidos! Incrível!
-          </div>
-        )}
 
         <div className="bg-card/80 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8 shadow-lg shadow-purple-500/10">
           {completed ? (

@@ -64,7 +64,6 @@ const SlidingPuzzleGame = ({ onComplete }: SlidingPuzzleGameProps) => {
       setBoard(newBoard);
       setMoves(moves + 1);
 
-      // Check if puzzle is solved
       if (JSON.stringify(newBoard) === JSON.stringify(winningBoard)) {
         setIsGameWon(true);
         const finalTime = Date.now() - startTime;

@@ -75,7 +75,6 @@ const MemoryMathGame = ({ onComplete }: MemoryMathGameProps) => {
     const newFlippedCards = [...flippedCards, cardId];
     setFlippedCards(newFlippedCards);
 
-    // Update card state
     setCards((prev) =>
       prev.map((c) => (c.id === cardId ? { ...c, isFlipped: true } : c))
     );
@@ -83,14 +82,12 @@ const MemoryMathGame = ({ onComplete }: MemoryMathGameProps) => {
     if (newFlippedCards.length === 2) {
       setMoves(moves + 1);
 
-      // Check for match after a short delay
       setTimeout(() => {
         const [firstId, secondId] = newFlippedCards;
         const firstCard = cards.find((c) => c.id === firstId);
         const secondCard = cards.find((c) => c.id === secondId);
 
         if (firstCard && secondCard && firstCard.value === secondCard.value) {
-          // Match found
           setCards((prev) =>
             prev.map((c) =>
               c.id === firstId || c.id === secondId
@@ -100,12 +97,12 @@ const MemoryMathGame = ({ onComplete }: MemoryMathGameProps) => {
           );
           setMatches(matches + 1);
 
-          const newScore = score + (100 - moves * 5);
+          const newScore = score + Math.max(20 - moves * 2, 3);
           setScore(newScore);
 
           toast({
             title: "Par encontrado!",
-            description: `+${100 - moves * 5} pontos`,
+            description: `+${20 - moves * 2} pontos`,
           });
 
           if (matches + 1 === expressions.length) {

@@ -5,19 +5,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { planets } from "@/data/planetsData";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
-
-const LoadingPage = () => (
-  <div className="min-h-screen flex flex-col bg-space-gradient">
-    <div className="space-stars"></div>
-    <NavBar />
-    <main className="flex-1 pt-24 pb-16 container mx-auto px-4 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-    </main>
-    <Footer />
-  </div>
-);
 
 const SolarSystem3D = () => {
   const navigate = useNavigate();
@@ -79,15 +66,15 @@ const SolarSystem3D = () => {
     renderer.toneMappingExposure = 1.2;
     canvasRef.current.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 3);
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.2);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.PointLight(0xfff9c4, 5, 2000, 1);
+    const sunLight = new THREE.PointLight(0xfff9c4, 3, 2000, 1);
     sunLight.position.set(0, 0, 0);
     sunLight.castShadow = true;
     scene.add(sunLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(500, 300, 500);
     scene.add(directionalLight);
 
@@ -197,21 +184,29 @@ const SolarSystem3D = () => {
       orbits.push(orbit);
 
       let planetTexture;
+      let emissiveColor = 0x000000;
+      let emissiveIntensity = 0.05;
+
       switch (planet.id) {
         case "aritmetica":
           planetTexture = textureLoader.load("/textures/earthMoon.png");
+          emissiveColor = 0x2a4a6b;
           break;
         case "estatistica":
           planetTexture = textureLoader.load("/textures/earth-texture.jpg");
+          emissiveColor = 0x1a3d5c;
           break;
         case "funcoes":
           planetTexture = textureLoader.load("/textures/saturn-map.jpg");
+          emissiveColor = 0x8b7355;
           break;
         case "geometria":
-          planetTexture = textureLoader.load("/textures/uranus-map.jpg");
+          planetTexture = textureLoader.load("/textures/neptune-map.jpg");
+          emissiveColor = 0x4a7c7e;
           break;
         default:
           planetTexture = textureLoader.load("/textures/uranus-map.jpg");
+          emissiveColor = 0x4a7c7e;
       }
 
       const planetSize = planet.size / 3 + 10;
@@ -219,10 +214,10 @@ const SolarSystem3D = () => {
 
       const planetMaterial = new THREE.MeshStandardMaterial({
         map: planetTexture,
-        metalness: 1,
-        roughness: 0.7,
-        emissive: 0xffffff,
-        emissiveIntensity: 0.1,
+        metalness: 0.1,
+        roughness: 0.8,
+        emissive: emissiveColor,
+        emissiveIntensity: emissiveIntensity,
       });
 
       const planetMesh = new THREE.Mesh(planetGeometry, planetMaterial);
