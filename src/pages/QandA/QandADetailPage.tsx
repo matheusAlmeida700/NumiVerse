@@ -134,7 +134,7 @@ const QandADetailPage = () => {
                   </div>
                 </CardHeader>
                 <CardFooter className="text-sm text-white/60">
-                  Postado por Usuário {postUser?.name}
+                  Postado por {postUser?.name}
                 </CardFooter>
               </Card>
             </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Music, Play, Pause, SkipBack, SkipForward } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import {
   Tooltip,
@@ -9,7 +9,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useAudio } from "@/hooks/useAudio";
-import NumiDJ from "@/assets/numi/numi-dj.png";
 
 const MusicPlayerButton = () => {
   const [expanded, setExpanded] = useState(false);
@@ -40,7 +39,11 @@ const MusicPlayerButton = () => {
                 }`}
                 onClick={() => setExpanded(!expanded)}
               >
-                <img className={"h-16"} src={NumiDJ} alt="Numi DJ" />
+                <img
+                  className="h-16"
+                  src="/images/numi/numi-dj.png"
+                  alt="Numi DJ"
+                />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="left">

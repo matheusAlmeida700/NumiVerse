@@ -19,10 +19,6 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserData } from "@/hooks/useUserData";
 import { planets } from "@/data/planetsData";
-import Logo from "@/assets/numi/numi-ship.png";
-import Streak from "@/assets/nav/streak.png";
-import Xp from "@/assets/nav/xp.png";
-import UserProfile from "@/assets/nav/user-profile.png";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -74,7 +70,11 @@ const NavBar = () => {
           to="/"
           className="flex items-center space-x-4 hover:scale-110 transition-transform"
         >
-          <img src={Logo} alt="Logo" className="w-14 h-14 rotate-6" />
+          <img
+            src="/images/numi/numi-ship.png"
+            alt="Logo"
+            className="w-14 h-14 rotate-6"
+          />
           <span className="text-2xl font-bold text-white text-glow">
             NumiVerse
           </span>
@@ -136,11 +136,19 @@ const NavBar = () => {
                   {isAuthenticated ? (
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-2">
-                        <img src={Xp} className="w-8 h-8" alt="" />
+                        <img
+                          src="/images/nav/xp.png"
+                          className="w-8 h-8"
+                          alt=""
+                        />
                         <span className="text-xl">{userData?.xp ?? 0} XP</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <img src={Streak} className="w-8 h-8" alt="XP" />
+                        <img
+                          src="/images/nav/streak.png"
+                          className="w-8 h-8"
+                          alt="XP"
+                        />
                         <span className="text-xl">
                           {userData?.streak?.current ?? 0} dias
                         </span>
@@ -224,7 +232,11 @@ const NavBar = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="hidden sm:flex items-end gap-2 rounded-full hover:scale-110 transition-all">
-                        <img src={Xp} className="w-8 h-8" alt="XP" />
+                        <img
+                          src="/images/nav/xp.png"
+                          className="w-8 h-8"
+                          alt="XP"
+                        />
                         <span className="font-bold">{userData?.xp ?? 0}XP</span>
                       </div>
                     </TooltipTrigger>
@@ -239,7 +251,7 @@ const NavBar = () => {
                     <TooltipTrigger asChild>
                       <div className="hidden sm:flex items-end gap-2 px-3 rounded-full hover:scale-110 transition-all">
                         <img
-                          src={Streak}
+                          src="/images/nav/streak.png"
                           className="rounded-full w-8 h-8"
                           alt="Dias consecutivos"
                         />
@@ -260,7 +272,7 @@ const NavBar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="w-10 h-10 cursor-pointer hover:scale-110 hover:ring-space-purple transition-all">
-                    <AvatarImage src={UserProfile || ""} />
+                    <AvatarImage src="images/nav/user-profile.png" />
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-card/95 border-white/10 backdrop-blur-md">
@@ -279,7 +291,7 @@ const NavBar = () => {
             ) : (
               <Link to="/auth">
                 <Avatar className="w-10 h-10 cursor-pointer hover:scale-110 hover:ring-space-purple transition-all">
-                  <AvatarImage src={UserProfile || ""} />
+                  <AvatarImage src="/blank-picture.png" />
                 </Avatar>
               </Link>
             )}

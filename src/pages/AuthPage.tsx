@@ -14,11 +14,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import NumiShip from "../assets/register/alien.png";
-import Satelite from "../assets/login/satelite.png";
-import Ship from "../assets/login/naveNumi.png";
-import SaturnNumi from "../assets/register/alienSaturno.png";
-import Logo from "/src/assets/numi/numi-ship.png";
 
 const AuthPage = () => {
   const [activeTab, setActiveTab] = useState<string>("login");
@@ -97,7 +92,11 @@ const AuthPage = () => {
       <div className="min-h-screen bg-space-gradient flex flex-col poppins">
         <header className="w-full pl-12 pt-6 flex justify-between items-center z-10">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={Logo} alt="Logo" className="w-14 h-14 rotate-6" />
+            <img
+              src="/images/numi/numi-ship.png"
+              alt="Logo"
+              className="w-14 h-14 rotate-6"
+            />
             <span className="text-xl font-bold text-white text-glow">
               NumiVerse
             </span>
@@ -105,22 +104,22 @@ const AuthPage = () => {
         </header>
         <img
           className="w-96 hidden md:block fixed top-32 left-28 animate-float"
-          src={NumiShip}
+          src="/images/register/alien.png"
           alt="NumiShip"
         />
         <img
           className="w-96 hidden md:block fixed top-36 right-20 animate-float"
-          src={Satelite}
+          src="/images/login/satelite.png"
           alt="Satelite"
         />
         <img
           className="w-96 hidden md:block fixed bottom-20 left-56 animate-float"
-          src={Ship}
+          src="/images/login/naveNumi.png"
           alt="Ship"
         />
         <img
           className="w-96 hidden md:block fixed bottom-20 right-36 animate-float"
-          src={SaturnNumi}
+          src="/images/register/alienSaturno.png"
           alt="SaturnNumi"
         />
         <div className="absolute top-72 left-28 w-40 h-40 rounded-full bg-space-blue opacity-20 blur-3xl animate-pulse"></div>

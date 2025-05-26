@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
@@ -21,6 +21,7 @@ import { Answer } from "@/types/post";
 import { useUser } from "@/hooks/useUserData";
 import usePost from "@/hooks/usePost";
 import { useParams } from "react-router-dom";
+import { useAnswerUsers } from "@/hooks/useAnswerUsers";
 
 interface AnswerListProps {
   postId: string;
@@ -37,18 +38,10 @@ const AnswerList = ({
 }: AnswerListProps) => {
   const { id } = useParams<{ id: string }>();
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
 
   const { data: post } = usePost(id);
-
-  useEffect(() => {
-    if (post?.userId) {
-      setUserId(post.userId);
-    }
-  }, [post]);
-
-  const { data: answerUser } = useUser(userId);
+  const answerUsers = useAnswerUsers(answers);
 
   const handleDeleteAnswer = async (answerId: string) => {
     try {
@@ -89,7 +82,7 @@ const AnswerList = ({
               <p className="text-white/90 whitespace-pre-wrap">{answer.text}</p>
             </CardContent>
             <CardFooter className="flex justify-between text-sm text-white/60">
-              <span>{answerUser?.name}</span>
+              <span>{answerUsers[answer.userId]?.name || "Usuário"}</span>
 
               <div className="flex items-center gap-3">
                 <span>

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Hero from "../assets/NumiVerse.png";
 import Rocket from "@/components/Rocket";
 import { RocketIcon, User } from "lucide-react";
 import NumiMath from "@/assets/home/numi-math.png";
@@ -20,16 +19,16 @@ const Index = () => {
       <Header />
 
       <main className="flex-1">
-        <section className="relative pt-24 px-4 flex items-center min-h-screen">
+        <section className="relative pt-8 md:pt-24 px-4 flex items-center min-h-screen">
           <div className="max-w-6xl mx-auto text-center">
             <h1 className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-bold poppins">
               Explore o universo da matemática! Aprenda, jogue e conquiste
               planetas em uma jornada cósmica cheia de desafios.
             </h1>
             <img
-              src={Hero}
+              src="/NumiVerse.png"
               alt="NumiVerse"
-              className="mx-auto mb-12 animate-float px-6"
+              className="mx-auto mb-12 animate-float md:px-6"
             />
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/auth">

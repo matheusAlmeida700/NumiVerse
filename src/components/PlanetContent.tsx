@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Star, Sparkles, Rocket } from "lucide-react";
+import { CheckCircle, Star, Sparkles } from "lucide-react";
 import { getPlanetById } from "@/data/planetsData";
 import { getLessonsByPlanet } from "@/data/lessonData";
 import { isLessonCompleted, useUserData } from "@/hooks/useUserData";
-import Xp from "@/assets/nav/xp.png";
 
 interface PlanetContentProps {
   planetId: string;
@@ -196,7 +195,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                     <div className="flex items-end">
                       <img
                         className="w-8 h-8 text-yellow-400 mr-2"
-                        src={Xp}
+                        src="/images/nav/xp.png"
                         alt="Coin"
                       />
                       <span className="text-md text-white/80 font-bold">

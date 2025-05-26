@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Logo from "/src/assets/numi/numi-ship.png";
 import { Button } from "./ui/button";
 import { ArrowUpRight } from "lucide-react";
 
@@ -11,7 +10,11 @@ const Header = () => {
           to="/"
           className="flex items-center space-x-4 hover:scale-110 transition-transform"
         >
-          <img src={Logo} alt="Logo" className="w-16 h-16 rotate-6" />
+          <img
+            src="/images/numi/numi-ship.png"
+            alt="Logo"
+            className="w-16 h-16 rotate-6"
+          />
           <span className="text-2xl hidden md:block font-bold text-white text-glow">
             NumiVerse
           </span>

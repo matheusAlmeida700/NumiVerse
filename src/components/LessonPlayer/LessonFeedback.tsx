@@ -27,6 +27,7 @@ const LessonFeedback = ({
             <img
               src={feedbackImage}
               alt="Correto!"
+              loading="lazy"
               className="w-64 h-64 object-contain mt-2 animate-scale-in"
             />
           </div>
@@ -43,6 +44,7 @@ const LessonFeedback = ({
             <img
               src={feedbackImage}
               alt="Incorreto!"
+              loading="lazy"
               className="w-64 h-64 object-contain mt-2 animate-scale-in"
             />
           </div>

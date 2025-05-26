@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { userService } from "@/services/api";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -8,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Medal, Star, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import BlankPicture from "@/assets/blank-picture.png";
 import LoadingPage from "./LoadingPage";
 import { useUser } from "@/hooks/useUserData";
 import { useToast } from "@/hooks/use-toast";
@@ -114,7 +111,7 @@ const RankingPage = () => {
                   </div>
 
                   <Avatar className="h-12 w-12 mr-4">
-                    <AvatarImage src={BlankPicture} />
+                    <AvatarImage src="/blank-picture.png" />
                   </Avatar>
 
                   <div className="flex-1">
@@ -156,7 +153,7 @@ const RankingPage = () => {
                   </div>
 
                   <Avatar className={`h-12 w-12 mr-4`}>
-                    <AvatarImage src={BlankPicture} />
+                    <AvatarImage src="/blank-picture.png" />
                   </Avatar>
 
                   <div className="flex-1">

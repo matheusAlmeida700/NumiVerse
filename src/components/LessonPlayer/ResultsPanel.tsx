@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { correctImages, incorrectImages } from "@/data/feedbackImages";
-import Xp from "@/assets/nav/xp.png";
 import { useEffect, useState } from "react";
 
 interface ResultsPanelProps {
@@ -70,7 +69,11 @@ const ResultsPanel = ({ results, onRetry, onFinish }: ResultsPanelProps) => {
             <div className="flex justify-between items-center">
               <span>XP ganho:</span>
               <div className="flex items-center text-yellow-500">
-                <img className="w-8 h-8 mr-2" src={Xp} alt="Xp" />
+                <img
+                  className="w-8 h-8 mr-2"
+                  src="/images/nav/xp.png"
+                  alt="Xp"
+                />
                 {results.xp}
               </div>
             </div>
