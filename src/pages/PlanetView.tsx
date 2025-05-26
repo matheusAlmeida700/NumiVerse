@@ -24,19 +24,12 @@ const PlanetView = () => {
     return () => clearTimeout(timer);
   }, [planetId]);
 
-  const planet = getPlanetById(planetId || "");
-  const planetColor = planet?.glowColor || "bg-purple-500/40";
-
   return (
     <div className="min-h-screen flex flex-col bg-space-gradient">
       <div className="space-stars"></div>
 
-      <div
-        className={`absolute top-1/2 left-2 w-[400px] h-[400px] rounded-full blur-[150px] opacity-20 ${planetColor}`}
-      ></div>
-      <div
-        className={`absolute bottom-1/2 right-2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-20 ${planetColor}`}
-      ></div>
+      <div className="absolute top-1/2 left-2 w-[400px] h-[400px] rounded-full blur-[150px] opacity-20"></div>
+      <div className="absolute bottom-1/2 right-2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-20 "></div>
 
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(20)].map((_, i) => (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,35 +14,39 @@ interface PlanetContentProps {
 
 const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
   const navigate = useNavigate();
-  const [planet, setPlanet] = useState<any>(null);
-  const [lessons, setLessons] = useState<any[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   const { data: userData } = useUserData();
 
+  const planet = useMemo(() => getPlanetById(planetId), [planetId]);
+  const lessons = useMemo(() => getLessonsByPlanet(planetId), [planetId]);
+
   useEffect(() => {
-    const planetData = getPlanetById(planetId);
-    setPlanet(planetData);
-
-    const planetLessons = getLessonsByPlanet(planetId);
-    setLessons(planetLessons);
-
-    const timer = setTimeout(() => {
-      setLoaded(true);
-    }, 300);
-
+    const timer = setTimeout(() => setLoaded(true), 300);
     return () => clearTimeout(timer);
-  }, [planetId]);
+  }, []);
 
   const handleStartLesson = (lessonId: string) => {
     navigate(`/lesson/${lessonId}`);
   };
 
   const checkLessonCompleted = (lessonId: string): boolean => {
-    if (userData && userData.progress) {
-      return isLessonCompleted(userData.progress, lessonId);
+    return userData?.progress
+      ? isLessonCompleted(userData.progress, lessonId)
+      : false;
+  };
+
+  const getDifficultyColor = (difficulty?: string) => {
+    switch (difficulty) {
+      case "iniciante":
+        return "bg-green-500/80";
+      case "intermediário":
+        return "bg-yellow-500/80";
+      case "avançado":
+        return "bg-red-500/80";
+      default:
+        return "bg-blue-500/80";
     }
-    return false;
   };
 
   if (!planet) {
@@ -55,18 +59,9 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
     );
   }
 
-  const getDifficultyColor = (difficulty: string | undefined) => {
-    switch (difficulty) {
-      case "iniciante":
-        return "bg-green-500/80";
-      case "intermediário":
-        return "bg-yellow-500/80";
-      case "avançado":
-        return "bg-red-500/80";
-      default:
-        return "bg-blue-500/80";
-    }
-  };
+  const completedLessonsCount = lessons.filter((lesson) =>
+    checkLessonCompleted(lesson.id)
+  ).length;
 
   return (
     <div className="container mx-auto px-4 poppins">
@@ -81,7 +76,6 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
         <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
           {planet.description}
         </p>
-
         <div className="relative w-full max-w-md mx-auto mt-8 h-1">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-space-purple to-transparent"></div>
         </div>
@@ -98,27 +92,18 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
           </h2>
           <div className="text-white/60 flex flex-col md:flex-row md:items-center gap-2">
             <span>
-              {
-                lessons.filter((lesson) => checkLessonCompleted(lesson.id))
-                  .length
-              }{" "}
-              de {lessons.length} completadas
+              {completedLessonsCount} de {lessons.length} completadas
             </span>
             <Progress
-              value={
-                (lessons.filter((lesson) => checkLessonCompleted(lesson.id))
-                  .length /
-                  lessons.length) *
-                100
-              }
+              value={(completedLessonsCount / lessons.length) * 100}
               className="w-full md:w-32 h-2"
             />
           </div>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {lessons.map((lesson, index) => {
             const isCompleted = checkLessonCompleted(lesson.id);
-
             return (
               <Card
                 key={lesson.id}
@@ -205,7 +190,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
 
                     <Button
                       onClick={() => handleStartLesson(lesson.id)}
-                      variant={"default"}
+                      variant="default"
                       className={`transition-all duration-300 ${
                         isCompleted
                           ? "bg-green-600 hover:bg-green-700"
