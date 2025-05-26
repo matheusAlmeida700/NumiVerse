@@ -1386,10 +1386,18 @@ export const lessonData: Record<string, LessonData> = {
   },
 };
 
+const lessonsByPlanetMap: Record<string, LessonData[]> = {};
+
+Object.values(lessonData).forEach((lesson) => {
+  const planetKey = lesson.id.split("-")[0];
+  if (!lessonsByPlanetMap[planetKey]) {
+    lessonsByPlanetMap[planetKey] = [];
+  }
+  lessonsByPlanetMap[planetKey].push(lesson);
+});
+
 export const getLessonsByPlanet = (planetId: string): LessonData[] => {
-  return Object.values(lessonData).filter((lesson) =>
-    lesson.id.startsWith(planetId)
-  );
+  return lessonsByPlanetMap[planetId] || [];
 };
 
 export const lessonToPlanetMap: Record<string, string> = {
