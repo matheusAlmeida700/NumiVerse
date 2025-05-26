@@ -112,22 +112,22 @@ const AuthPage = () => {
           </Link>
         </header>
         <img
-          className="w-96 hidden md:block fixed top-32 left-28 animate-float"
+          className="w-96 hidden md:block fixed md:top-32 md:left-28 animate-float"
           src="/images/register/alien.png"
           alt="NumiShip"
         />
         <img
-          className="w-96 hidden md:block fixed top-36 right-20 animate-float"
+          className="w-96 hidden md:block fixed md:top-36 md:right-20 animate-float"
           src="/images/login/satelite.png"
           alt="Satelite"
         />
         <img
-          className="w-96 hidden md:block fixed bottom-20 left-56 animate-float"
+          className="w-96 hidden md:block fixed md:bottom-20 md:left-56 animate-float"
           src="/images/login/naveNumi.png"
           alt="Ship"
         />
         <img
-          className="w-96 hidden md:block fixed bottom-20 right-36 animate-float"
+          className="w-96 hidden md:block fixed md:bottom-20 md:right-36 animate-float"
           src="/images/register/alienSaturno.png"
           alt="SaturnNumi"
         />
