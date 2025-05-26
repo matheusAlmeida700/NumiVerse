@@ -125,8 +125,6 @@ const SolarSystem3D = () => {
     const sunGeometry = new THREE.SphereGeometry(50, 64, 64);
     const sunMaterial = new THREE.MeshBasicMaterial({
       map: sunTexture,
-      emissive: 0xffee88,
-      emissiveIntensity: 0.6,
     });
 
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
@@ -254,15 +252,11 @@ const SolarSystem3D = () => {
         planetMesh.add(ring);
       }
 
-      const glowColor = new THREE.Color(
-        planet.glowColor.replace("bg-", "").replace("/40", "")
-      );
       const glowIntensity = 0.2;
 
       const glowSprite = new THREE.Sprite(
         new THREE.SpriteMaterial({
           map: textureLoader.load("/textures/circle.png"),
-          color: glowColor,
           transparent: true,
           blending: THREE.AdditiveBlending,
           opacity: glowIntensity,

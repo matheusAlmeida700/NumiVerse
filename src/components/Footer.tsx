@@ -27,18 +27,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/missions"
+                  to="/games"
                   className="text-white/60 hover:text-white transition"
                 >
-                  Missões
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/achievements"
-                  className="text-white/60 hover:text-white transition"
-                >
-                  Conquistas
+                  Jogos
                 </Link>
               </li>
             </ul>
@@ -49,34 +41,26 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  to="/help"
+                  to="/achievements"
                   className="text-white/60 hover:text-white transition"
                 >
-                  Central de Ajuda
+                  Conquistas
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/faq"
+                  to="/ranking"
                   className="text-white/60 hover:text-white transition"
                 >
-                  FAQs
+                  Ranking
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/contact"
+                  to="/qanda"
                   className="text-white/60 hover:text-white transition"
                 >
-                  Contato
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/feedback"
-                  className="text-white/60 hover:text-white transition"
-                >
-                  Feedback
+                  Dúvidas
                 </Link>
               </li>
             </ul>

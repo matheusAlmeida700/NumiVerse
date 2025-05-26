@@ -76,7 +76,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
           loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
         }`}
       >
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 pt-12 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 pt-12 pb-2 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
           {planet.name}
         </h1>
         <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">

@@ -17,6 +17,7 @@ import { ptBR } from "date-fns/locale";
 import PostForm from "@/components/QandA/PostForm";
 import usePost from "@/hooks/usePost";
 import { Post } from "@/types/post";
+import Footer from "@/components/Footer";
 
 const QandAListPage = () => {
   const { isAuthenticated } = useAuth();
