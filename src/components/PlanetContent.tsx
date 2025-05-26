@@ -97,7 +97,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
           <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-yellow-400" /> Lições
           </h2>
-          <div className="text-white/60 flex items-center gap-2">
+          <div className="text-white/60 flex flex-col md:flex-row md:items-center gap-2">
             <span>
               {
                 lessons.filter((lesson) => checkLessonCompleted(lesson.id))
@@ -112,7 +112,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
                   lessons.length) *
                 100
               }
-              className="w-24 h-2"
+              className="w-full md:w-32 h-2"
             />
           </div>
         </div>
