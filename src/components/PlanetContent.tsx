@@ -64,7 +64,7 @@ const PlanetContent: React.FC<PlanetContentProps> = ({ planetId }) => {
   ).length;
 
   return (
-    <div className="container mx-auto px-4 poppins">
+    <div className="container mx-auto px-4">
       <div
         className={`mb-10 text-center transition-all duration-700 ${
           loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"

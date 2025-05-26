@@ -54,9 +54,7 @@ const App = () => (
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
-    <div className="absolute bottom-12 left-12">
-      <MusicPlayerButton />
-    </div>
+    <MusicPlayerButton />
   </QueryClientProvider>
 );
 

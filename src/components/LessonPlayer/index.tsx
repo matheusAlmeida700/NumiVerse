@@ -112,19 +112,6 @@ const LessonPlayer = () => {
       case "complete-number":
         correct = selectedAnswers[0] === currentQuestion.correctAnswer;
         break;
-      case "match":
-        const matchPairs = currentQuestion.correctAnswer as string[];
-        correct =
-          matchPairs.every((pair) => {
-            const [a, b] = pair.split("=");
-            return selectedAnswers.includes(`${a}=${b}`);
-          }) && selectedAnswers.length === matchPairs.length;
-        break;
-      case "drag-drop":
-        const correctDragDrop = currentQuestion.correctAnswer as string[];
-        correct =
-          JSON.stringify(selectedAnswers) === JSON.stringify(correctDragDrop);
-        break;
       case "sort":
         const correctOrder = currentQuestion.correctAnswer as string[];
         correct =
@@ -140,15 +127,6 @@ const LessonPlayer = () => {
         const correctSequence = currentQuestion.correctAnswer as string[];
         correct =
           JSON.stringify(selectedAnswers) === JSON.stringify(correctSequence);
-        break;
-      case "connect-dots":
-        const correctConnections = currentQuestion.correctAnswer as string[];
-        const allConnectionsCorrect = correctConnections.every((conn) =>
-          selectedAnswers.includes(conn)
-        );
-        const noExtraConnections =
-          selectedAnswers.length === correctConnections.length;
-        correct = allConnectionsCorrect && noExtraConnections;
         break;
     }
 
