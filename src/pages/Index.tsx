@@ -53,7 +53,7 @@ const Index = () => {
         </section>
 
         <section className="max-w-7xl mx-auto">
-          <div className="relative flex flex-col md:flex-row items-center justify-center md:h-[750px]">
+          <div className="relative flex flex-col md:flex-row items-center justify-center h-[800px]">
             <div className="w-full md:flex-1 h-full">
               <Rocket />
             </div>

@@ -74,7 +74,7 @@ const QandAListPage = () => {
       <NavBar />
 
       <div className="max-w-5xl mx-auto pt-32 px-4 pb-16">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <h1 className="flex items-center text-3xl font-bold text-white mb-2">
               <MessageCircleQuestion className="w-10 h-10 text-space-purple mr-3" />
@@ -88,7 +88,7 @@ const QandAListPage = () => {
           {isAuthenticated && (
             <Button
               onClick={() => setShowForm(true)}
-              className="bg-space-purple hover:bg-purple-700 flex items-center gap-2"
+              className="bg-space-purple hover:bg-purple-700 flex items-center gap-2 mt-6 md:mt-0"
             >
               <PlusCircle size={16} />
               Nova Dúvida
