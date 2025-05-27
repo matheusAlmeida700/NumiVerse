@@ -1307,7 +1307,7 @@ export const lessonData: Record<string, LessonData> = {
         question:
           "Em um gráfico de setores, se uma categoria ocupa 90° do círculo, qual é sua porcentagem?",
         answers: [],
-        correctAnswer: "25",
+        correctAnswer: ["25", "25%", "25/100"],
         explanation: "90° é ¼ de 360°, logo representa 25%.",
       },
     ],
@@ -1387,7 +1387,7 @@ export const lessonData: Record<string, LessonData> = {
         question:
           "Se há 10 bolas numeradas de 1 a 10 em uma urna, qual a probabilidade de sortear a bola 7?",
         answers: [],
-        correctAnswer: "0.1",
+        correctAnswer: ["0.1", "0,1", "1/10"],
         explanation: "1 chance em 10 = 1/10 = 0.1",
       },
     ],
