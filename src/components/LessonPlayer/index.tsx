@@ -47,7 +47,7 @@ const LessonPlayer = () => {
   const updateStreak = useUpdateStreak();
 
   const correctFeedbacks = [
-    "Sabe muito, irmão!",
+    "Sabe muito!",
     "Calma, gênio!",
     "Você tá voando!",
     "Isso que é habilidade!",
@@ -55,7 +55,7 @@ const LessonPlayer = () => {
     "Senhoras e senhores, um gênio.",
     "Nota 10, sem defeitos!",
     "Tá pronto pro ENEM já!",
-    "Acertou, miserávi!", 
+    "Acertou, miserávi!",
     "Você joga o fino da sabedoria!",
     "Pitágoras tá vivo e eu nem sabia.",
     "Excelente!",
