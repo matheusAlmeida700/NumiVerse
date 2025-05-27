@@ -184,7 +184,15 @@ export const lessonData: Record<string, LessonData> = {
         type: "complete-number",
         question: "Resolva a equação: x² - 5x + 6 = 0",
         answers: [],
-        correctAnswer: "2 e 3",
+        correctAnswer: [
+          "2 e 3",
+          "3 e 2",
+          "2,3",
+          "3,2",
+          "2 ou 3",
+          "3 ou 2",
+          "3 2",
+        ],
         explanation: "Fatorando: (x - 2)(x - 3) = 0 → x = 2 ou x = 3.",
       },
       {

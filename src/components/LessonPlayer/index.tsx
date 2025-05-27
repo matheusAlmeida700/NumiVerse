@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/components/ui/use-toast";
-import { Heart } from "lucide-react";
 import { lessonData, lessonToPlanetMap } from "@/data/lessonData";
 import { calculateXpForLesson } from "@/data/userProgressData";
 import {
@@ -110,24 +109,31 @@ const LessonPlayer = () => {
         correct = selectedAnswers[0] === currentQuestion.correctAnswer;
         break;
       case "complete-number":
-        correct = selectedAnswers[0] === currentQuestion.correctAnswer;
+        if (Array.isArray(currentQuestion.correctAnswer)) {
+          correct = currentQuestion.correctAnswer.includes(selectedAnswers[0]);
+        } else {
+          correct = selectedAnswers[0] === currentQuestion.correctAnswer;
+        }
         break;
-      case "sort":
+      case "sort": {
         const correctOrder = currentQuestion.correctAnswer as string[];
         correct =
           JSON.stringify(sortableItems) === JSON.stringify(correctOrder);
         break;
-      case "tap-choice":
+      }
+      case "tap-choice": {
         const correctTaps = currentQuestion.correctAnswer as string[];
         correct =
           correctTaps.every((answer) => selectedAnswers.includes(answer)) &&
           selectedAnswers.length === correctTaps.length;
         break;
-      case "sequence":
+      }
+      case "sequence": {
         const correctSequence = currentQuestion.correctAnswer as string[];
         correct =
           JSON.stringify(selectedAnswers) === JSON.stringify(correctSequence);
         break;
+      }
     }
 
     setIsCorrect(correct);
